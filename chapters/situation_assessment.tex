@@ -1,0 +1,90 @@
+% Chapter Template
+
+\chapter{Situation Assessment} % Main chapter title
+
+\label{chapter-situation_assessment} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Chapter . \emph{Situation Assessment}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+In this chapter we introduce the Situation Assessment capacities of our system. 
+
+%TODO: Citations on Toaster 
+\section{Introduction}
+\label{situation_assessment-intro}
+%Motivation
+For any application that's not repetitive, control based, it's necessary that robots have a representation of their environment. Depending on the application, these information could be simple or more complex. Imagine, for example, a robot that needs to clean the floor of a room. A simple implementation of this idea would rely on a map of the room and laser or bumper sensors to avoid or detect obstacles. Now, imagine a household robot that needs to actively help a family that lives in an apartment, by fetching objects, providing information and help accomplish various tasks. Clearly, in this situation, the robot needs a deeper degree of reasoning on sensor data: laser points and camera images need to be integrated to recognize objects and humans, spatial relationships between objects (e.g. the cup is on the table) and humans (e.g. the human has the cup) need to be properly modeled, actions performed by humans, and their effects on the environment, need to be recognized, and so on.
+
+%What is situation assessment
+In this situation, there is a need for a module that performs different kind of reasoning on perceptual data, and produces information that can be used by the rest of the system. Maintaning knowledge and understanding of the current situation, also known as situation awareness, is called situation assessment. 
+Endsley in \cite{endsley1995} explains that "situation awareness incorporates an operator's understanding of the situation as a whole, forming the basis for decision making".
+
+
+\subsection{Situation Assessment}
+%what are people doing with situation assessment and belief management
+A variety of robotic systems have made a situation assessment component to fit the need of the robot in a particular task application. In \cite{beck2011}, the situation assessment system is based on Dynamic Markov chains to model the environment states and their evolution. It presents an application for a mobile robot to navigate in a narrow passage.
+\cite{Chella2010} aims to build a "higher order" perception, giving the robot the ability to reason on its own inner world.
+\cite{Kluge01situationassessment} presents an empirical assessment of situations for a mobile robot in a crowded public environment applied to recognize situations of deliberate obstruction. In our situation assessment software we focus on what is represented (human, objects ...) and we support heterogeneous type of sensors and data to provide a semantic interpretation of the environment with the aim to have a situation assessment capability that can be used in a various set of applications (see \ref{sec:applications}).
+
+
+\subsection{Theory of Mind}
+%A Geometric
+perceptual perspective taking, whereby 
+human can understand that other people have a different  perception of the world, and 2) 
+conceptual perspective taking, whereby humans can go further and attribute beliefs and feelings to other people~\cite{Baron1985}.
+
+Understanding properly others' intention requires to reason about their beliefs and thoughts, and on how they affect actions. This skill is called Theory of Mind \cite{premack1978does}. An ability linked to this concept is perspective taking, which is widely studied in developmental literature.  Flavell in \cite{flavell1977development} describes two levels of perspective taking: 
+1) perceptual perspective taking, whereby  humans can understand that other people see the world differently~\cite{Tversky1999}, and 2) conceptual perspective taking, whereby humans can go further and attribute thoughts and feelings to other people~\cite{Baron1985}. Studies on individuals that don't possess the required mechanisms to perform perspective taking, like young children \cite{frick2014picturing}, 
+have put into light the difficulties these people have to accomplish everyday social relationships and confirmed the importance of this ability.
+
+Previous works in robotics have shown that enhancing the robot's perspective taking abilities improves its reasoning capabilities, leading to more appropriate and efficient task planning and interaction strategies \cite{breazeal2006,Trafton2005,ros2010one}.
+
+Concerning level two, various research on human robot interaction already aim to represent the human belief state.
+Breazal et al.~\cite{BreazealGB09} proposed one of the first human-robot implementation. In our previous work \cite{Milliez2014}, we made a primitive implementation to solve the Sally and Anne test described by Wimmer in~\cite{Wimmer1983}. In this primitive implementation, the reasoning on others belief state was limited to object position. We propose here a more generic approach to represent any kind of belief the human may hold on the environment.
+%B conceptual
+
+The first point we need to introduce is the concept of intention. There are many different definitions of intention in psychology \cite{bruner1981} and philosophy \cite{bratman1984} literature. In this paper we define an intention as the wish and will to achieve a goal. The intention emerges from contextual causes (motivations) and is present 
+
+An important study linked to conceptual perspective taking is the 'divergent belief task'.  Formulated in~\cite{wimmer1983}, this kind of task requires the ability to recognize that others can have beliefs about the world that differ from the observable reality. ~\cite{BreazealGB09} proposed one of the first human-robot implementations, resulting in more advanced goal recognition skills. This is a primary issue of intention recognition, since, as explained by \cite{byom2013theory} "as humans, we generally believe that others act in ways that are consistent with their beliefs and goals".
+
+
+Also, the authors's belief modeling (described fully in \cite{briggs2011facilitating}) is oriented toward communication problems and not geometrical and spatial perspective taking issues.
+
+\subsection{Activity Recognition}
+
+The recognition of human activities is an important topic in computer science research, which can be studied at different levels. Anticipating human actions and movements allows the robot to adapt its behavior and proactively help humans, as studied in \cite{koppula2013anticipating}. An interesting idea is using the robot's own internal models in order to recognize actions and predict user intents, as shown by the \textit{HAMMER} system in \cite{demiris2007prediction}. Sequences of actions can be linked to plans, a well-known topic called plan recognition. Several approaches have been studied in this domain using, for example, classical planning \cite{ramirez2009plan}, probabilistic \cite{bui2003general} or logic techniques \cite{singla2011abductive}. An interesting framework for intention recognition is the Bayesian Theory of Mind \cite{baker2014modeling}, used to represent the inference process of an observer looking at another agent's behaviors, with POMDPs and Dynamic Bayesian Networks (DBNs). 
+
+Two approaches that can be used for intention estimation are Interactive Partially Observed Markov Decision Processes (I-POMDP) and Inverse Learning. I-POMDP  \cite{gmytrasiewicz2004interactive} offer a rich framework that extends Partially Observed Markov Decision Processes (POMDP) in a multi-agent setting. Inference in these models can be extremely complex, but there have been attempts at solving this issue, like in \cite{doshi2009monte,hoang2013interactive}. 
+
+Inverse Reinforcement Learning \cite{ng2000algorithms} formulates the problem of computing an unknown reward function of an agent after observing his behavior. This strategy has been applied, with Bayesian Networks (BN), in \cite{Nagai2015}, in order to learn the mental model of another agent, and choose appropriate actions for a relationship building task. A linked approach is inverted planning, which has been applied in a bayesian framework in \cite{baker2009action}  for human action understanding.
+
+Contextual information can be used to further disambiguate complex situations. \cite{Liu2014} shows a system using BNs to understand users' intentions with an emphasis on contextual information.
+
+\section{Definitions}
+%Fact
+%Action
+
+
+\section{Situation Assessment}
+\label{situation_assessment-situation_assessment}
+\subsection{Entity Recognition}
+
+
+\section{Belief Management}
+\label{situation_assessment-belief_management}
+
+\section{Action and Intention Inference}
+\label{situation_assessment-intention_recognition}
+
+\subsection{Intention Graph}
+\subsection{Context to Intentions}
+\subsection{Intentions to Actions}
+\subsection{Actions to Observations}
+\subsection{Inference Process}
+
+\section{Experiments}
+\label{situation_assessment-experiments}
+\subsection{Case Study}
+\subsection{Robot Implementation}
+\subsection{Discussion}
+
+%%refine better when writing... basically it's that paper. Maybe we can put something novel? Like a better study

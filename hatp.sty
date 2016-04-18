@@ -1,0 +1,20 @@
+%Define the HATP language
+%
+%Author: Raphaël Lallement, raphael . lallement [at] laposte . net
+
+\usepackage{listings}
+
+\lstdefinelanguage{HATP}{
+	keywords={define,entityType,entityAttributes,
+		dynamic,static,atom,set,bool,string,number,
+		true,false,NULL,new,add,in,rem,
+		method,operator,projects,preconditions,effects,cost,duration,subtasks,goal,
+		FORALL,EXIST,IF,SELECT,SELECTONCE,SELECTORDERED, plans},
+	sensitive=true,
+	comment=[l]{//},
+	string=[b]{"},
+	tabsize=3,
+	basicstyle={\singlespacing},aboveskip={-3ex}
+}
+
+\lstalias{hatp}{HATP}
