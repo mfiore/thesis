@@ -7,8 +7,17 @@
 \lhead{Chapter . \emph{Plan Production and Management}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
 
-\section{Related Works}
+\section{Introduction}
 
+
+In \cite{shah2011improved} a shared plan is executed
+using Chaski, a task-level executive which is used to adapt the robot's actions to
+the human partners. Plans can be executed in two different modalities:
+equal partners or leader and assistant. The authors show that this
+system reduces human idle time.
+
+
+Robot assistants need not only to predict human intentions, but also to produce socially acceptable plans in order to help them. Some systems, like Pike \cite{karpas2015robust} and Chaski \cite{shah2011improved}, explicitly model humans in their plans and allow the robot to adapt its behavior to the users' actions.  Other approaches, such as \cite{levine2014concurrent}, integrate robot's actions in the recognition process, allowing the system to flexibly adapt its plan to humans. 
 
 \section{Classic Planning}
 \subsection{Human-Aware Task Planner}
@@ -20,6 +29,76 @@
 \section{Plan Negotiation}
 
 \section{Plan Management}
+We have identified several ways - or
+modalities - to envisage how the robot planning and decisional abilities
+for task achievement can be used: 
+
+\noindent
+\textbf{Robot plans.}
+In the first modality the robot will, using information present in the
+Knowledge Base and HATP, produce a plan to complete the joint
+goal. After that the robot will verbalize the plan to the user,
+explaining which actions will be performed by each agent and in which
+order. The robot will monitor the execution process, informing the
+human of which actions it's about to execute and also on when the human
+should execute its part of the plan. This modality, where the robot is
+the leader, can be helpful when interacting with
+naive users or in tasks where the robot has a better knowledge of the
+domain or of the environment than the other agents.
+
+\noindent
+\textbf{Human plans.}
+The human can also create plans, interacting with the robot by using a
+tablet application. This application allows the user to select
+different actions and parameters. The user can issue both high level goals (e.g. clean the
+table) and simpler actions (e.g. take the grey tape, give me the walle
+tape, stop your current action). The robot will simply observe the
+surroundings and wait for user inputs. This modality is always available and has a priority over
+the other two modalities. If the robot receives a command from the
+application while it is in another modality, it will abandon its current
+plan, stopping its actions at a safe point, and then execute the users'
+command. We feel that this interaction modality is important for two
+different reasons.  First, some users will simply prefer to be in
+charge of the execution process, for a matter of personal preference or because they
+feel they have a deeper knowledge on how to realize the current task
+than the robot. We can picture, for example, industrial or medical
+scenarios, where the human is the leader and asks the robot to perform
+different tasks to help him, when needed. A second use of this modality is in situations where
+the robot doesn't have  a clear estimation of the users' intentions and
+goals. For example, in a domestic environment, a user could decide to
+order a robot to bring him a drink, a need that the robot can't always anticipate.
+
+\noindent
+\textbf{Robot adapts.}
+In the last presented operation modality the robot will try to help
+the human to complete a task. At the start of the scenario, the robot
+will stand still and observe the environment. After the user takes an
+action the robot will calculate a plan and try to help as it can, by
+performing actions related to that task and by giving helpful information to
+the user. In our implementation the robot will start
+this modality in a 'passive' role, simply observing the human until he
+takes the first action. We could also picture a more pro-active role for
+the robot, where the robot chooses a goal on its own and starts acting toward its
+completion, eventually asking for the help of the human when he can't
+complete an action. 
+
+This modality corresponds to what we feel is a very natural way of
+interaction between different partners, in particular in non-critical
+tasks, where defining an accurate plan between the partners is not
+fundamental. This situation relates quite easily to the scenario we
+will present in details in section \ref{sec:experiments}, where the
+two partners must clean a set of furnitures together. In this
+situation the two partners could simply choose to start executing the
+actions that they prefer, continuously adapting their plans to the
+other partners' actions.  
+
+The robot is able to switch from one modality to another during
+execution. For example, if the robot is in the 'robot plans' modality and the
+users' actions differ from the calculated plan the robot will
+interrupt its current action, create a new plan, and switch to the
+'robot adapts' modality.  
+
+
 \subsection{Human Leader}
 \subsection{Robot Leader}
 \subsection{Equal Partners}

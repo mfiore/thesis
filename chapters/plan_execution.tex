@@ -6,18 +6,34 @@
 
 \lhead{Chapter . \emph{Plan Execution}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
+%Legibility: quella zoccola americana di cui non ricordo il nome
+%Safety
 
-\section{Related Works}
+\section{Introduction}
 
-\section{The Geometrical Task Planner}
+Acting in a human-crowded environment is a difficult problem. Even when acting independently, the robot needs to insure human safety, by stopping when a movement could bring harm to a human; to perform legible movements, so that its actions can be understand by humans; and to be robust, trying to complete its actions even in front of unexpect conditions.
 
-\section{Robot Action Execution} %%pausing an action, abandoning an action, precondition checking, social clues
+When performing a cooperating action with the human the robot needs to continuously monitor if he is involved in the task, eventually stopping to wait for him, continuing without the human if it can, or even abandoning the task;  and also to adapt its movement to him. For example, if the robot and humans are performing an handover, the robot will have to choose a position for its arm where the human can easily reach the object, change this position if the human is moving, or abandon the task if the human leaves the area.
 
-\section{Collaborative Action Execution} %%POMDPs to adapt the action
+\section{Overview}
+
+\begin{itemize}
+	\item Action Executor. This module is tasked with executing the robot's actions in a robust, human-aware, and flexible way.
+	\item Collaborative Planners. This set of planners enable the robot to adapt it's actions to humans when performing cooperative actions.
+	\item Motion Planners and Executors. These planners are in charge of choosing trajectories for the robot,
+taking into account the environment and the present agents.
+\end{itemize}
 
 
+\section{Action Executor}
+The robot can deal with failed actions by updating its knowledge of the environment and replanning accordingly. For example, if the robot tries to take an item and fails, it will update its knowledge introducing the information that the item is not reachable  from the current position. The robot can then replan, for example by asking the user to take the item. The robot has the ability to stop its current action, for example because of unexpected changes in the environment. The robot is also able  to pause and resume the execution of an action, for example because the arm of the human  is in its planned trajectory.
+
+Our robot has limited capacities to show social clues to humans when executing actions. It will always verbalize it's next action and move it's head to the action's target.
 
 
+\section{Collaborative Planners} %%POMDPs to adapt the action
+We introduced a special framework to manage cooperative actions, called the Collaborative Planners, based on hierarchical MOMDPs.  The Collaborative Planners that enables the system to react in a human-aware way when performing cooperative actions . We use a hierarchical framework \cite{pineau2001hierarchical}, where the system model is split into a main MOMDP module and several MOMDP sub-models, each one related to a different action. The models are solved separately, leading to the computation of different, simpler, policy functions. At run-time, the system interacts with the main module, providing values for the set of observations and for the observed variables, and receiving an action as result. Based on this action, the system will contact a different sub-model, receiving the final action to execute. Using hierarchical MOMDPs we can represent a set of models, with a greatly reduced complexity, and easily expand it if we want to implement new actions or to add more complex behaviors. To maintain this model generic the Collaborative Planners will output high-level actions, which the Action Executor will adapt to the current situation.
 
+For example, if the robot is giving a bottle to a human, the related Collaborative Planner will receive information such as the human's distance, orientation, and the pose of his arm, in order to compute if he is involved in the action. Depending on these information, the planner could choose high-level actions like "continue", which would prompt the robot to extend its arm or release the bottle, 
 
 
