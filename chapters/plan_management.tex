@@ -105,7 +105,7 @@ two partners must clean a set of furnitures together. In this
 situation the two partners could simply choose to start executing the
 actions that they prefer, continuously adapting their plans to the
 other partners' actions.  
-\subsection{Switching Modalities}
+
 
 \section{Plan Generation}
 \subsection{Human-Aware Task Planner}
@@ -363,11 +363,15 @@ During the execution of a plan, the robot will monitor other agents. In general,
 \end{itemize}
 
 \subsection{Monitoring at Action Level}
-When the robot expects a specific action from a human.
+The robot can be updated at each time on what actions have been performed, using the mechanisms described in the Situation Assessment chapter. This way, the robot can compare the actions performed by humans, with those that should be performed following the shared plan.
 
 \subsection{Monitoring at Task Level}
+Monitoring an expected task is a more complex issue, as humans have several way to complete it. We can deal with this issue by using the ideas presented in the Intention Recognition paper with the hierarchical MDP models presented here. In general, the Intention Recognition model will be inferring human intentions from a known list of possible intentions, which should include the possible goals in the system, and so the shared goal that is been performed with the robot. We add a new intention to monitor, assigned to the HMDP related to the subtask assigned to the user, with the same contexts as the high-level intention, and monitor his engagement level.
+
+ If the Intention Recognition module detects that the human's intention correspond to the current task, than the robot will consider that the human is proceeding with his part of the plan. When this intention will be achieved, the robot will start to monitor the next task assigned to the human.
 
 \subsection{Evaluating Human Engagement}
+Human Engagement in a task can be evaluated using the Intention Recognition framework. %%Add the previous part
 
 \subsection{Adapting Monitoring to Human Knowledge}
 Once the current task to perform has been explained, the robot performs it if it is allocated to it, or it  monitors its human partner's task performance. Consequently, the monitoring may be done at high-level tasks if the human has enough knowledge of it.
@@ -376,8 +380,19 @@ We have chosen this adaptive way of monitoring since we believe the robot would 
 Monitoring human actions is complex, particularly with high-level tasks, where we are not monitoring a set of atomic actions. The system should have reasoning models for the robot to understand if the state of the world is coherent with the action that the human needs to perform. It should also be able to measure the level of engagement of the human to the task, in order to better assess if the human is executing or not his part of the shared plan, and to react accordingly.
 
 \subsection{Monitoring and Unseen Actions}
+Often, in cooperative tasks, the agents will operate in different locations, and so their actions won't be observable at all time. Perhaps one of the agents is preparing a cake in the kitchen,  while the robot is preparing the table. While we don't deal, in this work, with these issues, there are studies on plan recognition in partially observable environments. %CITA
+
 
 \subsection{Failed Monitoring and Replanning}
+What happens when a human is not engaged in the current task? There are three possibilities:
+\begin{itemize}
+\item The human is momentarily doing another task: in this case, the robot will simply wait, without considering the human's assigned task as failed.
+\item The human is engaged in a different long-term task, related to the current scenario: in this case, the robot will act differently depending on the 
+current modality. In the 'robot leader' mode, the robot will issue a warning to the human. In the 'Equal Partners' or 'Human Leader' modalities, the robot will create a new plan, and try to adapt to the human.  %%What should the robot actually do?
+\item The human is engaged in a different long-term task, not related to the current scenario. In this case, the robot will create a new plan, not considering the human as a partner.
+\end{itemize}
+
+To understand if a task is 'short term' or 'long term' we can hand-code these information, linking it to the intentions. We infer that a human is engaged in a different task, but still related to the same scenario, if the likelihood that the human intention is its assigned task is low, but the likelihood that the human intention is the shared goal is still high. 
 
 
 
