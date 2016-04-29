@@ -1,4 +1,4 @@
-% Chapter Template
+                 % Chapter Template
 
 \chapter{Situation Assessment} % Main chapter title
 
@@ -13,11 +13,11 @@ In this chapter we introduce the Situation Assessment capacities of our system.
 \label{situation_assessment-intro}
 \subsection{What is Situation Assessment?}
 %Motivation
-For any application that's not repetitive, control based, it's necessary that robots have a representation of their environment. Depending on the application, these information could be simple or more complex. Imagine, for example, a robot that needs to clean the floor of a room. A simple implementation of this idea would rely on a map of the room and laser or bumper sensors to avoid or detect obstacles. Now, imagine a household robot that needs to actively help a family that lives in an apartment, by fetching objects, providing information and helping accomplish various tasks. Clearly, in this situation, the robot needs a deeper degree of reasoning on sensor data: laser points and camera images need to be integrated to recognize objects and humans; spatial relationships between objects (e.g. the cup is on the table) and humans (e.g. the human has the cup) need to be properly modeled; actions performed by humans, and their effects on the environment, need to be recognized; and so on.
+In any application that is not entirely composed by repetitive, precomputed, actions, robots need to possess adeguate reasoning skills, which severely depend on the quality of the representation of their environment. This representation can be more or less complex, depending on the application. Imagine, for example, a robot that needs to clean the floor of a room. For a fairly simple case, this robot would rely on a map of the room and set of lasers, or bumper sensors, to detect and obstacles. Now, imagine a household robot that needs to actively help a family that lives in an apartment, by fetching objects, providing information, and helping accomplish various tasks. Clearly, in this situation, the robot needs a deeper degree of reasoning on sensor data: laser points and camera images need to be integrated to recognize objects and humans; spatial relationships  (e.g. the cup is on the table, the human has the cup) need to be properly modeled; actions performed by humans, and their effects on the environment, need to be recognized; and so on. 
 
-%What is situation assessment
-In this situation, there is a need for a module that performs different kind of reasoning on perceptual data, and produces information that can be used by the rest of the system. Maintaning knowledge and understanding of the current situation, also known as situation awareness, is called situation assessment. 
-Endsley in \cite{endsley1995} explains that "situation awareness incorporates an operator's understanding of the situation as a whole, forming the basis for decision making".
+In this situation, there is a need for a process which performs different kinds of reasoning on perceptual data, and produces information that can be used by the rest of the system. This process is called situation assessment, and is deeply linked to the quality of the decisions of the robot, as explained by Endsley in \cite{endsley1995}. 
+
+An example of generic system used in robotics for situation assessment is \cite{beetz2015robosherlock}
 
 %what are people doing with situation assessment and belief management
 In robotics, different authors have implemented a situation assessment component, but these are usually not generic, and designed for a a specific application. For example, \cite{Chella2010,Kluge01situationassessment} use situation assessment component for mobile robots. In the first work, a Dynamic Markov chain is used to track the state of the environment, in order to help the robot navigate narrow passages. In the second work, an empirical assessment of situations is used to recognize situations in crowded scenarios where the robot is obstructed.
@@ -32,7 +32,7 @@ Previous works in robotics have shown that enhancing the robot's perspective tak
 
 An important study linked to conceptual perspective taking is the 'divergent belief task'.  Formulated in~\cite{wimmer1983}, this kind of task requires the ability to recognize that others can have beliefs about the world that differ from the observable reality. ~\cite{BreazealGB09} proposed one of the first human-robot implementations, resulting in more advanced goal recognition skills. 
 
-\cite{briggs2011facilitating}) presents a situation assessment system able to model different agent's beliefs. The work is oriented in particular toward communication problems and not geometrical and spatial perspective taking issues.
+\cite{scheutz2013computational}) presents a situation assessment system able to model different agent's beliefs. The work is oriented in particular toward communication problems and not geometrical and spatial perspective taking issues.
 
 \subsection{Intention Recognition}
 %TODO: here in particular we need something for action recognition
