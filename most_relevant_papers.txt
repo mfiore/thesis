@@ -71,3 +71,13 @@ Plan\intention Recognition:
   pages={177--204},
   year={2014}
 }
+
+
+@inproceedings{karami2010human,
+  author = "Karami, A-B and Jeanpierre, Laurent and Mouaddib, A-I",
+  booktitle = "{Human-Robot Interaction (HRI), 2010 5th ACM/IEEE International Conference on}",
+  organization = "IEEE",
+  pages = "155--156",
+  title = "{Human-robot collaboration for a shared mission}",
+  year = "2010"
+}

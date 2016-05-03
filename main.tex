@@ -33,8 +33,9 @@
 \hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
 
 \usepackage{amsmath,amsfonts,amssymb}
-
+\usepackage{graphicx}
 \usepackage{epsfig}
+\usepackage{epstopdf}
 
 \usepackage{lineno}
 \usepackage{ltablex}
@@ -55,7 +56,7 @@
 \usepackage{tabularx}
 
 \usepackage{listings}
-\input{hatp.sty} 
+%\input{hatp.sty} 
 
 
 \title{\ttitle} % Defines the thesis title - don't touch this
@@ -327,10 +328,12 @@ TODO\ldots
 \input{chapters/case_study.tex}
 
 %\bibliographystyle{plainnat} % Use the "unsrtnat" BibTeX style for formatting the Bibliography
-\bibliographystyle{apalike}
+%\bibliographystyle{apalike}
 %\bibliographystyle{unsrtnat}
+\bibliographystyle{IEEEtran}
+
 \lhead{\emph{Bibliography}} % Change the page header to say "Bibliography"
-%\bibliography{thesis} % The references (bibliography) information are stored in the file named "thesis.bib"
+\bibliography{all.bib} % The references (bibliography) information are stored in the file named "thesis.bib"
 
 \newpage
 \appendix

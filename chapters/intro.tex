@@ -72,8 +72,7 @@ The supervision system was developed with the following goals in mind:
 
 To achieve this goal we chose to use the well known ROS framework, which allows use different robots without having a large impact on the code.The system has been implemented and tested in simulation, using the GAZEBO simulator, and on two different robots, the PR2 by Willow Garage, and the SPENCER robot, developed in an european project. 
 
-%TODO: system architecture
-The supervision system is composed by the following modules:
+The supervision system is composed by the following modules, as shown in figure \ref{fig:intro-system_architecture}:
 \begin{itemize}
 \item Situation Assessment: this modules produces symbolic information, using geometrical and temporal reasoning, starting from perception data. Using Situation Assessment, the robot is able to understand information such as if an object is reachable, if an human has performed an action, and if a human is heading toward it.
 \item Symbolic Database: this module collects all the symbolic information produced by the system. The Database is able to represent the knowledge of different agents, as viewed by the robot. Using this feature, the robot can represent, for example, the fact that a human doesn't know the location an object, or thinks that it is in a wrong place.
@@ -81,6 +80,13 @@ The supervision system is composed by the following modules:
 \item Plan Manager: This module contacts the Task Planner to produce plans to achieve the current goal, and then manages these plans. The system supports multi-agent plans, and so the Plan Manager will monitor other agents action, to check if they conform to the current plan, and interact with the Execution Manager module to execute the robot's actions. The Plan Manager will handle replans, when an action executed by the robot fails or other agents's behavior differ from the current plan.
 \item Execution Manager: this module handles the execution of robot's action, including joint actions shared with other agents. The module handles different situation that can arise while executing an action, for example stopping and resuming it or abandoning it.
 \end{itemize}
+
+ \begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.45]{img/intro/system_architecture}
+	\caption{This picture shows the different layers of the system}
+	\label{fig:intro-system_architecture}
+\end{figure}
 
 The system also interfaces itself with other modules, which can be easily changed depending on the current needs:
 

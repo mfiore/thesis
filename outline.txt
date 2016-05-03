@@ -1,0 +1,86 @@
+-Introduction
+	-Introduction
+	-Contributions
+	-System Overview
+	-Organization of the Thess
+	-Published Works
+-Situation Assessment
+	-Introduction
+		-What is Situation Assessment
+		-Theory of Mind
+		-Intention and Activity Recognition
+		-Dialogue
+	-Overview
+	-Object and Human Detection
+	-Human-Robot Communication
+	-World Model and Geometrical Reasoning
+	-Belief Management
+	-Action and Intention Inference
+		-Intention Graph
+		-From Contexts to Intentions
+		-From Intentions to Actions
+		-From Actions to Observations
+	-Experiments and Discussion
+		-Cookie Scenario
+		-Keys Scenario
+		-User Study
+		-Robot Implementation
+		-Discussion
+-Goal Management
+	-Introduction
+	-Choosing a Goal
+		-Robot Receives a goal from a human
+		-Robot chooses a goal on its own
+-Plan Production and Management
+	-Introduction
+	-Overview
+	-Plan Management Modalities
+		-Robot Leader	
+		-Human Leader
+		-Equal Partners
+	-Plan Production
+		-HATP
+		-Probabilistic Planners (that is, the multi-agent mdp planner)
+		-Adapting Plan Generation to Human Knowledge
+	-Plan Explanation
+		-Plan Preprocessing
+		-Plan Presentation
+		-Failure and Replanning
+	-Plan Negotiation
+	-Plan Monitoring
+		-Monitoring at Action Level
+		-Monitoring at Task Level
+		-Evaluating Human Engagement
+		-Adapting Monitoring to Human Knowledge
+		-Monitoring and Unseen Actions
+		-Failed Monitoring and Replanning
+-Plan Execution
+	-Introduction
+	-Overview
+	-Action Execution
+	-Joint Action Execution
+-Case Study
+	-Human Aware Robot Guide
+		-Introduction
+		-Scenario
+		-Environment-Based Intention Recognition
+		-Task and Motion Planning Problems
+		-Guiding a Group
+			-Guiding Group Model
+			-Adapting the Robot's Speed
+			-Suspending the task
+		-Motion Planning Notes
+		-Laboratory Experiments and Analysis
+		-Results on Airport Deployment	
+	-Household helper
+		-Introduction
+		-Scenario
+		-Human-Robot Handover
+-Conclusions
+
+Appendix:
+-Methods
+	-MDP
+	-POMDP
+	-Hierarchical MDP
+	-Bayesian Networks
