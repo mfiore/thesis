@@ -6,7 +6,7 @@
 
 \lhead{Chapter . \emph{Situation Assessment}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
-In this chapter we introduce the Situation Assessment capacities of our system. 
+In this chapter we introduce the Situation Assessment capacities of our system. Section \ref{sec:situation_assessemnt-intro} provides an introduction to the subject, with a discussion on some relevant works. Section\ref{sec:situation_assessment-overview} shows an overview of this layer, discussing its key aspects and modules. Sections \ref{sec:situation_assessment-object_human_detection} and \ref{sec:situation_assessment-communication} quickly discuss two minor aspects of our implementation, entity detection and communication. In section \ref{sec:situation_assessment-situation_assessment} we dicuss about the geometrical reasoning capacities of our system, showing how symbolic facts are generated, and in section \ref{sec:situation_assessment-belief_management} we show how these facts are assigned to human belief models. In \ref{sec:situation_assessment-intention_recognition} we introduce our intention recognition module, able to infer the most likely human intentions and actions. Finally, in section \ref{sec:situation_assessment-experiments} we show the experiments conducted to validate our module, and in particular its intention recognition capacities.
 
 %TODO: Citations on Toaster. Look and add other possible citations. Cite everything. Everything!
 \section{Introduction}
@@ -53,7 +53,6 @@ Dialogue is a very important part of situation assessment. Agents often communic
 
 \section{System Overview}
 \label{sec:situation_assessment-overview}
-
 In our architecture, we built a Situation Assessment layer, which is able to:
 \begin{itemize}
 \item  Detect and track entities.
@@ -82,18 +81,25 @@ This layer is composed by different elements, as shown in Fig. \ref{fig:situatio
 	\label{fig:situation_assessment-situation_assessment_overview}
 \end{figure}
 
-
 In addition, the system possesses a description of the world, with a definition of all the elements known to the robot, like objects and agents, possible actions, possible intentions, intentions, etc. 
 Symbolic facts are constantly produced starting from the sensor data and from the position of entities, and then the Belief Manager will update and maintain the belief model of each agent. The belief model of humans and of the robot will be used by the Intention and Action Recognition modules to infer the most likely intentions and actions performed. All these information are introduced in the Database, and can be read by other components. For example, the Goal Manager can choose a goal based on human commands or on an estimation of its intention. In a similar way, the Action Execution modules will read the Database in order to obtain the state of the world, to check action preconditions.  
 
 Our situation assessment layer was presented in \cite{Milliez2014}, where it was used to pass the Sally and Anne test~\cite{Baron1985} on a robotic platform. The intention and action recognition capacity was introduced in \cite{devin2016some}.
 
 \section{Object and Human Detection}
+\label{sec:situation_assessment-object_human_detection}
 In our system, we chose to simplify perception issues, focusing on reasoning aspects. We associate a unique tag to every object that is interesting in a particular scenario.  When the robot observes a tag using a camera, it detects the corresponding object using a tag-matching algorithm.
 Regarding humans, we use a motion capture software to identify and track agents moving in the environment. Using different tags, we can track the head, shoulders, and right arm of a human. Our situation assessment component has also been tested using a laser and RGB based detector in the SPENCER european project \footnote{http://www.spencer.eu/}.
 
+
+%TODO: image of MOCAP and VIMAN
+
 \section{Human-Robot Communication}
-Similarly, communication between the human and the robot is limited, in our system. Humans can give commands to the robot by using a tablet application, where they can manage the robot goals, by adding a new goal, canceling a previous one, or pausing the robot. The robot is able to provide simple verbal output by using a text-to-speech component. The robot is not able to perform real dialogues with the human but it can adapt its speech to the current tasks and scenarios, by explaining plans, informing the human if it has a problem, verbalizing its current actions, and so on. This feature will be explained fully in chapter \ref{chap-plan production and management}. 
+\label{sec:situation_assessment-communication}
+
+Similarly, communication between the human and the robot is limited, in our system. Humans can give commands to the robot by using a tablet application, where they can manage the robot goals, by adding a new goal, canceling a previous one, or pausing the robot. Requests are added to the Database, and can be read by the Goal Management Layer. The robot is able to provide simple verbal output by using a text-to-speech component. The robot is not able to perform real dialogues with the human but it can adapt its speech to the current tasks and scenarios, by explaining plans, informing the human if it has a problem, verbalizing its current actions, and so on. This feature will be explained fully in chapter \ref{chap-plan production and management}. 
+
+%TODO: image of the tablet application
 
 \section{World Model and Geometrical Reasoning}
 \label{sec:situation_assessment-situation_assessment}
@@ -107,6 +113,8 @@ an agent can be in a specific area, a box can be opened and can contain objects,
 
 Using its perception abilities the robot can build a representation of the environment, starting with entities' positions. Using geometrical reasoning we can compute spatial relationships between entities, e.g. the glasses are on the shelf, the human is moving toward the library, the glasses are reachable by the human, the bottle is visible for the human. These reasonings provide a base for the perspective taking abilities of the robot. 
 
+
+%TODO: Image of geometrical reasoning
 
 \section{Belief Management}
 \label{sec:situation_assessment-belief_management}
@@ -131,6 +139,7 @@ However, when he comes back and looks at the environment, we assign him a new be
 The idea of this set of rules is updating an agent's mental belief model for a property only if it's observable, or if it's not observable and perception data contradicts the current value of the property (e.g. the mug was moved from the table to the kitchen while the agent was in another room: while the agent can not see where is the mug, he can see it is no longer on the table).
 
 
+%TODO: Image of perspective taking
 
 \section{Action and Intention Inference}
 \label{sec:situation_assessment-intention_recognition}
@@ -189,6 +198,20 @@ We assume, in this work, that at each moment a human can only execute a single a
 \end{itemize}
 
 When the robot infers that an action has been performed, it updates the world state with its $postconditions$, triggering an update on the beliefs of all present agents. The current human intention is recorded in the Database, in order to be used by the Goal Manager.
+
+\subsection{Proactive Behaviors}
+\label{subsec:situation_assessment-proactive_behaviors}
+Information about the most likely intention and action will be introduced in the database, to be read by the Goal Management module. Based on this information, the robot can execute two different proactive behaviors: correcting the belief state of the human, and proactively helping him to achieve his task.
+
+\subsubsection{Correcting Belief State}
+Having a wrong or incomplete belief on the world state can lead agents to execute non optimal, useless, or even dangerous actions. The robot needs to detect these situations in order to warn the human. The robot assumes that it always holds a correct belief state. Our solution uses the expected action rewards introduced in \ref{sec:situation_assessment-action_evaluation}. The idea is comparing the expected reward for performing an action according to the human and the robot's belief states. To formalize: we compare the action values \(Q_m(s_h,a_h)\) and \(Q_m(s_r,a_h)\), where $m$ is the most likely intention,  $s_h$ and $s_r$ are the robot's and human's belief state, and $a_h$ is the most likely action. If these values are not equal the human expects a different outcome from its action than what should actually happen. 
+
+We propose a simple solution, where the robot warns the human of the detected divergent belief for that action. For example, Bob wants to drink tea from a closed, opaque bottle, which the robot knows is empty (perhaps because another agent drank the last glass), while Bob does not. When he approaches the bottle, the robot detects that his most likely intention (using the process described in \ref{sec:situation_assessment-intention_recognition}) is to drink tea. The system calculates the expected rewards from taking the bottle in the two belief models and obtains different values. The system checks the property values associated to the bottle in the two mental models, and extracts the differences. Using this information, the robot corrects the divergent belief, informing the human that the bottle is now empty. 
+
+To implement this idea, in our system, detecting the need to correct a belief state, the Intention and Action Recognition module will introduce all the needed information in the Database, which will be read by the Goal Manager in the form of a "warn agent" goal with high priority (as will be explained in chapter \ref{chapter-goal_management}).
+
+\subsubsection{Performing a part of the plan}
+There are situations in which the robot should help the human achieve its goal by acting. The Goal Management layer will consider new inferred intentions as possible goals for the robot, and will communicate with the Plan Production and Management layer to achieve them, as explained in chapters \ref{chapter-goal_management}, \ref{chapter-plan_management}, and \ref{chapter-plan_execution}. 
 
 
 \section{Experiments and Discussion}
