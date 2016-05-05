@@ -27,8 +27,108 @@ equal partners or leader and assistant. The authors show that this
 system reduces human idle time.
 
 
-Robot assistants need not only to predict human intentions, but also to produce socially acceptable plans in order to help them. Some systems, like Pike \cite{karpas2015robust} and Chaski \cite{shah2011improved}, explicitly model humans in their plans and allow the robot to adapt its behavior to the users' actions.  Other approaches, such as \cite{levine2014concurrent}, integrate robot's actions in the recognition process, allowing the system to flexibly adapt its plan to humans. 
+Robot assistants need not only to predict human intentions, but also to produce socially acceptable plans in order to help them. Some systems, like Pike \cite{karpas2015robust} and Chaski \cite{shah2011improved}, explicitly model humans in their plans and allow the robot to adapt its behavior to the users' actions.
 
+
+Message Passing + Looping:
+guestrin2002distributed
+We present a principled and efficient planning algo-
+rithm for collaborative multiagent dynamical systems.
+All computation, during both the planning and the ex-
+ecution phases, is distributed among the agents; each
+agent only needs to model and plan for a small part
+of the system. Each of these local subsystems is
+small, but once they are combined they can represent
+an exponentially larger problem. The subsystems are
+connected through a subsystem hierarchy. Coordina-
+tion and communication between the agents is not im-
+posed, but derived directly from the structure of this
+hierarchy. A globally consistent plan is achieved by
+a message passing algorithm, where messages corre-
+spond to natural local reward functions and are com-
+puted by local linear programs; another message pass-
+ing algorithm allows us to execute the resulting pol-
+icy. W hen two portions of the hierarchy share the same
+structure, our algorithm can reuse plans and messages
+to speed up computation.
+
+
+dietterich2000hierarchical
+This paper presents a new approach to hierarchical reinforcement learning based on de-
+composing the target Markov decision process (MDP) into a hierarchy of smaller MDPs
+and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decom-position, has both a procedural semantics|as a subroutine hierarchy|and a declarative
+semantics|as a representation of the value function of a hierarchical policy. MAXQ uni
+and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and
+Dayan and Hinton. It is based on the assumption that the programmer can identify useful
+subgoals and de
+programmer constrains the set of policies that need to be considered during reinforcement
+learning. The MAXQ value function decomposition can represent the value function of any
+policy that is consistent with the given hierarchy. The decomposition also creates oppor-
+tunities to exploit state abstractions, so that individual MDPs within the hierarchy can
+ignore large parts of the state space. This is important for the practical application of the
+method. This paper denes the MAXQ hierarchy, proves formal results on its representa-
+tional power, and establishespresents an online model-free learning algorithm, MAXQ-Q, and proves that it converges
+with probability 1 to a kind of locally-optimal policy known as a recursively optimal policy, even in the presence of the
+representation and MAXQ-Q through a series of experiments in three domains and shows
+experimentally that MAXQ-Q (with state abstractions) converges to a recursively optimal
+policy much faster than the value function has an important bene
+an improved, non-hierarchical policy via a procedure similar to the policy improvement
+step of policy iteration. The paper demonstrates the e
+execution experimentally. Finally, the paper concludes with a comparison to related work
+and a discussion of the design tradeo
+ne subtasks that achieve these subgoals. By de
+ning such subgoals, the
+ve conditions for the safe use of state abstractions. The paper
+ve kinds of state abstraction. The paper evaluates the MAXQ
+at Q learning. The fact that MAXQ learns a representation of
+t: it makes it possible to compute and execute
+ectiveness of this non-hierarchical
+s in hierarchical reinforcement learning.
+
+
+hauskrecht1998hierarchical
+We investigate the use of temporally abstract
+actions, or macro-actions, in the solution of
+Markov decision processes. Unlike current mod-
+els that combine both primitive actions and
+macro-actions and leave the state space un-
+changed, we propose a hierarchical model (using
+an abstract MDP) that works with macro-actions
+only, and that significantly reduces the size of the
+state space. This is achieved by treating macro-
+actions as local policies that act in certain regions
+of state space, and by restricting states in the ab-
+stract MDP to those at the boundaries of regions.
+The abstract MDP approximates the original and
+can be solved more efficiently. We discuss sev-
+eral ways in which macro-actions can be gen-
+erated to ensure good solution quality. Finally,
+we consider ways in which macro-actions can be
+reused to solve multiple, related MDPs; and we
+show that this can justify the computational over-
+head of macro-action generation.
+
+multiplan mdp
+boutilier1999sequential
+
+dec-pomdp
+bernstein2002complexity
+
+i-pomdp
+gmytrasiewicz2005framework
+
+sparse interactions dec-pomdp
+melo2013heuristic
+
+torreno2015approach
+Multi-agent planning (MAP) approaches have been typically conceived for independent or loosely-coupled problems to enhance the benefits of distributed planning between autonomous agents as solving this type of problems require less coordination between the agents' sub-plans. However, when it comes to tightly-coupled agents' tasks, MAP has been relegated in favour of centralized approaches and little work has been done in this direction. In this paper, we present a general-purpose MAP capable to efficiently handle planning problems with any level of coupling between agents. We propose a cooperative refinement planning approach, built upon the partial-order planning paradigm, that allows agents to work with incomplete information and to have incomplete views of the world, i.e. being ignorant of other agents' information, as well as maintaining their own private information. We show various experiments to compare the performance of our system with a distributed CSP-based MAP approach over a suite of problems.
+
+survey of multi agent planning
+durfee1999survey
+
+
+cross-training
+nikolaidis2013cross
 
 \section{Overview}
 Our system presents a planning layer which is able to perform the following tasks:

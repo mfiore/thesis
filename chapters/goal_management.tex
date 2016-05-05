@@ -5,7 +5,7 @@
 \label{chapter-goal_management} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 \lhead{Chapter . \emph{Goal Management}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
-In this Chapter we introduce the goal management characteristics of our system.
+In this Chapter we introduce the goal management characteristics of our system. Section \men{sec:goal_management-intro} introduces the important topic of goal generation and management. Section \ref{sec:goal_management-overview} shows the main characteristics of this layer. Finally, section \ref{sec:goal_management-choosing} discusses in details the characteristics of our implementation.
 
 \section{Introductions}
 \label{sec:goal_management-intro}
@@ -16,6 +16,7 @@ Let's imagine, for example, an household robot, helping a family to accomplish a
 It's clear that managing goals is a hard problem, involving issues such as scheduling and risk analysis. An example of work that studies this issues is \cite{hanheide2010framework}, where the authors present a framework to generate and manage goals in a robotic system. Goals are generated based on the system's state from a number of generators, and encoded in terms of importance and urgency. The framework has been used in a robotic explorer architecture.
 
 \section{Overview}
+\label{sec:goal_management-overview}
 While goal management is not a focus in this work, we introduce a simple system that allows the robot to select which goal to activate from a list of possible goals. This layer is able to:
 
 \begin{itemize}
@@ -29,7 +30,7 @@ While goal management is not a focus in this work, we introduce a simple system 
 
 We do not include mechanisms for scheduling or to evaluate the length of time to achieve a goal, which would improve the quality of choices performed by this layer .
 
-\section{Goal Management}
+\section{Generating and Choosing Goals}
 \label{sec:goal_management-choosing}
 This layer possesses a list of possible goals that can be achieved by the robot, which may differ from the list of intentions introduced in section \ref{sec:situation_assessment-intention_recognition}, since some goals could be achieved only by humans or only by the robot. At each moment, the layer also has a list of instantiated goals, that need to be managed.
 
