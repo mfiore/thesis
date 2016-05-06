@@ -8,167 +8,89 @@
 
 
 \section{Introduction}
-Robots can be used to perform a large number of different operations. Some of them will be simple enough that the robot can just map an operation to an elementar action, or a sequence of these. In other cases, the robot might have to  achieve complex goals, which require the ability to plan an appropriate sequence of actions. When cooperating together with other agents the robot will have to build a shared plan, which includes the actions that every agent need to perform, in order to coordinate and ensure the corrent achievemt of the goal. We can imagine the following process:
+\label{sec-plan_management-intro}
+\subsection{Cooperation between agents}
+Robots can be used to perform a large number of different operations. Some of these will be simple enough that the robot can just achieve its task by performing a prefixed sequence of elementary actions . In other cases, the robot might have to  achieve complex goals, which require the ability to create plans of actions, adapting them to the current state of the world. When cooperating together with other agents, the robot will have to build a shared plan, which includes the actions that every agent need to perform, in order to coordinate and ensure the corrent achievemt of the goal. We can imagine the following process:
 \begin{itemize}
 	\item The system receives a new goal. This can be directly introduced by a human, or chosen after some kind of reasoning by the robot.
 	\item One of the agents (the robot or the humans) proposes a shared plan to achieve the goal, and presents it to the other agents.
-	\item The agents negotiate the plan. In some situations, one of the agent might not be able (or might not want) to perform a specific action, or sequence of actions. The agent can refuse a plan, propose a correction, or propose a complete different plan.
+	\item The agents negotiate the plan. In some situations, one of the agents might not be able (or might not want) to perform a specific action, or sequence of actions. The agent can refuse a plan, propose a correction, or propose a complete different plan.
 	\item The agents execute the plan. Each agent performs its part of the plan. In additions, agents may check the state of others to monitor the correct execution of their part of the plan or too cordinate with them.
 	\item An agent might fail its part of the plan. If this happens the agents need to create a new plan to account for this failure.
- 	\item The process continues until the goal is achieved or it becomes inachievable (for example, a needed resource is no longer available)-
+ 	\item The process continues until the goal is achieved or it becomes inachievable (for example, a needed resource is no longer available).
 \end{itemize} 
-When humans cooperate this process can be very quick. For simple tasks humans are able to coordinate without explicitly forming a plan, in particular they are used to cooperating together. Other times, when there are unexpected problems during the execution of a plan, humans are able to quickly readapt their plan, without starting the process from the scratch. In order to cooperate in a natural way with humans, robots need to reproduce these mechanisms.
+When humans cooperate this process can be very quick. For simple tasks humans are able to coordinate without explicitly forming a plan, in particular if they are used to cooperating together. Other times, when there are unexpected problems during the execution of a plan, humans are able to quickly readapt their plan, without completely restarting this process. In order to cooperate in a natural way with humans, robots need to reproduce these mechanisms.
 
 
-In \cite{shah2011improved} a shared plan is executed
-using Chaski, a task-level executive which is used to adapt the robot's actions to
-the human partners. Plans can be executed in two different modalities:
-equal partners or leader and assistant. The authors show that this
-system reduces human idle time.
-
-
-Robot assistants need not only to predict human intentions, but also to produce socially acceptable plans in order to help them. Some systems, like Pike \cite{karpas2015robust} and Chaski \cite{shah2011improved}, explicitly model humans in their plans and allow the robot to adapt its behavior to the users' actions.
-
-
-Message Passing + Looping:
-guestrin2002distributed
-We present a principled and efficient planning algo-
-rithm for collaborative multiagent dynamical systems.
-All computation, during both the planning and the ex-
-ecution phases, is distributed among the agents; each
-agent only needs to model and plan for a small part
-of the system. Each of these local subsystems is
-small, but once they are combined they can represent
-an exponentially larger problem. The subsystems are
-connected through a subsystem hierarchy. Coordina-
-tion and communication between the agents is not im-
-posed, but derived directly from the structure of this
-hierarchy. A globally consistent plan is achieved by
-a message passing algorithm, where messages corre-
-spond to natural local reward functions and are com-
-puted by local linear programs; another message pass-
-ing algorithm allows us to execute the resulting pol-
-icy. W hen two portions of the hierarchy share the same
-structure, our algorithm can reuse plans and messages
-to speed up computation.
-
-
-dietterich2000hierarchical
-This paper presents a new approach to hierarchical reinforcement learning based on de-
-composing the target Markov decision process (MDP) into a hierarchy of smaller MDPs
-and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decom-position, has both a procedural semantics|as a subroutine hierarchy|and a declarative
-semantics|as a representation of the value function of a hierarchical policy. MAXQ uni
-and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and
-Dayan and Hinton. It is based on the assumption that the programmer can identify useful
-subgoals and de
-programmer constrains the set of policies that need to be considered during reinforcement
-learning. The MAXQ value function decomposition can represent the value function of any
-policy that is consistent with the given hierarchy. The decomposition also creates oppor-
-tunities to exploit state abstractions, so that individual MDPs within the hierarchy can
-ignore large parts of the state space. This is important for the practical application of the
-method. This paper denes the MAXQ hierarchy, proves formal results on its representa-
-tional power, and establishespresents an online model-free learning algorithm, MAXQ-Q, and proves that it converges
-with probability 1 to a kind of locally-optimal policy known as a recursively optimal policy, even in the presence of the
-representation and MAXQ-Q through a series of experiments in three domains and shows
-experimentally that MAXQ-Q (with state abstractions) converges to a recursively optimal
-policy much faster than the value function has an important bene
-an improved, non-hierarchical policy via a procedure similar to the policy improvement
-step of policy iteration. The paper demonstrates the e
-execution experimentally. Finally, the paper concludes with a comparison to related work
-and a discussion of the design tradeo
-ne subtasks that achieve these subgoals. By de
-ning such subgoals, the
-ve conditions for the safe use of state abstractions. The paper
-ve kinds of state abstraction. The paper evaluates the MAXQ
-at Q learning. The fact that MAXQ learns a representation of
-t: it makes it possible to compute and execute
-ectiveness of this non-hierarchical
-s in hierarchical reinforcement learning.
-
-
-hauskrecht1998hierarchical
-We investigate the use of temporally abstract
-actions, or macro-actions, in the solution of
-Markov decision processes. Unlike current mod-
-els that combine both primitive actions and
-macro-actions and leave the state space un-
-changed, we propose a hierarchical model (using
-an abstract MDP) that works with macro-actions
-only, and that significantly reduces the size of the
-state space. This is achieved by treating macro-
-actions as local policies that act in certain regions
-of state space, and by restricting states in the ab-
-stract MDP to those at the boundaries of regions.
-The abstract MDP approximates the original and
-can be solved more efficiently. We discuss sev-
-eral ways in which macro-actions can be gen-
-erated to ensure good solution quality. Finally,
-we consider ways in which macro-actions can be
-reused to solve multiple, related MDPs; and we
-show that this can justify the computational over-
-head of macro-action generation.
-
-multiplan mdp
-boutilier1999sequential
-
-dec-pomdp
-bernstein2002complexity
-
-i-pomdp
-gmytrasiewicz2005framework
-
-sparse interactions dec-pomdp
-melo2013heuristic
-
-torreno2015approach
-Multi-agent planning (MAP) approaches have been typically conceived for independent or loosely-coupled problems to enhance the benefits of distributed planning between autonomous agents as solving this type of problems require less coordination between the agents' sub-plans. However, when it comes to tightly-coupled agents' tasks, MAP has been relegated in favour of centralized approaches and little work has been done in this direction. In this paper, we present a general-purpose MAP capable to efficiently handle planning problems with any level of coupling between agents. We propose a cooperative refinement planning approach, built upon the partial-order planning paradigm, that allows agents to work with incomplete information and to have incomplete views of the world, i.e. being ignorant of other agents' information, as well as maintaining their own private information. We show various experiments to compare the performance of our system with a distributed CSP-based MAP approach over a suite of problems.
-
-survey of multi agent planning
-durfee1999survey
-
-
-cross-training
-nikolaidis2013cross
-
-\section{Overview}
-Our system presents a planning layer which is able to perform the following tasks:
+\subsection{Multi Agent Planning}
+Multi-Agent planning   is an important and studied topic in the AI community \cite{durfee1999survey}. There are several approaches to this problem, both using classical or probabilistc planning. There are several issues to consider:
 \begin{itemize}
-	\item Interface with external planners in order to create a shared plan. The system has been integrated with an HTN (Hierarchical Task Network) based planner, HATP (Human-Aware Task Planner), and with a multi-agent MDP planner.
-	\item Explain a plan to human agents. Depending on the human knowledge of the tasks to be performed, the robot will change the explanations, explaining more deeply tasks that agents don't know.
-	\item Negotiate a plan. Our system has some simple mechanics allowing a human to reject a plan, specifying which parts of it it doesn't want to perform. The robot will take the human's preference into account when producing a new plan.
-	\item Monitor a human plan. Our system is able to monitor the human part of a plan, too cordinate with him and reacting when the human fails an action or diverges from the current plan.
-	\item Receive plans from a user. Users can interact with the robot with a tablet application, asking it to execute specific actions or goals.
-	\item Executing shared plans in different modalities. The robot can be a leader, assistant, or equal partner of a human during plan management.
+\item Localized vs Centralized: a multi-agent planner might be localized, meaning that separate systems plan independently and then communicate to build a shared plan (an idea investigated, for example in \ref{nikolaidis2013cross,guestrin2002distributed} ); or centralized, meaning that a single system plans for all the agents.
+\item Coordination: agents need to coordinate their plans, in particular in the presence of shared resources. Imagine, for example, two agents, Max and Bob, that are using a tool to repair a set of cars. If Max is proceeding faster than Bob and the two don't coordinate, Max might take the tool and leave, starting to repair another car, ignoring the fact that Max still needs the tool. This example shows that it is important to reason on the duration of actions performed by agents. At the simplest level, agents need to know the advancament of the sub-plan of other agents. More complex reasoning might take into account how long an agent needs to perform a certain sub-task to refine a plan. 
+\item Cooperation: even when performing different sub-tasks of the same plans, agents can help each other, for example by passing items, thus improving the optimality of the plan. Multi-Agent problems can be loosely or tightly coupled, depending on the quantity of interactions between agents. \cite{torreno2015approach} propose a general purpose approach able to plan at differet level of coupling.
+\item Communication and Knowledge. In a multi-agent environment each agent might have an incomplete or incorrent belief on the world, which might lead to wrong or suboptimal actions. Agents may communicate to progressively build a correct belief model on the state world. 
 \end{itemize}
 
+
+Several approaches has been studied to bring the multi-agent planning problem in a probabilistic framework. \cite{boutilier1999sequential} create a centralized MDP, able to select at each time step actions for every present agent. Dec-POMDP \cite{bernstein2002complexity} and I-POMDP \cite{gmytrasiewicz2005framework} are more complex frameworks, that take into account the belief models of agents. Both models are much more complex than normal MDP\POMDPs, and result difficult to use in even moderately complex scenarios. A solution to this problem is considering simpler problem, where the agents mostly work independently and interact only in limited situations, such as in \cite{molo2013heuristic}. 
+
+\subsection{Plan Explanation and Negotiation}
+In order to form a shared plans, agents often communicate, explaining tasks to each other and negotiating to agree on a solution. In \cite{Lallee2013} the authors suggest that joint plans should be fully communicated in order to sustain effective collaboration. 
+
+Some authors have started to investigate this topic in robotics. In \cite{Petit2012}, a human is able to teach new plans to a robot verbally through ``spoken language programming''. \cite{Sorce2015} studies the inverse problem, where the system is able to explain plans to users. 
+
+%negotiation
+fabregues2014hana
+
+\subsection{Plan Management}
+Finally, the shared plan needs to be executed. Agents need to perform their part of the plans and to monitor other agents in order to coordinate with them. Two examples of systems able to execute shared plans are  \cite{shah2011improved} and Pike \cite{karpas2015robust}. Chaski is also able to execute plans in two different modalities: equal partners or leader and assistent.
+
+
+
+\section{Overview}
+\label{sec-plan_management-overview}
+Our system presents a planning layer which is able to perform the following tasks:
+\begin{itemize}
+	\item Interface with external planners in order to create a shared plan. The system has been integrated with an HTN (Hierarchical Task Network) based planner, HATP (Human-Aware Task Planner) , and with a multi-agent MDP planner.
+	\item Explain a plan to human agents. Depending on the human knowledge of the tasks to be performed, the robot will change the explanations, explaining more deeply tasks that agents don't know. This idea is supported by research on Intelligent Tutoring Systems \cite{brusilovskiy1994construction}  and on e-learning \cite{brusilovskiy2005}, which  prove the necessity of keeping and updating a model of the learner's knowledge to efficiently teach a task.
+	\item Negotiate a plan. Our system has some simple mechanics allowing a human to reject a plan, specifying which parts of it it does not want to perform. The robot will take the human's preference into account when producing a new plan.
+	\item Monitor a human plan. Our system is able to monitor other agents' parts of a plan, too cordinate with them and to react when the an agent fails an action or his action diverge from the current plan.
+	\item Receive plans from a user. Users can interact with the robot with a tablet application, asking it to execute specific actions or goals.
+	\item Executing shared plans in different modalities. The robot can be a leader, assistant, or equal partner of humans during plan management.
+\end{itemize}
+
+A number of modules implement this ideas, as shown in figure \ref{fig:plan_management-architecture}:
+\begin{itemize}
+\item Task Planner. Creates a shared plan for the involved agents.
+\item Plan Explanation. Explains the plan to the involved agents, adapting it to their knowledge.
+\item Plan Negotiation. Negotiats the plan with the involved agents.
+\item Plan Management. Manages the current plan, interacting with the Plan Execution layer to execute the robot's action and with the Situation Assessment layer to monitor human's actions.
+\end{itemize}
+
+After receiving a goal from the Goal Management layer, the Task Planner looks for a suitable plan. If there is a plan, depending from the current modality, it will activate Plan Explanation and the Plan Negotiation modules to communicate with the involved humans, or directly send the plan to the Plan Management module. If the plan needs to be negotiated this process is repeated. When a plan is agreed by all the agents, the Task Planner sends it to the Plan Management module, which executes it. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[clip,scale=0.6]{img/plan_management/architecture.pdf}
+	\caption{The image represents the architecture of the plan management layers. Yellow rounded rectangles represent modules, while blue rectangles layers. Arrows represent message exchanged between components, with the label detailing the message. }
+	\label{fig:goal_management-goal_cycle}
+\end{figure}
+
+
+Part of this chapter was presented in \cite{Lallement2014,milliez2016using,fioreiser2014}.
+
 \section{Plan Management Modalities}
-We have identified several ways - or modalities - to envisage how the robot planning and decisional abilities
-for task achievement can be used: Robot Leader, Human Leader, and Equal Partners.
-
-The robot is able to switch from one modality to another during
-execution. For example, if the robot is in the 'robot plans' modality and the users' actions differ from the calculated plan the robot will
-interrupt its current action, create a new plan, and switch to the 'robot adapts' modality.  
-
+\label{sec-plan_management-modalities}
+When acting together, agents sometimes do not have the same decision power, with one of them assuming the role of a leader. We represent this idea, in our system, by proposing three different modalities: Robot Leader, Human Leader, and Equal Partners. The robot is able to switch from one modality to another during the execution of a plan. For example, if the current modality is 'Robot Leader' and the Robot receives a command from a user, it will switch to the 'Human Leader' modality, after interrupting its current action.
 
 \subsection{Robot Leader}
-In the first modality the robot will, using information present in the
-Knowledge Base and HATP, produce a plan to complete the joint
-goal. After that the robot will verbalize the plan to the user,
-explaining which actions will be performed by each agent and in which
-order. The robot will monitor the execution process, informing the
-human of which actions it's about to execute and also on when the human
-should execute its part of the plan. This modality, where the robot is
-the leader, can be helpful when interacting with
-naive users or in tasks where the robot has a better knowledge of the
+In this modality the robot, after computing the plan, will explain it, negotiate it and start executing it.
+The robot will track the status of humans, informing them of which actions they should execute. This modality can be helpful when interacting with  naive users or in tasks where the robot has a better knowledge of the
 domain or of the environment than the other agents.
 
 \subsection{Human Leader}
 The human can also create plans, interacting with the robot by using a
-tablet application. This application allows the user to select
-different actions and parameters. The user can issue both high level goals (e.g. clean the
-table) and simpler actions (e.g. take the grey tape, give me the walle
-tape, stop your current action). The robot will simply observe the
-surroundings and wait for user inputs. This modality is always available and has a priority over
+tablet application, as explained in chapter \ref{sec:situation_assessment-communication}. In this modality the robot   will simply observe the surroundings and wait for user inputs. This modality is always available and has a priority over
 the other two modalities. If the robot receives a command from the
 application while it is in another modality, it will abandon its current
 plan, stopping its actions at a safe point, and then execute the users'
@@ -184,27 +106,19 @@ goals. For example, in a domestic environment, a user could decide to
 order a robot to bring him a drink, a need that the robot can't always anticipate.
 
 \subsection{Equal Partners}
-n the last presented operation modality the robot will try to help
+In the last presented operation modality the robot will try to help
 the human to complete a task. At the start of the scenario, the robot
 will stand still and observe the environment. After the user takes an
 action the robot will calculate a plan and try to help as it can, by
 performing actions related to that task and by giving helpful information to
-the user. In our implementation the robot will start
-this modality in a 'passive' role, simply observing the human until he
-takes the first action. We could also picture a more pro-active role for
-the robot, where the robot chooses a goal on its own and starts acting toward its
-completion, eventually asking for the help of the human when he can't
-complete an action. 
+the user, for example to fill gaps in their knowledge. In this modality, 
+the robot will not explain or negotiate the current plan.
+
 
 This modality corresponds to what we feel is a very natural way of
 interaction between different partners, in particular in non-critical
 tasks, where defining an accurate plan between the partners is not
-fundamental. This situation relates quite easily to the scenario we
-will present in details in section \ref{sec:experiments}, where the
-two partners must clean a set of furnitures together. In this
-situation the two partners could simply choose to start executing the
-actions that they prefer, continuously adapting their plans to the
-other partners' actions.  
+fundamental. 
 
 
 \section{Plan Generation}
@@ -245,6 +159,46 @@ Each action in the domain provides a function that estimates its cost if added t
 
 \subsection{Human-Aware Probabilistic Planner}
 
+dietterich2000hierarchical
+This paper presents a new approach to hierarchical reinforcement learning based on de-
+composing the target Markov decision process (MDP) into a hierarchy of smaller MDPs
+and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decom-position, has both a procedural semantics|as a subroutine hierarchy|and a declarative
+semantics|as a representation of the value function of a hierarchical policy. MAXQ uni
+and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and
+Dayan and Hinton. It is based on the assumption that the programmer can identify useful
+subgoals and de
+programmer constrains the set of policies that need to be considered during reinforcement
+learning. The MAXQ value function decomposition can represent the value function of any
+policy that is consistent with the given hierarchy. The decomposition also creates oppor-
+tunities to exploit state abstractions, so that individual MDPs within the hierarchy can
+ignore large parts of the state space
+
+
+
+
+
+hauskrecht1998hierarchical
+We investigate the use of temporally abstract
+actions, or macro-actions, in the solution of
+Markov decision processes. Unlike current mod-
+els that combine both primitive actions and
+macro-actions and leave the state space un-
+changed, we propose a hierarchical model (using
+an abstract MDP) that works with macro-actions
+only, and that significantly reduces the size of the
+state space. This is achieved by treating macro-
+actions as local policies that act in certain regions
+of state space, and by restricting states in the ab-
+stract MDP to those at the boundaries of regions.
+The abstract MDP approximates the original and
+can be solved more efficiently. We discuss sev-
+eral ways in which macro-actions can be gen-
+erated to ensure good solution quality. Finally,
+we consider ways in which macro-actions can be
+reused to solve multiple, related MDPs; and we
+show that this can justify the computational over-
+head of macro-action generation.
+
 
 \subsection{Adapting Plan Generation to Human Knowledge}
 To take knowledge into account while planning, a new social rule was needed. The aim is to select the best suited plan for the given policy. We propose two policies: favor teaching, so the human can learn from the robot, or efficiency. With the teaching policy, the planner tries to produce plans maximizing the number of human tasks where they have the opportunity to learn, while efficiency makes the planner select plans with the least amount of unknown tasks for the human in order to ensure that they can be more efficient.
@@ -261,6 +215,9 @@ Concerning user preferences, the negotiation step will update a database with th
 
 
 \section{Plan Explanation}
+
+
+
 % intro
 %FINALE Once the robotic system has generated a collaborative plan adapted to the chosen HATP policy (about learning, abilities and preferences), the plan must be shared with the human partner.
 Once the robotic system has generated a collaborative plan adapted to the chosen policies (about learning, abilities and preferences), the plan must be shared with the human partner.
