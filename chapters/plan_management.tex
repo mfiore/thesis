@@ -114,132 +114,130 @@ performing actions related to that task and by giving helpful information to
 the user, for example to fill gaps in their knowledge. In this modality, 
 the robot will not explain or negotiate the current plan.
 
+We feel that, particularly in non-critical tasks, where defining an accurate plan between the partners is not
+fundamental, this modality is a very natural way of
+interaction between different partners.
 
-This modality corresponds to what we feel is a very natural way of
-interaction between different partners, in particular in non-critical
-tasks, where defining an accurate plan between the partners is not
-fundamental. 
+\section{Human Knowledge and Plan Management}
+\label{sec-plan_management-human_knowledge}
+\subsection{Representing Human Knowledge in a Task}
+Among the topics of this chapter, we will consider different ways to use human knowledge in planning issues. In order to do so, we introduce and maintain, a new property of human knowledge of a task, which will be maintained in the Situation Assessment Layer. 
+
+This property is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this property, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix_wheel, car, expert)$. 
+
+Parameters can be deeply linked to the knowledge of a task. In general, we can divide task parameters in two categories:
+\begin{itemize}
+\item class-link. In some situation, knowledge of a task is not linked to the specific instance of a parameter, but to a whole class. For example, we can imagine that if Bob knows how to paint the living room, he will know how to paint every room in a standard house. We could represent this property as $(Bob, paint, house_room, expert)$. We can notice that the parameter, in this case, is $house_room$, representing the class of rooms belonging to a normal house, and not $living_room$.
+\item instance-link. In other cases, instead, knowledge of a task is deeply linked to specific instances of parameters. For example, knowing how to fix the motor of a specific car, wouldn't necessary translate in knowing how to fix the motor of every car.
+\end{itemize}
+
+We can also consider some tasks as common knowledge, expecting every human to be able to perform them, like, for example, putting ingredients in a bowl. of task will be tagged as common knowledge and considered as known by any user, no matter the parameters. 
+
+\subsection{Maintaning Human Knowledge in a Task}
+%How human update their knowledge
+We define four task-knowledge levels for humans, that will lead to different behaviors from the robot.
+
+\begin{itemize}
+\item \textit{New}.this value will be used for tasks which have never been performed by the user. If the user observes the task being executed, with an explanation of it, or if he performs it himself, the value will be changed to \textit{beginner}. However if the user observes the task being executed without any explanation, we  keep the level as \textit{new} since we consider that he might not have received enough information to link the observed movements to the task.
+\item \textit{beginner}. This value will be used for users who have already achieved the task but may still need explanation to perform it again. If the user successfully performs the task again, without asking for explanations, the value is changed to \textit{intermediate}, otherwise it is changed to \textit{new}.
+\item \textit{Intermediate}. This value will be used for users who are able to perform the task without guidance. If the user successfully performs the task without guidance again, the value is changed to \textit{expert}. In case of failure, it is downgraded to \textit{beginner}.
+\item \textit{Expert}. This knowledge level will be used for users who are able to perform the task without guidance and are experienced enough to explain it to a third party. If the user fails in performing the task, he will be downgraded to \textit{intermediate}.
+\end{itemize}
+
+These task knowledge levels allow for adaptation of the collaborative plan generation, explanation and monitoring.
 
 
 \section{Plan Generation}
+\label{sec-plan_management-plan_generation}
+\subsection{Introduction}
+\label{subsec-plan_management_hatp}
+One of the goals of our system is flexibility; we consider important important the possibility to interface with external components. We built an intermediate Plan Generation module, that interacts with external planners and returns plans represented in a common format that can be handled by other modules. At the moment, we tested two different planners with our system, which will be shown in the next subsections.
+
 \subsection{Human-Aware Task Planner}
-Hierarchical Task Network (HTN) planning is a popular approach that cuts down on the classical planning search space
-by relying on a given hierarchical library of domain control knowledge. This provides an intuitive methodology for
-specifying high-level instructions on how robots and agents should perform tasks, while also giving the planner enough 
-flexibility to choose the lower-level steps and their ordering. In this paper we present the HATP (Hierarchical Agent-
-based Task Planner) planning framework which extends the traditional HTN planning domain representation and seman-
-tics by making them more suitable for roboticists, and treating agents as “first class” entities in the language. The for-
-mer is achieved by allowing “social rules” to be defined which specify what behaviour is acceptable/unacceptable by
-the agents/robots in the domain, and interleaving planning with geometric reasoning in order to validate online–with
-respect to a detailed geometric 3D world–the human/robot actions currently being pursued by HATP.1
-The planning algorithm of HATP has also been extended in various ways. First, it incorporates a simple mechanism
-to take into account the (user-defined) cost of executing actions, so that instead of returning the first arbitrary solution
-found, it keeps searching until an optimal (least-cost) one is found.2 Second, HATP has been extended to be more
-suitable for Human-Robot Interaction (HRI); in particular, “social rules” can be included by the user to define what
-the acceptable (and unacceptable) behaviours of the agents are. Two examples are: what sequences of steps should be
-avoided in final solutions, and a limit on the amount of time a person should spend waiting (and doing nothing). The rules
-are then used to filter out the primitive solutions found that do not meet the constraints.
-
-%FINALE To compute collaborative plans, we use HATP \cite{lallement14} an HTN planner specifically designed for robotics.
-%FINALE HATP comes along with specific features concerning plan generation, such as:
-To compute collaborative plans, we use a modified HTN planner specifically designed for robotics.
-It comes along with specific features concerning plan generation, such as:
-
+Computing a plan in complex environments can be very complex and time consuming. An useful approach to reduce planning's search space is introducing the knowledge of an expert in the planner, in order to guide it to desiderable states. An implementation of this idea is HTN, where the domain expert specifies a hierarchical library of operations, called tasks and actions, when the operation is respectively a node or a leaf in the hierarchy.  HATP is a planning framework that extends HTN for human-robot interaction tasks. Among the capacities of HATP we can find:
 \begin{itemize}
-\item Agent based: it computes multi-agent plans with humans and robots acting.
-\item Cost driven: the best (or a "sufficiently" good) plan is found sooner (using plan pruning).
-\item Social rules: it refines the plans according to a set of rules designed to promote more socially acceptable plans  (e.g. effort balancing depending on human preferences and context, social conventions\ldots).
-\end{itemize}
+\item Multi-Agent. HATP is able to plan for different agents at the same time, humans and robots.
+\item Social Rules. The domain expert can introduce a set of rules, which represent desirable behaviors, for example to distribute in different ways operations between agents, or to avoid specific sequences of actions.
+\item Cost Driven. The domain expert can specify a cost for actions. Plan pruning allows to explore more efficiently the search space, discarding paths that are not promising.
+\end{itemize} 
 
-%The best plan is defined by its cost (the sum of every action's cost in the plan) but also by a set of social properties (e.g. how the workload is shared). To reduce the number of plans to compute, our planner is cost-driven : it throws away plans that are not promising. The plan is given in the form of the HTN tree decomposition and a set of streams, (one per agent). The decomposition tree is useful to keep the hierarchical structure. The streams represent the actions that each agent must carry out and the causal links to order them and ensure the synchronization, hence the streams are useful for the execution (e.g. to ensure turn taking). Figure \ref{fig:treePlan} depicts an extract of the tree decomposition of a solution plan (the example is described later).
-
-
-Each action in the domain provides a function that estimates its cost if added to the plan. So at any time it is possible to compute the cost of the partial plan while it is being built. Furthermore the current best plan score is stored;  if at any moment the cost of the current partial plan exceeds this score, the plan is discarded and the search continues. This plan pruning helps speed up the search for the best plan. After each plan is computed a set of filtering rules are applied to sanction plans that do not exhibit certain social behaviors. Once the best plan (note that one can limit the search to a "sufficiently" good  cost level)   is retrieved, it is sent to the supervisor in the form of an HTN tree decomposition. In addition, a set of streams of actions is elaborated; each stream represents the actions an agent (human or robot) must carry out. To ensure proper action sequencing and synchronization between agents, causal links are embedded. Besides, the plan may include joint actions allocated simultaneously to two or more agents because they need tight collaboration
-
+Plans are represented as an HTN tree decomposition and as a set of streams, one per agent, which shows which actions each agent needs to perform. Casual links are introduced between streams to ensure synchronization.
 
 \subsection{Human-Aware Probabilistic Planner}
+\label{subsec-plan_management_happ}
 
-dietterich2000hierarchical
-This paper presents a new approach to hierarchical reinforcement learning based on de-
-composing the target Markov decision process (MDP) into a hierarchy of smaller MDPs
-and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decom-position, has both a procedural semantics|as a subroutine hierarchy|and a declarative
-semantics|as a representation of the value function of a hierarchical policy. MAXQ uni
-and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and
-Dayan and Hinton. It is based on the assumption that the programmer can identify useful
-subgoals and de
-programmer constrains the set of policies that need to be considered during reinforcement
-learning. The MAXQ value function decomposition can represent the value function of any
-policy that is consistent with the given hierarchy. The decomposition also creates oppor-
-tunities to exploit state abstractions, so that individual MDPs within the hierarchy can
-ignore large parts of the state space
-
-
-
+% dietterich2000hierarchical
+% This paper presents a new approach to hierarchical reinforcement learning based on de-
+% composing the target Markov decision process (MDP) into a hierarchy of smaller MDPs
+% and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decom-position, has both a procedural semantics|as a subroutine hierarchy|and a declarative
+% semantics|as a representation of the value function of a hierarchical policy. MAXQ uni
+% and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and
+% Dayan and Hinton. It is based on the assumption that the programmer can identify useful
+% subgoals and de
+% programmer constrains the set of policies that need to be considered during reinforcement
+% learning. The MAXQ value function decomposition can represent the value function of any
+% policy that is consistent with the given hierarchy. The decomposition also creates oppor-
+% tunities to exploit state abstractions, so that individual MDPs within the hierarchy can
+% ignore large parts of the state space
 
 
-hauskrecht1998hierarchical
-We investigate the use of temporally abstract
-actions, or macro-actions, in the solution of
-Markov decision processes. Unlike current mod-
-els that combine both primitive actions and
-macro-actions and leave the state space un-
-changed, we propose a hierarchical model (using
-an abstract MDP) that works with macro-actions
-only, and that significantly reduces the size of the
-state space. This is achieved by treating macro-
-actions as local policies that act in certain regions
-of state space, and by restricting states in the ab-
-stract MDP to those at the boundaries of regions.
-The abstract MDP approximates the original and
-can be solved more efficiently. We discuss sev-
-eral ways in which macro-actions can be gen-
-erated to ensure good solution quality. Finally,
-we consider ways in which macro-actions can be
-reused to solve multiple, related MDPs; and we
-show that this can justify the computational over-
-head of macro-action generation.
+% hauskrecht1998hierarchical
+% We investigate the use of temporally abstract
+% actions, or macro-actions, in the solution of
+% Markov decision processes. Unlike current mod-
+% els that combine both primitive actions and
+% macro-actions and leave the state space un-
+% changed, we propose a hierarchical model (using
+% an abstract MDP) that works with macro-actions
+% only, and that significantly reduces the size of the
+% state space. This is achieved by treating macro-
+% actions as local policies that act in certain regions
+% of state space, and by restricting states in the ab-
+% stract MDP to those at the boundaries of regions.
+% The abstract MDP approximates the original and
+% can be solved more efficiently. We discuss sev-
+% eral ways in which macro-actions can be gen-
+% erated to ensure good solution quality. Finally,
+% we consider ways in which macro-actions can be
+% reused to solve multiple, related MDPs; and we
+% show that this can justify the computational over-
+% head of macro-action generation.
 
 
 \subsection{Adapting Plan Generation to Human Knowledge}
-To take knowledge into account while planning, a new social rule was needed. The aim is to select the best suited plan for the given policy. We propose two policies: favor teaching, so the human can learn from the robot, or efficiency. With the teaching policy, the planner tries to produce plans maximizing the number of human tasks where they have the opportunity to learn, while efficiency makes the planner select plans with the least amount of unknown tasks for the human in order to ensure that they can be more efficient.
-%(the robot however can execute some tasks unknown to the human).
-In case of a policy to favor efficiency, the rule is simply to apply a penalty every time the human has to perform an action they ignore. This penalty would be reversed for the teaching rule.
+\label{subsec-plan_generation-adapting_knowledge}
+When interacting with humans, it is important to take into account others' knowledge and capacities when planning. We consider two different policies for our planner: teaching, where the planner will look for plans not known to the human, in order to teach him of different ways of achieving a task; and efficiency, where the robot will try to maximize the number of human tasks known when creating a plan. This ideas where represented as social rules.
 
-To illustrate our planner and the new social rule let us consider the toy example where a human and a robot have to cook an apple pie. A part of the solution plan is shown in Figure \ref{fig:treePlan}. In this context we can consider that the human knows how to carry out all the actions (pick, place, cut, and so on) but they may not know the exact order of steps (higher level task). If we favor teaching, the plan should contain a way to achieve the recipe with a minimal knowledge level on each task and, as much as possible, human will be in charge of those steps. On the other hand, if we favor efficiency the plan should contain the smallest amount of unknown tasks to be performed by the user.
+To illustrate our planner and the new social rule let us consider the toy example where a human and a robot have to cook an apple pie. A part of the solution plan is shown in Figure \ref{fig:plan_management-treePlan}. In this context we can consider that the human knows how to carry out all the actions (pick, place, cut, and so on) but he might not know the correct sequence to achieve the goal. If we favor teaching, the plan should contain a way to achieve the recipe with a minimal knowledge level on each task and, as much as possible, the human should be in charge of those steps. On the other hand, if we favor efficiency the plan should contain the smallest amount of unknown tasks to be performed by the user.
 Using this rule, the robot is able to adapt its plan generation to the knowledge of the user concerning tasks contained in the shared plan.
-%, and the tasks can be carried by either of the agents. The one to be actually chosen will depend on the rest of the plan (optimality of the task allocation).
+
 To properly compute the cost of a plan, the planner will also consider a task knowledge as upgraded once it is added to the plan. This allows the efficiency policy to prefer plans that reuse the same task many times and assign it to the same user to lower the cost, over some plans where different tasks are performed or the same task is performed by a different agent.
 
-The planner is integrated in a dialog system that allows to negotiate plans (see below). More precisely it allows for asking about user preferences and abilities. If the user tells the system that she/he cannot perform a given task, it will not be added to the plan (invalidate the corresponding task precondition).
-Concerning user preferences, the negotiation step will update a database with the preferences expressed by the user. If the user specifies that she/he (does not) want to perform certain tasks, those tasks if added to the plan, will take an important reward (resp. penalty) cost. Hence plans which contain such tasks will be considered as unwanted, however if they are the only possible solutions (because of inability and so on) they will be kept and the planner will return the one with the least number of unwanted and maximum number of wanted tasks.
-
+The planner is integrated in a dialog system that allows to negotiate plans, as explained in \ref{sec:plan_management-negotiation}. Using this system, the preference and abilities of users are recorded in the Situation Assessment Layer. 
+If a user is not able to perform a certain task, the planner will never chose this action for him. If he user prefers to perform, or not to perform, a specific task, the planner will update the cost functions accordingly with a reward or penality to assign that task to that user.
 
 \section{Plan Explanation}
-
-
-
-% intro
-%FINALE Once the robotic system has generated a collaborative plan adapted to the chosen HATP policy (about learning, abilities and preferences), the plan must be shared with the human partner.
-Once the robotic system has generated a collaborative plan adapted to the chosen policies (about learning, abilities and preferences), the plan must be shared with the human partner.
-Speech is a ``potent modality for the on-going maintenance of cooperative interaction'' \cite{Lallee2013}. Indeed, Tomasello even suggests that the principal function of language is to establish and negotiate cooperative plans \cite{tomasello2005}.
-Considering this, we decided to use speech to present the plan to the collaborator.
+\label{sec:plan_management-plan_explanation}
+Once the system has genereated a collaborative plan, this must be shared with the human partners. The robot will present and negotiate plans using speech, which is supported by several studies, such as \cite{Lalle2013,tomasello2005}.
 
 \subsection{Plan Preprocessing}
-The HTN tree generated represents a solution to achieve the goal. However, it may not be suitable to present or explain it like it is to the collaborator, as it may contain refinement steps that would make the explanation unclear. To adapt the plan for explanation we use two rules.
-%
-(1) We remove the recursive tasks. If a node $n$ of the HTN tree contains the same method (using $compare$ function) as its parent $parent(n)$, it will be replaced in the tree by its children $children(n)$. (2) We also replace nodes with a single child by their children.
+The structured tree generated by the planner represents a solution to achieve the goal. In order to explain this plan to users, the system will process it, removing unnecessary information. In particular, our algorithm follows two rules:
+\begin{itemize}
+	\item  We remove recursive tasks. If a node $n$ of the HTN tree contains the same method as its parent $parent(n)$, it will be replaced in the tree by its children $children(n)$. 
+	\item We replace nodes with a single child by their children.
+\end{itemize}
+
+More formally:
 \begin{enumerate}
 \item $\textbf{if}$ $(compare(n, parent(n)))$ \textbf{then} $n \leftarrow children(n)$
 \item $\textbf{if}$ $(children(n).size() = 1)$ \textbf{then} $n \leftarrow children(n)$
 \end{enumerate}
-These rules build a lighter plan tree to process.
 
+where $compare(n1,n2)$ is true if the two nodes have the same method.
 
 \subsection{Plan Presentation}
-%Miki: Could simplyfi in which agents are in charge of the task, removing the parhentesis.
-
-Before executing the plan, the robot will present the goal and the proposed allocation of high-level tasks to give a global view on the plan. Standard NL generation is used as shown in Table \ref{table:pie-present}. 
-To ensure the scalability of the system, when presenting the plan, the robot will verbalize only the $N$ first highest level tasks. For simplicity, we have chosen $N$=$3$ based on some runs carried out during the development process. We believe that this number would require further investigation depending on the domain or on the user and her/his confidence in the execution of the tasks. The robot will present the first steps of the plan, and then execute them. Once this execution is achieved, it will repeat the present/negotiate/execute process until the plan is completed or aborted.
+Before executing the plan, the robot will present the goal and the proposed allocation of high-level tasks to give a global view on the plan. Standard natural language generation is used as shown in Table \ref{table:plan_management-pie-present}. 
+To ensure the scalability of the system, when presenting the plan, the robot will verbalize only the $N$ first highest level tasks. For simplicity, we have chosen $N$=$3$ based on some runs carried out during the development process. We believe that this number would require further investigation depending on the domain or on the user and his confidence in the execution of the tasks. The robot will present the first steps of the plan, and then execute them. Once these steps have been executed, the robot will repeat the present/negotiate/execute process until the plan is completed or aborted.
 
 % Put in a double colomn table
 %\begin{tabular}{ll}
@@ -273,183 +271,125 @@ To ensure the scalability of the system, when presenting the plan, the robot wil
  \vspace{-4pt}
 \caption{Presentation of a plan to cook an apple pie. Root is the root of the tree and child is a list with its children.}
  \vspace{-20pt}
- \label{table:pie-present}    
+ \label{table:plan_management-pie-present}    
 \end{table}
- 
-\section{Adaptive Plan Execution}
-\label{planExecution}
-
-\subsection{Plan Management Algorithm}
-\label{sec:algo}
-Once the plan has been accepted by the collaborator, the execution can start. We give the algorithm for the adaptive plan execution, and then explain it.
-
-
-
-%    \vspace{-12pt}
-% \begin{program}
-% \mbox{\textbf{$execute\_tree$ algorithm:}}
-% %\seq{node parent, list<node> currentNodes};
-% \FOR $n:=nodes.start$ \TO $n:=nodes.end$
-%      $verbalize(n)$;
-%      \IF $agents(n) = {robot}$
-%         \THEN \IF $children(n)$ \neq \emptyset \AND $userKn(n) = NEW$
-%         \AND $teachPolicy$
-%           \THEN $execute\_tree(children(n))$;
-%           $userKn(n) := BEGINNER$;
-%         \ELSE $execute(n)$;  \FI
-        
-%      \ELSIF $userKn(n) = NEW$
-%        \THEN $explain(n)$;
-%          \IF $children(n)$ \neq \emptyset
-%            \THEN $execute\_tree(children(n))$;
-%                  $userKn(n) := BEGINNER$;
-%          \ELSE $monitor(n)$; \FI
-         
-%      \ELSIF $userKn(n) = BEGINNER$
-%        \THEN \IF $proposeExplain(n)$
-%            \THEN $userKn(n) = NEW$;
-%            (...);\rcomment{\textit{//Same process as NEW}}
-%            \ELSE $monitor(n)$; \FI
-%    %          userKn(n) = INTER; \FI
-             
-%        \ELSIF $userKn(n) = INTERMEDIATE$ 
-%        \OR $userKn(n) = EXPERT$)
-%          \THEN monitor(n); \FI
-%  %        \IF(userKn(n) = INTER)
-%  %          userKn(n) = EXPERT; 
-% %\rcomment{This text will be set flush to the right margin}
-% \end{program}
-%    \vspace{-5pt}
-
-
-
-%\begin{algorithm}
-\begin{algorithmic}[1]
-\For{n$:=$nodes.start to n$:=$nodes.end}
-	\If{$agents$(n) = \{robot\}}\label{alg:onlyRobotStart}
-    	\If{$children(n) \neq \emptyset$ $\wedge$ $user\_kn(n)$ = NEW\par
-        \hskip\algorithmicindent $\wedge$ $teachPolicy$}
-        	\State $execute\_tree(children(n))$
-            \State $user\_kn(n) :=$ BEGINNER
-        \Else
-         	\State $execute(n)$
-        \EndIf\label{alg:onlyRobotEnd}
-    \ElsIf{$user\_kn(n)$ = NEW}\label{alg:newStart}
-     	\State $explain(n)$
-        \If{$children(n)$ $\neq \emptyset$}
-          	\State $execute\_tree(children(n))$
-            \State $user\_kn(n)$ $:=$ BEGINNER
-        \Else
-         	\State $monitor(n)$
-        \EndIf\label{alg:newEnd}
-    \ElsIf{$user\_kn(n)$ = BEGINNER}\label{alg:beginnerStart}
-      	\If{$propose\_explain(n)$}
-          	\State $user\_kn(n)$ $:=$ NEW
-            \State $(\dots)$ \Comment{Same process as NEW}
-        \Else
-          	\State $monitor(n)$
-        \EndIf\label{alg:beginnerEnd}
-    \ElsIf{$user\_kn(n)$ = INTERMEDIATE\par
-    \hskip\algorithmicindent $\vee$ $user\_kn(n)$ = EXPERT}\label{alg:interStart}
-      	\State $monitor(n)$
-    \EndIf\label{alg:interEnd}
-\EndFor
-\end{algorithmic}
-%\caption{$execute\_tree(n)$}
-
-%\end{algorithm}
-
-
-
-\begin{itemize}
-\item \textit{$execute\_tree(n)$} is the main function to manage the execution. This is called after the negotiation process. It has \textit{$nodes$}, a list of nodes initially filled with the root's children, as an argument.
-\item \textit{$teachPolicy$} is a boolean to define if we are in teaching or efficient mode.
-\item \textit{$agents(n)$} returns the agents involved in the node \textit{n}.
-\item \textit{$verbalize(n)$} will verbalize the current task, using the node context to present it (e.g. using sequential relations such as first, then or finally according to the node position in the list).
-\item \textit{$user\_kn(n)$} returns the knowledge level of the user concerning the task \textit{n}.
-\item \textit{$propose\_explain(n)$} will lead the robot to propose an explanation for the current task. If the user accepts the explanation it will return true, and otherwise false.
-\item \textit{$explain(n)$} launches a procedure to explain the current task to the user. This procedure could be implemented as a script to launch a video, an explanation speech or even to ask an expert to explain the task.
-\item \textit{$monitor(n)$} sends a request to the supervision system to monitor proper execution of the current node. If the request returns a success, the function will upgrade the user's knowledge and \textit{$execute\_tree$} function will continue. In case of failure, the function will downgrade the user's knowledge, exit the \textit{$execute\_tree$} function, and return a failure that will result in a replan request to the supervisor and a new execution if a plan is found.
-\item \textit{$execute(n)$} works in a similar way to the monitor but sends a request to execute the node by the robot.
-\end{itemize}
- 
-\subsection{Explanation of the plan management algorithm}
-During the execution, we use the HTN processed tree to execute the plan, give explanation about tasks and monitor them according to the knowledge values in the user model.
-We use a depth first plan exploration process to proceed with the execution as it gives context to the task to perform.
-When reaching a node, several situations may occur.
-% Monitor function is responsible for: knowledge update(success = upgrade, fail = downgrade) and replan in case of failure. 
-
-\subsubsection{Only the robot is involved (lines ~\ref{alg:onlyRobotStart}-~\ref{alg:onlyRobotEnd})} if the robot is the only agent in charge of the current node, if the collaborator has a knowledge level equal to \textit{NEW} for the current task and the chosen policy for the interaction is teaching, the robot will execute the subtasks in ``demonstration mode'', meaning that it will verbalize each child task before performing it. Once it's done, the robot updates the human's knowledge on the current node to \textit{BEGINNER}. The same process will be applied to the children, so the robot will verbalize each (and only) task that needs to be learned by the collaborator.
-If the robot is in charge, but the human collaborator already has knowledge on the task, or the current policy is efficiency, the robot will verbalize only the high-level task it performs.
-
-Then, if the human is involved in the current node, the robot's behavior will depend on the human's knowledge level for the task, as it may have to explain it.
-The explanation could be done in several ways: showing a video, asking an expert to explain the task or simply verbally guiding the user, step by step. We will provide details about verbally guiding the user since it is the one actually involving the robot. 
-
-% if new
-\subsubsection{The collaborator is \textit{NEW} (lines~\ref{alg:newStart}-~\ref{alg:newEnd})} if the human has a level NEW for the current task, we explain it.
-When verbally guiding the user, if the current node has only one child node, we  go deeper in the tree and apply again the corresponding behavior according to the knowledge level. If the current node is actually an operator (a leaf), the supervisor waits for the user to perform the current action. In case of success, the knowledge level for the task is upgraded to \textit{BEGINNER} (in the above algorithm this is done in the \textit{monitor} process).
-
-% if beginner
-\subsubsection{The collaborator is \textit{BEGINNER} (lines ~\ref{alg:beginnerStart}-~\ref{alg:beginnerEnd})} if the human has a level \textit{BEGINNER} for the current task, we ask if he needs explanation. If so, we downgrade his knowledge level to NEW, on the current task, and apply the same process as the previous level. If the user refuses explanations, we simply monitor the execution of the current node. In case of success, the knowledge level for the current task is upgraded to \textit{INTERMEDIATE}. This knowledge level will also be used as default. This way, when we don't know the knowledge level of an agent concerning a task, we just ask him if he needs an explanation and adapt the behavior accordingly.
-
-% if intermediate
-\subsubsection{The collaborator is \textit{INTERMEDIATE} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})} if the human has a level \textit{INTERMEDIATE} for the current task, we verbalize it without proposing explanations, since he has already  succeeded with the plan at least once without help. Also, we do not go deeper in the tree and directly monitor the current task. If the user  fails, we downgrade his knowledge to \textit{BEGINNER}, otherwise we upgrade it to \textit{EXPERT}.
-
-% if expert
-\subsubsection{The collaborator is \textit{EXPERT} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})} in case of \textit{EXPERT} knowledge level on the current task, we  proceed as for the previous knowledge level, downgrading to \textit{INTERMEDIATE} if the user makes a mistake and keeping the \textit{EXPERT} level if he performs the task as expected.
-
-\subsection{Failure and Replanning}
-The goal of monitoring human actions is to be able to recover from unexpected behaviors of the human. When this happens, the robot needs to inform the human of his potentially wrong behavior and downgrade his knowledge level. Consequently, the next time the human will perform this task the robot will guide and monitor his execution at a more refined level (the children tasks).
-%maybe also the dad function to unknown to regive the context?
-The task planner is requested to compute a new plan to achieve the goal with the updated world state.
-One of the benefits of the dynamical update of human knowledge is that this new plan may have tasks that the robot has already explained or that the human has performed before the failure occurred. In this case, guiding the human through the new plan execution will be faster as the robot will not have to reexplain these tasks. 
-This replanning behavior gives robustness to the robotic system and allows a socially acceptable recovery procedure where we inform the human with the error and reexplain the plan only at the needed level of detail.
 
 \section{Plan Negotiation}
-Once the robot has presented the main tasks and repartition, it has to ensure that the human agrees with this shared plan. The robot will simply ask the human for approval and inquire what is wrong in case of disagreement.
-In the current version of our system, two kinds of human requests are handled. First the user can express her/his preferences, either the will to perform a task previously assigned to the robot or the denial to perform a task assigned to her/him. The other possibility is to inform the robot that the user cannot perform an action. This will be added to the user's model and stored in the database. The robot will then try to find a new plan that prevents the human from performing a task the user is not willing or able to perform. This plan will then be presented and the robot will ask again for the user's approval. In our system, the user's preferences have a higher cost than the teaching policy as we consider that the user should have the final decision.
+\label{plan_managemet-plan_negotiation}
+Once the robot has presented the plan it generated to achieve the joint goal to his collaborators, the robot can start a negotiation phase. 
 
+We introduce a simple negotiation algorithm, that starts with the robot asking humans for approval, inquiring what is wrong in case of disagreement. We handle two different human requests. First, the user can express his preferences, either to perform a task previously assigned to the robot or the not perform a task assigned to him. The other possibility is to inform the robot that the user cannot perform an action. The system will store these information and try to find a new plan, taking them into account, before starting a new explanation and negotiation phase.
+ 
+\section{Plan Management}
+\label{sec:plan_management-planExecution}
+
+Once the plan has been accepted by the collaborator, the agents can start executing it. While executing its part of the plan, by interacting with the Plan Execution Layer, the robot will choose which tasks to explain to users, and which tasks to monitor. We present our plan management algorithm, which will then be explained.
 
 
 \section{Plan Monitoring}
-During the execution of a plan, the robot will monitor other agents. In general, having a shared plan, the robot knows what is the user next expected action, and can monitor if it's accomplished. In general plan monitoring poses a number of different issues:
+\subsection{Introduction}
+During the execution of a plan, the robot will monitor other agents. In general, having a shared plan, the robot knows what is the user's next expected action, and can monitor if it's accomplished. Plan monitoring poses a number of different issues:
 \begin{itemize}
 \item Understanding when the next expected action has been performed. In some situations the robot will monitor the execution of a specific action. In this event, it needs to understand when the action has been performed.
-\item Understanding when the next expected task has been performed. In some situations, the robot wants to give a human cooperator the freedom to perform a subtask has it sees fit. This is a more complext problem than monitoring a specific action, since the robot needs to reason on the results of a sequence of actions.
+\item Understanding when the next expected task has been performed. In some situations, the robot wants to give a human cooperator the freedom to perform a subtask has it sees fit. This is a more complex problem than monitoring a specific action, since the robot needs to reason on the results of sequences of actions.
 \item Evaluating the human engagement in the current task. The robot needs to understand if the human is trying to accomplish its current task, if he momentarily interrupted it, or if he abandoned it.
 \end{itemize}
 
-\subsection{Monitoring at Action Level}
-The robot can be updated at each time on what actions have been performed, using the mechanisms described in the Situation Assessment chapter. This way, the robot can compare the actions performed by humans, with those that should be performed following the shared plan.
+\subsection{Monitoring Plans}
+When executing a shared goal, the Plan Management Layer needs to interact with the Intention and Actions recognition module in the Situation Assessment Layer. Normally, this module only monitors single goals. This is not enough when actively cooperating in a joint task, since actions may vary if the load of the task is shared. While performing a shared plan, we create a new intention for each node in the plan tree that can be currently performed (meaning, if it has conditional links to other nodes, they have already been accomplished). We associate to these intentions the linked MMDP, as previously explained in \ref{subsec:plan_management-happ}, and the context node "have a shared plan", which is treated as evidence with the value true. We call these intentions $plan intentions$.
 
-\subsection{Monitoring at Task Level}
-Monitoring an expected task is a more complex issue, as humans have several way to complete it. We can deal with this issue by using the ideas presented in the Intention Recognition paper with the hierarchical MDP models presented here. In general, the Intention Recognition model will be inferring human intentions from a known list of possible intentions, which should include the possible goals in the system, and so the shared goal that is been performed with the robot. We add a new intention to monitor, assigned to the HMDP related to the subtask assigned to the user, with the same contexts as the high-level intention, and monitor his engagement level.
+We associate to each known intention a precomputed "expected length", which is the time to accomplish the linked goal.
 
- If the Intention Recognition module detects that the human's intention correspond to the current task, than the robot will consider that the human is proceeding with his part of the plan. When this intention will be achieved, the robot will start to monitor the next task assigned to the human.
+The robot can be updated at each time on what actions have been performed, using the mechanisms described in Section \ref{sec:situation_assesssment-intention_recognition}. This way, the robot can compare the actions performed by humans, with those that should be performed following the shared plan.
 
-\subsection{Evaluating Human Engagement}
-Human Engagement in a task can be evaluated using the Intention Recognition framework. %%Add the previous part
+Using the Intention and Action Recognition module, the robot can infer in which intention the human is currently involved. If the current involved intention equals the task to monitor, the robot infers that the human is actively working to complete it's task. The task will be completed when the linked MMDP reaches a goal state, and at that point the monitor procedure will return a success.
 
-\subsection{Adapting Monitoring to Human Knowledge}
-Once the current task to perform has been explained, the robot performs it if it is allocated to it, or it  monitors its human partner's task performance. Consequently, the monitoring may be done at high-level tasks if the human has enough knowledge of it.
-We have chosen this adaptive way of monitoring since we believe the robot would be more efficient, sparing its resources, by focusing its attention more often on parts of the plan that have never been performed by the human partner, and less when he has some form of expertise, leaving more freedom to the human on the way to execute tasks he knows.
+If the human is currently not involved in the monitored task there are three possibilities:
+\begin{itemize}
+	\item the human has momentarily interrupted the task. This can be inferred if the human is currently involved in another intention, which doesn't belong to the $plan intentions$, and who's expected length is short. In this case, the monitor won't return an error until a predefined $allowed_time$.
+	\item the human has abandoned the task.  This can be inferred if the human is currently involved in another intention, which doesn't belong to the $plan intentions$, and who's expected length is long. The monitor will return a "not involved error". 
+	\item the human is performing another task in the shared goal. This can be inferred if the human is currently involved in another intention, which belongs to the $plan intentions$. In this case the monitor will return a "other task error"
+\end{itemize}
 
-Monitoring human actions is complex, particularly with high-level tasks, where we are not monitoring a set of atomic actions. The system should have reasoning models for the robot to understand if the state of the world is coherent with the action that the human needs to perform. It should also be able to measure the level of engagement of the human to the task, in order to better assess if the human is executing or not his part of the shared plan, and to react accordingly.
 
 \subsection{Monitoring and Unseen Actions}
-Often, in cooperative tasks, the agents will operate in different locations, and so their actions won't be observable at all time. Perhaps one of the agents is preparing a cake in the kitchen,  while the robot is preparing the table. While we don't deal, in this work, with these issues, there are studies on plan recognition in partially observable environments. %CITA
+Often, in cooperative tasks, the agents will operate in different locations, and so their actions won't be observable at all time. Perhaps one of the agents is preparing a cake in the kitchen,  while the robot is preparing the table. While we don't deal, in this work, with these issues, there are studies on plan recognition in partially observable environments, like \cite{geib2005partial}.
+
 
 
 \subsection{Failed Monitoring and Replanning}
 What happens when a human is not engaged in the current task? There are three possibilities:
 \begin{itemize}
 \item The human is momentarily doing another task: in this case, the robot will simply wait, without considering the human's assigned task as failed.
-\item The human is engaged in a different long-term task, related to the current scenario: in this case, the robot will act differently depending on the 
-current modality. In the 'robot leader' mode, the robot will issue a warning to the human. In the 'Equal Partners' or 'Human Leader' modalities, the robot will create a new plan, and try to adapt to the human.  %%What should the robot actually do?
-\item The human is engaged in a different long-term task, not related to the current scenario. In this case, the robot will create a new plan, not considering the human as a partner.
+\item The human is engaged in a different long-term task, related to the current scenario: in this case, the robot will act differently depending on the current modality. In the 'robot leader' mode, the monitoring will be considered as failure. In the 'Equal Partners' or 'Human Leader' modalities, the robot will create a new plan, and try to adapt to the human.  
+\item The human is engaged in a different long-term task, not related to the current scenario. In this case, the monitor will return a failure.
 \end{itemize}
 
 To understand if a task is 'short term' or 'long term' we can hand-code these information, linking it to the intentions. We infer that a human is engaged in a different task, but still related to the same scenario, if the likelihood that the human intention is its assigned task is low, but the likelihood that the human intention is the shared goal is still high. 
 
+
+
+\section{Experiments and Discussion}
+\label{study}
+
+\subsection{User Study}
+We have conducted a comparative user study in order to have a first evaluation of the perception by users of our system's adaptability. Two groups of users were asked to follow the two-pies scenario. The first group interacted with a simulated robot equipped with a basic system (BS). BS has the same behavior as our system without the agent knowledge awareness mechanisms. The second group interacted with a second system, called knowledge system (KS), showing a behavior similar to what our system provides.
+All participants were then asked to evaluate the interaction with respect to several criteria.
+%
+The task distribution presented in Section \ref{sec:experiment} 
+is used for both systems to achieve the apple pie cooking example.
+Once they have cooked the first dessert, the robot generates a plan to cook the banana pie. 
+In KS,  the robot has the same behavior as our system and  favors a task distribution for the banana pie where the human performs tasks he has already performed for the apple pie (preparing dough and fruits).
+In BS, we imagine that the robot could ask the human to make the mixture instead of the dough.
+
+Two groups of 19 participants, from 18 to 60, interacted with each system. This was achieved thanks to  
+an online user study\footnote{User study for KS http://goo.gl/forms/qvbtu4vcFW, and BS http://goo.gl/forms/ZSvGcCi5le}, where we presented pictures of the task state and recordings of the robot's speech in French for each step of the interaction (as shown in Figure \ref{fig:user_study}).
+On some steps, the user could choose the action to perform, making it possible to execute a wrong action leading to a replan from the robot. For simplicity, the replan was limited to cancel the wrong action before resuming the previous plan. Also, to focus on the adaptability of our solution from knowledge awareness in the different steps of the shared plan, we did not allow negotiation from the users.
+At the end of the simulated interaction, we have asked the same questions to both groups, concerning the adaptability of the system and the robot partner itself. 
+The users gave marks along a Likert scale from one (disagree) to five (agree) to express their agreement with several statements (as shown in Figure \ref{fig:user_study}).
+For instance, one question we asked: "Did you feel that the robot adapts its explanation to the knowledge you acquired during the interaction?".
+
+\begin{figure}[ht!]
+  \vspace{-8pt}
+ \centering
+ \begin{tabular}{cc}
+  \includegraphics[width=0.24\textwidth]{img/ustudy9.png} &
+  \includegraphics[width=0.19\textwidth]{img/ustudy11.png}
+ \end{tabular}
+  \vspace{-6pt}
+ \caption{\textit{Left}: The user listens to recorded robot explanation and chooses the action to take. \textit{Right}: At the end, the user evaluates the interaction using a Likert scale.}
+ \label{fig:user_study}
+   \vspace{-15pt}
+ \end{figure}
+
+\subsection{Results}
+
+We collected the answers for each form, and computed the mean along with the standard deviation and p-value to evaluate the reliability. The p-value was computed using a t-distribution with 18 degrees of freedom and considering that the mean of KS would be higher than BS as stated in our hypothesis and identical as null hypothesis. 
+%We compare below the results for each system. 
+Figure \ref{fig:results} summarizes the results. Comparing users' answers, we can see that the robot adaptation on users' knowledge concerning the explanation is well perceived with a mean of 3.74 for KS against 2.05 for BS. The users interacting with KS globally noticed that the task distribution took their knowledge into account by giving a mean rating of 3.42 for KS and 2.58 for BS. The last question concerned the freedom to choose the way to perform the task. The mean was 2.58 for KS compared to 1.89 for BS, and the p-value was lower than 0.05. So even on that aspect there was an improvement. 
+%As some users just performed the task as the robot teach them, they may not have noticed that they could perform it in a different way. However, 
+With KS, the users attributed a mean of 3.11 for the global adaptability of the system against 1.89 for the basic one.
+We also asked how the robot partner was perceived. While in BS, the robot is not perceived as more verbose (2.53 for KS against 2.47 for BS), people found the interaction slightly more natural (2.74 against 2.42) and the robot appeared smarter (2.79 against 2.26). Even if these results strengthen our idea, as the p-value is higher than 0.1 for the naturalness, it doesn't prove that there is a noticeable difference between the two systems. We believe that other aspects might have been taken into account by the users such as the speech itself and lead users of both experiments to perceive the interaction as not so natural. For instance, improving the verbalization with a synonym dictionary could help to get more significant results.
+
+
+
+ \begin{figure}[ht!]
+
+   \vspace{-9pt}
+ \centering
+ \begin{tabular}{cc}
+  \includegraphics[width=0.41\textwidth]{img/respvalue3.png}
+ \end{tabular}
+   \vspace{-8pt}
+ \caption{Average users' rating of the interaction on several criteria. Blue for our system and red for basic system.}
+ \label{fig:results}
+  \vspace{-10pt}
+ \end{figure}
+
+This study sheds light on how users were able to perceive the robot adaptation to their knowledge concerning task distribution, task explanation and monitoring. In addition, the robot partner was perceived as smarter and the interaction seemed a bit more natural to the users. However these first results need to be confirmed with study on a larger population. Also, as future work we envisage to conduct this users study on a real robot as we believe it would lead to more realistic opinions.
+In both studies, we asked the participants how the interaction could be improved. Several users suggested they would like to be able to choose which action to perform, putting forward the importance of the negotiation (we removed negotiation in the user study to focus on knowledge adaptation). A user suggested they would like to be informed about the progress from time to time. This can be easily added since at each moment the robot knows the number of nodes remaining in the shared plan to achieve the goal.
+Other comments concerned suggestions about the speech itself, the robot voice, intonation and chosen words, which were not the aim of the experiment but are indeed an important part of the interaction. 
+
+%
 
 

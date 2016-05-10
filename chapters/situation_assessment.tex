@@ -104,7 +104,8 @@ Similarly, communication between the human and the robot is limited, in our syst
 \section{World Model and Geometrical Reasoning}
 \label{sec:situation_assessment-situation_assessment}
 The first step in estimating human intentions is reasoning about the environment and the belief of humans. Our world is composed by agents, the robot and humans; by objects; and by areas, which are bounded regions in the environment with semantic meaning, e.g. living room, kitchen. To be more generic, we will sometimes use the word \textit{entity} to refer to an agent, an agent's joint or an object. We can assign properties, to entities and areas to represent different information, e.g. 
-an agent can be in a specific area, a box can be opened and can contain objects, a bottle can contain liquids, a mug can be hot. The $subject$ of a property is the name of the primary entity linked to it (e.g. bob, mug). 
+an agent can be in a specific area, a box can be opened and can contain objects, a bottle can contain liquids, a mug can be hot. 
+%The $subject$ of a property is the name of the primary entity linked to it (e.g. bob, mug). 
  We divide properties in two classes: 
 \begin{itemize}
 \item fully observable:  can be seen by any present agent looking at the linked entity or area, e.g. the box is open
@@ -141,7 +142,7 @@ The idea of this set of rules is updating an agent's mental belief model for a p
 
 %TODO: Image of perspective taking
 
-\section{Action and Intention Inference}
+\section{Intention and Action Inference}
 \label{sec:situation_assessment-intention_recognition}
 
 In order to infer human intentions, we will provide the following information to the robot: a list of known contexts, a list of known intentions, a list of known actions, a set of observations of human actions, and a belief model of humans and of itself.
