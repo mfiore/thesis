@@ -6,7 +6,7 @@
 
 \lhead{Chapter . \emph{Situation Assessment}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
-In this chapter we introduce the Situation Assessment capacities of our system. Section \ref{sec:situation_assessemnt-intro} provides an introduction to the subject, with a discussion on some relevant works. Section\ref{sec:situation_assessment-overview} shows an overview of this layer, discussing its key aspects and modules. Sections \ref{sec:situation_assessment-object_human_detection} and \ref{sec:situation_assessment-communication} quickly discuss two minor aspects of our implementation, entity detection and communication. In section \ref{sec:situation_assessment-situation_assessment} we dicuss about the geometrical reasoning capacities of our system, showing how symbolic facts are generated, and in section \ref{sec:situation_assessment-belief_management} we show how these facts are assigned to human belief models. In \ref{sec:situation_assessment-intention_recognition} we introduce our intention recognition module, able to infer the most likely human intentions and actions. Finally, in section \ref{sec:situation_assessment-experiments} we show the experiments conducted to validate our module, and in particular its intention recognition capacities.
+In this chapter we introduce the Situation Assessment capacities of our system. Section \ref{sec:situation_assessment-intro} provides an introduction to the subject, with a discussion on some relevant works. Section\ref{sec:situation_assessment-overview} shows an overview of this layer, discussing its key aspects and modules. Sections \ref{sec:situation_assessment-object_human_detection} and \ref{sec:situation_assessment-communication} quickly discuss two minor aspects of our implementation, entity detection and communication. In section \ref{sec:situation_assessment-situation_assessment} we dicuss about the geometrical reasoning capacities of our system, showing how symbolic facts are generated, and in section \ref{sec:situation_assessment-belief_management} we show how these facts are assigned to human belief models. In \ref{sec:situation_assessment-intention_recognition} we introduce our intention recognition module, able to infer the most likely human intentions and actions. Finally, in section \ref{sec:situation_assessment-experiments} we show the experiments conducted to validate our module, and in particular its intention recognition capacities.
 
 %TODO: Citations on Toaster. Look and add other possible citations. Cite everything. Everything!
 \section{Introduction}
@@ -158,7 +158,8 @@ An IG is linked to a specific agent, and composed by the following layers of nod
 
 In a typical usage, the robot will create, for each monitored human, an IG, formed by the Context and Intention Nodes, which we consider statically known by the robot, and a variable list of Action and Observation nodes, which depends on the human's belief model. The robot will create action nodes for each known action whose $preconditions$ are satisfied in the human's belief model, and their related Observation Nodes. These IGs will need to be updated every time that an agent performs an action, switching the previous Action and Observation nodes with new ones, that will depend on the state of the world after the action was performed.
 
-When monitoring a human, we set Context Nodes and Observation Nodes as \textit{evidence}, considering them observable by the robot. These information will allow us to have a good estimation of the most likely actions and intentions of the human, as explained in \ref{intention and action inference}.
+When monitoring a human, we set Context Nodes and Observation Nodes as \textit{evidence}, considering them observable by the robot. These information will allow us to have a good estimation of the most likely actions and intentions of the human, as explained in \ref{sec:situation_assessment-intention and action inference}. 
+
 
 An example of IG, taken from an experiment, can be seen in figure \ref{fig:situation_assessment-intention_graph}. In the following paragraphs, we will explain the role of these layers of nodes, and how the conditional dependencies between them are computed.
 
@@ -172,7 +173,7 @@ An example of IG, taken from an experiment, can be seen in figure \ref{fig:situa
 \subsection{From Contexts to Intentions}
 We introduce a set of contexts in our domain. We consider as context any information that can be used to characterize and motivate an intention \cite{abowd1999towards}. We model a context  as a property, which can assume different values and influences the probability of a user having a particular intention. For example, we imagine that a human is more likely to be cooking at dinner time, or to drink a hot mug of tea on a cold day.
 
-Contextual nodes can directly influence one or more Intention nodes. In this work, we chose to learn these conditional dependencies from humans, as explained in section \ref{situation_assessment-experiments}.
+Contextual nodes can directly influence one or more Intention nodes. In this work, we chose to learn these conditional dependencies from humans, as explained in section \ref{sec:situation_assessment-experiments}.
 
 \subsection{From Intentions to Actions}
 \label{sec:situation_assessment-action_evaluation}
