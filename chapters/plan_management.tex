@@ -310,22 +310,36 @@ We introduce a simple negotiation algorithm, that starts with the robot asking h
 
 Once the plan has been accepted, the agents can start executing it. The three different plan management modalities presented imply different strategies.
 
-In the "Human Leader" and "Equal Partners" modalities the robot should not interfere with the actions of its partner. The Plan Management algorithm will execute the robot's actions, and replan if a human diverges from the precomputed plan or if the execution of an action fails. If there is one, or more, casual link $(a_h,a_r)$, where $a_r$ is the next action that the robot needs to perform, and $a_h$ is an action by another agent, and $a_h$ has not been completed yet, the robot will wait for its completion before execution $a_r$. This algorithm is shown in Figure. \ref{fig:plan_management-manage_plan_not_leader}. 
+
+\subsection{The robot is not leader}
+\label{subsec:plan_management-robot_not_leader_manager}
+In the "Human Leader" and "Equal Partners" modalities the robot should not interfere with the actions of its partner. The Plan Management algorithm will be divided in different threads, one for each agents. We will now explain this algorithm, which is shown in Figure \ref{fig:plan_management-manage_plan_not_leader}.
+\begin{itemize}
+  \item Each thread must execute the part of the plan of an agent, composed by $n$ different actions.
+  \item For each action, for every casual link $(a_i,a_n$), where $a_n$ is the current action, and $a_i$ is another action, the plan manager waits until $a_i$ is completed, or there is an error. This is handled in the WaitCasualLinks procedure.
+  \item When all the casual links have been satisfied, the execute\\monitor procedure is called, depending if the thread is managing the robot or another agent. The ExecuteAction operation interacts with the Plan Execution Layer to complete the action, while the MonitorAction operation with the Situation Assessment Layer.
+  \item If these procedures success, the plan manager switches to the next action, otherwhise it returns a failure.
+  \item The process is continued until there is a failure or the plan for the current agent, is completed.
+\end{itemize} 
 
 \begin{figure}[ht!]
  \centering
  \includegraphics[]{img/plan_management/manage_plan_not_leader.pdf}
- \caption{The plan management algorithm used when the current modality is not "Robot Leader". The}
- \label{fig:plan_management-manage_plan_not_leader. The algorithm is composed by different threads, one for each agent. In this instance, the left lane represents the robot's management thread, while the right a human's management thread. Elliptic nodes represent operations, while diamond nodes divergences in the algorithm.}
+ \caption{The plan management algorithm used when the current modality is not "Robot Leader". The algorithm is composed by different threads, one for each agent. In this instance, the left lane represents the robot's management thread, while the right a human's management thread. Elliptic nodes represent operations. Diamond nodes, representing divergences in the algorithm, where adding where we tought that they might simplify the understanding of the algorithm. Arrows imply a transition between nodes, with the label of the arrow representing the condition of the transition, when present. The absence of a label implies that a transition is always applied. The blue circle node, called "start", represents the start of the algorithm. The green and red circle node, instead, represent the success or failure of the algorithm.}
+ \label{fig:plan_management-manage_plan_not_leader}
  \end{figure}
 
+Failures in the algorithm lead to a replan request. If a new plan is found, the algorithm starts again, otherwhise the goal is considered failed.
 
+\subsection{The robot is leader}
 
-In the "Robot Leader" modality the situation is more complex. The plan needs to be analyzed and integrated with "explanation actions", particularly when teaching a human. Also, when a user is $expert$ in a task, we may want to give him the flexibility to execute it as he sees fit, without following a specific set of low level actions.  Unfortunately, this approach poses several problems. In fact, there might be conditional dependencies between actions of the robot and of the human in the original computed plan. If the human follows another set of actions, the coordination process might break. There are different solutions to this problem:
+In the "Robot Leader" modality the situation is more complex. The plan needs to be analyzed and potentially integrated with "explanation actions", used to explain a task to a human. In the Plan Management algorithm previously explained, the robot expects the human to perform a specific stream of operations, and will replan when he deviates from this stream. In this modality, the robot will want users to execute a specific set of tasks, warning him when he deviates from this. Some times, this tasks will be low level operations, but , when the user is competent enough in a task,  we may want to allow him the flexibility to execute it as he sees fit. 
+
+In this situation, we would like to use information about the task allocation, created in the planning//presentation//negotiation phases, to avoid to replan when a user is executing a task where we allow him flexibility in a different way from the one that the robot is planning.  Unfortunately, this approach poses several problems. In fact, there might be conditional dependencies between actions of the robot and of the human in the original computed plan. If the human follows another set of actions, the coordination process might break. There are different solutions to this problem:
 \begin{itemize}
 	\item Executing the plan in a sequential way, disallowing parallelism between the agent. This strategy is less efficient, but it might be useful when the robot wants to teach a task to a user.
 	\item Not allowing freedom of execution in tasks whose children have conditional links to robot actions. 
-	\item Execute the plan allowing the user to deviate, and repairing it when needed. This approach poses different problems. The first one is understanding when a deviation from the plan imposes the necessity of a repair. The second is that the task planner might generate a plan with a different task allocation, which implies that the robot should restart the explanation process.
+	\item Execute the plan allowing the user to deviate from it, and repairing it when needed. This approach poses different problems. The first one is understanding when a deviation from the plan imposes the necessity of a repair. The second is that the task planner might generate a plan with a different task allocation, which implies that the robot should restart the explanation process.
 \end{itemize}
 
 In \cite{milliez2016using} we presented a first version of an adaptive plan management algorithm, based on executing a plan in a sequential way. We present this algorithm in the following subsection, and then introduce a new parallelized version of it, based on plan reparation.
@@ -371,8 +385,8 @@ We start this subsection by showing our sequential plan management algorithm, an
 %\end{algorithm}
 
 \begin{itemize}
-\item \textit{$execute\_tree(n)$} is the main function to manage the execution. This is called after the negotiation process. It has \textit{$nodes$}, a list of nodes initially filled with the root's children, as an argument.
-\item \textit{$teachPolicy$} is a boolean to define if we are in teaching or efficient mode.
+\item \textit{$execute\_tree(n)$} is the main plan management function. The function receives as argument \textit{$nodes$}, a list of nodes initially filled with the root's children.
+\item \textit{$teachPolicy$} is a boolean that defines if we are in teaching or efficient mode.
 \item \textit{$agents(n)$} returns the agents involved in the node \textit{n}.
 \item \textit{$verbalize(n)$} will verbalize the current task, using the node context to present it (e.g. using sequential relations such as first, then or finally according to the node position in the list).
 \item \textit{$user\_kn(n)$} returns the knowledge level of the user concerning the task \textit{n}.
@@ -384,63 +398,123 @@ We start this subsection by showing our sequential plan management algorithm, an
  
 \subsection{Explanation of the sequential plan management algorithm}
 This plan management algorithm is based on the structured plan tree computed by the task planner, and on the tasks' knowledge values in the user models. We explore this tree with a pre-order strategy. The algorithm will analyze each node, with several possible outcomes:
-\subsubsection{Only the robot is involved (lines ~\ref{alg:onlyRobotStart}-~\ref{alg:onlyRobotEnd})} if the robot is the only agent in charge of the current node, if the collaborator has a knowledge level equal to \textit{new} for the current task, and the chosen policy for the interaction is teaching, the robot will execute the subtasks in ``demonstration mode'', meaning that it will verbalize each child task before performing it. Once the task have been executed, the robot updates the human's knowledge on the current node to \textit{beginner}. The same process will be applied to the children, so the robot will verbalize each (and only) task that needs to be learned by the collaborator.
-If the robot is in charge, but the human collaborator already has knowledge on the task, or the current policy is efficiency, the robot will verbalize only the high-level task it performs.
 
-Then, if the human is involved in the current node, the robot's behavior will depend on the human's knowledge level for the task, as it may have to explain it.
-The explanation could be done in several ways: showing a video, asking an expert to explain the task or simply verbally guiding the user, step by step. 
+\subsubsection{Only the robot is involved (lines ~\ref{alg:onlyRobotStart}-~\ref{alg:onlyRobotEnd})}.
+If the robot is the only agent in charge of the current node, the collaborator has a knowledge level equal to \textit{new} for the current task,
+and the chosen policy for the interaction is teaching, then the robot will execute the subtasks in ``demonstration mode'', meaning that it will verbalize each child task before performing it.
 
-% if new
-\subsubsection{The collaborator's knowledge level on the task is \textit{new} (lines~\ref{alg:newStart}-~\ref{alg:newEnd})}. if the human has a level $new$ for the current task, we explain it.
-When verbally guiding the user, if the current node has only one child node, we  go deeper in the tree and apply again the corresponding behavior according to the knowledge level. If the current node is actually an operator (a leaf), the system monitors the current action execution. In case of success, the knowledge level for the task is upgraded to \textit{beginner} .
+Once the task have been executed, the robot updates the human's knowledge on the current node to \textit{beginner}. The same process will be applied to the tasks' children.  Using this process, the robot will verbalize each (and only) task that needs to be learned by the collaborator.
+
+If the robot is in charge, but the human collaborator's knowledge on the task is different from \textit{new}, or the current policy is efficiency, the robot will verbalize only the high-level task it performs.
+
+
+If the human is involved in the current node, the robot's behavior will depend on the human's knowledge level for the task, since the human might need explanations.  Explaining a task could be done in several ways: showing a video, asking an expert to explain the it or simply verbally guiding the user, step by step. 
+\subsubsection{The collaborator's knowledge level on the task is \textit{new} (lines~\ref{alg:newStart}-~\ref{alg:newEnd})}. If the human has a level $new$ for the current task, we explain it.
+When verbally guiding the user, if the current node has only one child, we  go deeper in the tree and apply again the corresponding behavior according to the knowledge level. If the current node is actually an operator (a leaf), the system monitors the current action execution. In case of success, the knowledge level for the task is upgraded to \textit{beginner} .
 
 % if beginner
-\subsubsection{The collaborator's knowledge level on the task is \textit{beginner} (lines ~\ref{alg:beginnerStart}-~\ref{alg:beginnerEnd})}. if the human has a level \textit{beginner} for the current task, we ask if he needs explanations. If so, we downgrade his knowledge level to $new$, on the current task, and apply the same process as the previous paragraph. If the user refuses explanations, we simply monitor the execution of the current node. In case of success, the knowledge level for the current task is upgraded to \textit{intermediate}. This knowledge level will also be used as default. This way, when the robot does not know the knowledge level of an agent concerning a task, it will just ask him if he needs an explanation and adapt its behavior accordingly.
+\subsubsection{The collaborator's knowledge level on the task is \textit{beginner} (lines ~\ref{alg:beginnerStart}-~\ref{alg:beginnerEnd})}. If the human has a level \textit{beginner} for the current task, we ask if he needs explanations. If so, we downgrade his knowledge level to $new$, on the current task, and apply the same process as the previous paragraph. If the user refuses explanations, we simply monitor the execution of the current node. In case of success, the knowledge level for the current task is upgraded to \textit{intermediate}. This knowledge level will also be used as default. This way, when the robot does not know the knowledge level of an agent concerning a task, it will just ask him if he needs an explanation and adapt its behavior accordingly.
 
 % if intermediate
-\subsubsection{The collaborator's knowledge level on the task is \textit{intermediate} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})} if the human has a level \textit{intermediate} for the current task, we verbalize it without proposing explanations, since he has already  succeeded with the plan at least once without help. Also, we do not go deeper in the tree and directly monitor the current task. If the user  fails, we downgrade his knowledge to \textit{beginner}, otherwise we upgrade it to \textit{expert}.
+\subsubsection{The collaborator's knowledge level on the task is \textit{intermediate} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})}. If the human has a level \textit{intermediate} for the current task, we verbalize it without proposing explanations, since he has already  succeeded with the plan at least once without help. Also, we do not go deeper in the tree and directly monitor the current task. If the user  fails, we downgrade his knowledge to \textit{beginner}, otherwise we upgrade it to \textit{expert}.
 
 % if expert
-\subsubsection{The collaborator's knowledfge level on the task is \textit{expert} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})}. n case of \textit{expert} knowledge level on the current task, we  proceed as for the previous knowledge level, downgrading to \textit{intermediate} if the user makes a mistake and keeping the \textit{expert} level if he performs the task as expected.
+\subsubsection{The collaborator's knowledge level on the task is \textit{expert} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})}. In case of an \textit{expert} knowledge level on the current task, we  proceed as for the previous knowledge level, downgrading the level to \textit{intermediate} if the user makes a mistake and keeping the \textit{expert} level if he performs the task as expected.
 
 
 \subsection{Adaptive Parallel Plan Management Algorithm}
 In real cooperative operations, a serialized execution is not enough. The most natural way to interact is, in fact, parallelizing the agents' actions when this is possible. We created a new plan management algorithm to address this issue. We will illustrate its main points.
 
 \subsubsection{Plan Preprocessing}
-To start, we pre-process the plan streams produced by the Task Planner. Normally, the plan streams only include low level actions. We need to  modify the humans' plan streams to account for high-level tasks to be monitored. In this new plan, we may substitute groups of nodes with one of their ancestors, when the knowledge level of the human with the ancestor node's task is competent enough, and we want to give him flexibility. This new node will only have casual links in the same human's plan stream, imagining that the human will account on its own to coordinate with other agents. If another agent had a casual link on a removed node, we remove this casual link, but remembert this information, as we will account for it in the plan management algorithm.
+To start, we pre-process the plan streams produced by the Task Planner. Normally, the plan streams only include low level actions. We need to  modify the humans' plan streams to account for high-level tasks to be monitored. In this new plan, we may substitute groups of nodes with one of their ancestors, when the knowledge level of the human with the ancestor node's task is competent enough, and we want to give him flexibility. This new node will only have casual links in his plan stream, imagining that the human will account on its own to coordinate with other agents. If another agent had a casual link on a removed node, we remove this casual link, but remember this information, as we will account for it in the plan management algorithm.
 
 We will, so, analyze each node $n$:
 \begin{itemize}
-\item We look in the plan tree structure for the oldest ancestor of $n$, that we call $a$, where $kn(a) \geq intermediate$.
-\item If $a$ is different than $n$, let $[n_1..n_m]$ be the list of children of $a$. We substite this list in the plan stream with $a$. We set the casual links of $a$ with the predecessor of $n1$ in the stream, and the successor of $n_m$ in the stream (if they exit).
-\item For each casual link $l$ starting from any node $m$, where $m$ is a node in a different agent's plan stream, we erase $l$, but record this information in a $removed_casual_link$ flag of the node.
+\item We look in the plan tree structure for the oldest ancestor of $n$, that we call $a$, where $kn(a) \geq intermediate$. Note that this nodes must exist, as $n$ is a leaf (since the plan streams are composed only by leafs of the structure tree), and we consider leaves as common actions, as explained in section \ref{sec:plan_management-human_knowledge}.
+\item If $a$ is different than $n$, let $[n_1..n_m]$ be the list of children of $a$. We substite this list, in the plan stream, with $a$. We set the casual links of $a$ with the predecessor of $n1$ in the stream and the successor of $n_m$ in the stream (if they exit).
+\item For each casual link $l$ starting from any node $m$, where $m$ is a node in a different agent's plan stream, we erase $l$, but record this information in a $had_casual_link$ flag of the node.
 \end{itemize}
 
 
 \subsubsection{Algorithm}
-After pre-processing the plan streams, the plan management can start executing the current plan. Each stream will be executed in its own thread. First, we will start explanining the robot's algorithm, shown in Figure...
+After pre-processing the plan streams, the plan management can start executing the current plan. Each stream will be executed in its own thread. First, we will start explanining the robot's algorithm, which we divide in three blocks: a control block, which leads the flow of the program, an action block, which controls the execution of actions, and an explanation block, which manages eventual explanations to users. We will now details each of these block.
 
+We will start with the control block algorithm, shown in Figure \ref{fig:plan_management-manage_plan_leader_control_block}:
 \begin{itemize}
-\item	At the start of the plan, the robot will wait for casual links of its action to be completed. If there is an error, the algorithm will fail, otherwhise it will go on.
-\item The system will decide if the robot should explain it's current action. The algorithm will examine the current node's ancestors and choose which task to explain, using the same idea in the sequential plan management algorithm. (lines ~\ref{alg:onlyRobotStart}-~\ref{alg:onlyRobotEnd}). 
-\item If there are tasks to explain, and humans nearby, the robot will do it, otherwhise it will examine the next action.
-\item If the action cannot be realized, because it's preconditions are false (e.g. the robot needs to take an object but it's not there), the robot will wait for a predefined time. If the action is not realizable in this time, the algorithm will fail.
-\item If the $removed_casual_link$ flag of the node is true, then this action had a casual link on a human node which has been removed. The robot will ask humans if it can execute the current action, and depending on the answer it will execute it or the algorithm will fail. For example, the robot might need to take a tool after a human has finished using it. Since we are not monitoring the human specific actions, we don't know if he has already finished using it, if he will still need it, or if he is going to use another strategy that might not need that specific tool. For this reason, the robot will ask for permission.
-\item If the action is realizable, the robot will execute it.
-\item If in between the actions the robot receives a request for explanation from another thread, it will start a procedure to explain the task to the user. This is similar to the sequential plan management algorithm, for lines  (lines~\ref{alg:newStart}-~\ref{alg:beginnerEnd}). Additionally, we consider that the robot might be in another location. In that case, the robot will travel to the human and explain, or propose an explanation of the current task. After finishing, if the next action of the robot is not a $move to$ action, we introduce a $move to$ action to return to its previous location.
-\item If the robot's plan is finished, but the are still users whose plan is not finished, the robot will wait for their completion, just being present for explanations.
-\item The process continues until there is a failure or all plans are completed.
+\item The plan management algorithm needs to execute $n$ robot actions.
+\item If the stream receives an explanation request from the Plan Manager of another agent, the algorithm proceeds in the explain user block.
+\item If the current plan is not completed, and the algorithm did not receive a failure report from another Plan Manager, the system will wait for the casual links of the current action, using the waitCasualLink procedure, which was already explained in Subsec \ref{subsec:plan_management-robot_not_leader_manager}.
+\item If the system receives an error from another Plan Manager, it will fail, prompting a replan, otherwise, when the casual links are all satisfied, it will transition to the action block.
+\item If the plan of the robot is completed, but there are still some users acting, the robot will wait for them to finish their plan, only providing explanations if needed.
+\item The Plan Manager terminates successfully when all the agents have completed their plans.
 \end{itemize}
 
-Now, we will explain the user plan management algorithm, shown in Figure ..
+
+\begin{figure}[ht!]
+ \centering
+ \includegraphics[]{img/plan_management/manage_plan_leader_control_block.pdf}
+ \caption{The control block of the parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in Figure \ref{fig:plan_management-manage_plan_not_leader}, with the exception of yellow rectangles, which represent other blocks in the algorithm.}
+ \label{fig:plan_management-manage_plan_leader_control_block}
+ \end{figure}
+
+
+We continue explaining the action block algorithm, shown in Figure \ref{fig:plan_management-manage_plan_leader_action_block}.
 \begin{itemize}
-\item At the start of the plan, the system will wait for casual links of the current action. If there is an error, the algorithm will fail, otherwhise it will go on.
-\item The system will decide if the robot should explain the current task of the human, propose an explanation, or simply monitor. This is done analyzing the ancestors of the node, with a similar process to the sequential algorithm (lines~\ref{alg:newStart}-~\ref{alg:beginnerEnd}).
-\item If the current task should be explained, the system will send a request to the robot's plan management stream. The system will then wait for the end of the robot's explanations or for an error, and in that case it will quit.
+\item At the start of this block, the robot will analyze the current action to understand if it needs to verbalize it to users. In order to do so, it will look for the ancestors of the current node in the tree structure, using the same idea shown in the sequential plan management algorithm (lines ~\ref{alg:onlyRobotStart}-~\ref{alg:onlyRobotEnd}). The system will record which tasks have been explained, in order to avoid re-explaining the same task.
+\item If the robot should explain some of his actions, it will transition to the explainAction function. This function will verbalize the tasks, with the same reasoning shown in the sequential plan manager, if there are users in the same area as the robot.
+\item Since the human might take actions that diverge from the current's robot plan, the current action might not be executable. Imagine for example, the case where the robot's current action is to take an object from a table, but that object is not on the table. There are two possibilities in this case. 1) There was a casual link between $(a_h,a_n)$ where $a_h$ is an action that had to be performed by a human, and $a_n$ is the current action. The robot in this case has no way to know if the human has not yet performed the action, or if it will not perform it because he is following a different plan from the one it computed. 2) The human is following a different strategy, making $a_n$ not executable at the moment. For example, the human has taken an object needed by the robot. In this situation, the robot will wait from a predefined time for the action to become executable. If the action does not become executable in this time, the algorithm fails, prompting a replan.
+\item If the action is executable but the $had_casual_link$ flag for $a_n$ is set, the robot will ask the human for permission to perform the action. In fact, we might find situations where the human had to use a shared resource $r$ linked to $a_n$ in the original plan, like an object. The robot can not know if the human is using a different strategy, where he does not need $r$, if he has already finished using it, or if he still needs it. Our solution to this problem is asking him for permission, which is done in the $askPermission$ procedure. 
+\item If the action is executable, and the $had_casual_link$ flag is not set, or the robot had permission from the user, the system invokes the $executeAction$ procedure, which will return to the control block in case of success, or return a failure in case of errors. 
+\end{itemize}
+
+
+\begin{figure}[ht!]
+ \centering
+ \includegraphics[]{img/plan_management/manage_plan_leader_action_block.pdf}
+ \caption{The action block of the parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in Figure \ref{fig:plan_management-manage_plan_leader_control_block}. The algorithm starts from the ControlBlock node.}
+ \label{fig:plan_management-manage_plan_leader_control_block}
+ \end{figure}
+
+
+Finally, we explain the explain user block algorithm, shown in Figure \ref{fig:plan_management-manage_plan_leader_explain_block}.
+\begin{itemize}
+\item This block is invoked when the robot's Plan Manager received an explanation request from the Plan Manager of another agent.
+\item To start, if the user is in a different location, the robot will move toward him.
+\item At this point, if there are no errors, the robot will invoke the $explainUser$ procedure, which might explain him the task, or propose him an explanation first, in the same way explained in the sequential plan manager (lines~\ref{alg:newStart}-~\ref{alg:beginnerEnd}). 
+\item If the robot changed his position, and his next action in the plan stream is not a $moveTo$ action, which would make it change location, the robot will go back to his previous location.
+\item If there is an error during any of these operations, the system will look for a new plan.
+\end{itemize}
+
+
+\begin{figure}[ht!]
+ \centering
+ \includegraphics[]{img/plan_management/manage_plan_leader_explanation_block.pdf}
+ \caption{The explain block of the parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in Figure \ref{fig:plan_management-manage_plan_leader_control_block}. The algorithm starts from the ControlBlock node.}
+ \label{fig:plan_management-manage_plan_leader_explain_block}
+ \end{figure}
+
+
+Now, we will explain the user plan management algorithm, shown in Figure \ref{fig:plan_management-manage_plan_leader_humans}
+\begin{itemize}
+\item This algorithm is, in fact, very similar to the Plan Manager for the other two planning modalities, previously explained in Section \ref{subsec:plan_management-robot_not_leader_manager}. The difference lies in the $getExplanations$ and $requestExplanations$ procedures.
+\item The getExplanations procedure is used to decide if the robot should explain the current task of the human, propose an explanation, or simply monitor. This is done analyzing the ancestors of the node, with a similar process to the sequential algorithm (lines~\ref{alg:newStart}-~\ref{alg:beginnerEnd}).
+\item If the current task should be explained, the system will send a request to the robot's plan management stream, using the $requestExplanation$ procedure . The system will then wait for the end of the robot's explanations or for an error.
 \item If there are no errors the system will start monitoring the current task.
-\item The process is repeated until the plan is completed or there is an error
+\item The process is repeated until the plan is completed or there is an error.
 \end{itemize}
+
+
+\begin{figure}[ht!]
+ \centering
+ \includegraphics[]{img/plan_management/manage_plan_leader_humans.pdf}
+ \caption{The human parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in the previous image, Figure \ref{fig:plan_management-manage_plan_leader_control_block}.}
+ \label{fig:plan_management-manage_plan_leader_control_block}
+ \end{figure}
+
+
+We do not describe the update of human knowledge, as it is the same as in the sequential plan management algorithm.
+
+
 
 \subsubsection{Human Knowledge and Warnings}
 Maintaining human knowledge is done exactly in the same way as the sequential warning. The robot will issue a warning to a human when he commits a mistake.
