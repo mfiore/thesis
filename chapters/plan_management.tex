@@ -2,13 +2,14 @@
 
 \chapter{Plan Production and Management} % Main chapter title
 
-\label{chapter-plan_management} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-
+\label{chapter:plan_management} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 \lhead{Chapter . \emph{Plan Production and Management}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+In this chapter, we introduce the Plan Production and Management Layer of our system. Section \ref{sec:plan_management-intro} introduces the subject, with a review on multi agent planning, explanation, negotiation and plan management. Section \ref{sec:plan_management-overview} shows the main aspects of this component. Our system is able to use different plan management modalities, as explained in \ref{sec:plan_management-modalities}. Section \ref{sec:plan_management-human_knowledge} introduce the idea of maintaing the level of knowledge of a user in a task, which will be used both in plan generation and management. Section \ref{sec:plan_management-plan_generation} introduces our task planners, HATP \ref{subsec:plan_management-hatp}, and HAPP \ref{subsec:plan_management-happ}, and shows how plans are adapted to the human knowledge level in the domain tasks \ref{subsec:plan_generation-adapting_knowledge}. Section \ref{sec:plan_management-plan_explanation} shows how plans are explained to users, and section \ref{sec:plan_management-negotiation} how they are negotiated.  Section \ref{sec:plan_management-plan_manager} introduces the plan management aspects of this layer. We developed different strategies, shown in subsections \ref{subsec:plan_management-sequential_plan_management} and \ref{subsec:plan_management-adaptive_parallel_plan_manager}. Section \ref{section:plan_management-plan_monitoring} shows how are system is able to monitor human actions and task. Finally section \ref{sec:plan_management-experiments} details a user study created to evaluate the ability of our system to adapt to users.
 
 
 \section{Introduction}
-\label{sec-plan_management-intro}
+\label{sec:plan_management-intro}
 \subsection{Cooperation between agents}
 Robots can be used to perform a large number of different operations. Some of these will be simple enough that the robot can just achieve its task by performing a prefixed sequence of elementary actions. In other cases, the robot might have to achieve complex goals, which require the ability to create plans and to adapt them to the current state of the world. When cooperating with other agents, the robot will have to build a shared plan, which includes the actions that every agent need to perform, in order to coordinate and ensure the corrent achievement of the goal. We can imagine the following process:
 \begin{itemize}
@@ -24,13 +25,13 @@ When humans cooperate this process can be very quick. For simple tasks humans ar
 \subsection{Multi Agent Planning}
 Multi-Agent planning   is an important and studied topic in the AI community \cite{durfee1999survey}. There are several approaches to this problem, using classical or probabilistc planning. There are several issues to consider:
 \begin{itemize}
-\item Localized vs Centralized: a multi-agent planner might be localized, meaning that separate systems plan independently and then communicate to build a shared plan (an idea investigated, for example in \ref{nikolaidis2013cross,guestrin2002distributed} ); or centralized, meaning that a single system plans for all the agents.
+\item Localized vs Centralized: a multi-agent planner might be localized, meaning that separate systems plan independently and then communicate to build a shared plan (an idea investigated, for example in \cite{nikolaidis2013cross,guestrin2002distributed} ); or centralized, meaning that a single system plans for all the agents.
 \item Coordination: agents need to coordinate their plans, in particular in the presence of shared resources. Imagine, for example, two agents, Max and Bob, that are using a tool to repair a set of cars. If Max is proceeding faster than Bob and the two do not coordinate, Max might take the tool and leave, starting to repair another car, ignoring the fact that Bob still needs the tool. This example shows that it is important to reason on the duration of actions performed by agents. At the simplest level, agents need to know the advancament of the sub-plan of other agents. More complex reasoning might take into account how long an agent needs to perform a certain sub-task, in order to refine a plan. 
 \item Cooperation: even when performing different sub-tasks of the same plan, agents can help each other, for example by passing items, thus improving the efficiency of the plan. Multi-Agent problems can be loosely or tightly coupled, depending on the quantity of interactions between agents. \cite{torreno2015approach} propose a general purpose approach able to plan at differet level of coupling.
 \item Communication and Knowledge. In a multi-agent environment each agent might have an incomplete or incorrent belief on the world, which might lead to wrong or sub-optimal actions. Agents may communicate to progressively build a correct belief model on the state world. 
 \end{itemize}
 
-Several approaches has been studied to bring the multi-agent planning problem in a probabilistic framework. \cite{boutilier1999sequential} create a centralized MDP, able to select at each time step actions for every present agent. Dec-POMDP \cite{bernstein2002complexity} and I-POMDP \cite{gmytrasiewicz2005framework} are more complex frameworks, that take into account the belief models of agents. The complexity of these models makes them difficult to use in even moderately difficult scenarios. A solution to this problem is considering simpler problems, where the agents mostly work independently and interact only in limited situations, such as in \cite{molo2013heuristic}.  Unfortunately this solution is not feasible in the kind of scenarios that we are interested in, where robots and humans work in a strightly coupled manner. 
+Several approaches has been studied to bring the multi-agent planning problem in a probabilistic framework. \cite{boutilier1999sequential} create a centralized MDP, able to select at each time step actions for every present agent. Dec-POMDP \cite{bernstein2002complexity} and I-POMDP \cite{gmytrasiewicz2005framework} are more complex frameworks, that take into account the belief models of agents. The complexity of these models makes them difficult to use in even moderately difficult scenarios. A solution to this problem is considering simpler problems, where the agents mostly work independently and interact only in limited situations, such as in \cite{melo2013heuristic}.  Unfortunately this solution is not feasible in the kind of scenarios that we are interested in, where robots and humans work in a strightly coupled manner. 
 
 \subsection{Plan Explanation and Negotiation}
 In order to form a shared plans, agents often communicate, explaining tasks to each other and negotiating to agree on a solution. In \cite{Lallee2013} the authors suggest that joint plans should be fully communicated in order to sustain effective collaboration. 
@@ -44,7 +45,7 @@ fabregues2014hana
 Finally, the shared plan needs to be executed. Agents need to perform their part of the plans and to monitor other agents in order to coordinate with them. Two examples of systems able to execute shared plans are  \cite{shah2011improved} and Pike \cite{karpas2015robust}. Chaski is also able to execute plans in two different modalities: equal partners or leader and assistent.
 
 \section{Overview}
-\label{sec-plan_management-overview}
+\label{sec:plan_management-overview}
 Our system presents a planning layer which is able to perform the following tasks:
 \begin{itemize}
 	\item Interface with external planners in order to create a shared plan. The system has been integrated with an HTN (Hierarchical Task Network) based planner, HATP (Human-Aware Task Planner), and with a multi-agent MDP planner.
@@ -65,9 +66,9 @@ A number of modules implement this ideas, as shown in figure \ref{fig:plan_manag
 
 After receiving a goal from the Goal Management layer, the Plan Management module sends a request to the Task Planner to look for a suitable plan. If there is a plan, depending from the current modality, it will activate the Plan Explanation and Plan Negotiation modules to communicate with the involved humans, or directly start executing it. If the plan needs to be negotiated this process is repeated. When a plan is agreed by all the agents, the Plan Management starts executing it. 
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
-	\includegraphics[clip,scale=0.6]{img/plan_management/architecture.pdf}
+	\includegraphics[scale=0.5]{img/plan_management/architecture.pdf}
 	\caption{The image represents the architecture of the plan management layers. Yellow rounded rectangles represent modules, while blue rectangles layers. Arrows represent message exchanged between components, with the label detailing the message. }
 	\label{fig:plan_management-architecture}
 \end{figure}
@@ -76,7 +77,7 @@ After receiving a goal from the Goal Management layer, the Plan Management modul
 Part of this chapter was presented in \cite{Lallement2014,milliez2016using,fioreiser2014}.
 
 \section{Plan Management Modalities}
-\label{sec-plan_management-modalities}
+\label{sec:plan_management-modalities}
 When acting together, agents sometimes do not have the same decision power, with one of them assuming the role of a leader. We represent this idea, in our system, by proposing three different modalities: Robot Leader, Human Leader, and Equal Partners. The robot is able to switch from one modality to another during the execution of a plan. For example, if the current modality is 'Robot Leader' and the Robot receives a command from a user, it will switch to the 'Human Leader' modality, after interrupting its current action.
 
 \subsection{Robot Leader}
@@ -116,16 +117,18 @@ We feel that, particularly in non-critical tasks, where defining an accurate pla
 fundamental, this modality is a very natural way of
 interaction between different partners.
 
+
+
 \section{Human Knowledge and Plan Management}
-\label{sec-plan_management-human_knowledge}
+\label{sec:plan_management-human_knowledge}
 \subsection{Representing Human Knowledge in a Task}
 Among the topics of this chapter, we will consider different ways to use human knowledge in planning issues. In order to do so, we introduce a new property: the human's knowledge of a task, which will be maintained in the Situation Assessment Layer. 
 
-This property is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this property, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix_wheel, car, expert)$. 
+This property is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this property, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix\_wheel, car, expert)$. 
 
 Parameters can be deeply linked to the knowledge of a task. In general, we can divide task parameters in two categories:
 \begin{itemize}
-\item class-link. In some situation, knowledge of a task is not linked to the specific instance of a parameter, but to a whole class. For example, we can imagine that if Bob knows how to paint the living room, he will know how to paint every room in a standard house. We could represent this property as $(Bob, paint, house_room, expert)$. We can notice that the parameter, in this case, is $house_room$, representing the class of rooms belonging to a normal house, and not $living_room$.
+\item class-link. In some situation, knowledge of a task is not linked to the specific instance of a parameter, but to a whole class. For example, we can imagine that if Bob knows how to paint the living room, he will know how to paint every room in a standard house. We could represent this property as $(Bob, paint, house\_room, expert)$. We can notice that the parameter, in this case, is $house\_room$, representing the class of rooms belonging to a normal house, and not $living\_room$.
 \item instance-link. In other cases, instead, knowledge of a task is deeply linked to specific instances of parameters. For example, knowing how to fix the motor of a specific car, would not necessary translate in knowing how to fix the motor of every car.
 \end{itemize}
 
@@ -136,8 +139,8 @@ We can also consider some tasks as common knowledge, expecting every human to be
 We define four task-knowledge levels for humans, that will lead to different behaviors from the robot.
 
 \begin{itemize}
-\item \textit{New}.this value will be used for tasks which have never been performed by the user. If the user observes the task being executed, with an explanation of it, or if he performs it himself, the value will be changed to \textit{beginner}. However if the user observes the task being executed without any explanation, we keep the level as \textit{new} since we consider that he might not have received enough information to link the observed movements to the task.
-\item \textit{beginner}. This value will be used for users who have already achieved the task but may still need explanations to perform it again. If the user successfully performs the task a second time, without asking for explanations, the value is changed to \textit{intermediate}, otherwise it is changed to \textit{new}.
+\item \textit{New}. This value will be used for tasks which have never been performed by the user. If the user observes the task being executed, with an explanation of it, or if he performs it himself, the value will be changed to \textit{beginner}. However if the user observes the task being executed without any explanation, we keep the level as \textit{new} since we consider that he might not have received enough information to link the observed movements to the task.
+\item \textit{Beginner}. This value will be used for users who have already achieved the task but may still need explanations to perform it again. If the user successfully performs the task a second time, without asking for explanations, the value is changed to \textit{intermediate}, otherwise it is changed to \textit{new}.
 \item \textit{Intermediate}. This value will be used for users who are able to perform the task without guidance. If a \textit{beginner} user successfully performs the task without guidance again, the value is changed to \textit{expert}. In case of failure, it is downgraded to \textit{beginner}.
 \item \textit{Expert}. This knowledge level will be used for users who are able to perform the task without guidance and are experienced enough to explain it to a third party. If the user fails in performing the task, he will be downgraded to \textit{intermediate}.
 \end{itemize}
@@ -145,14 +148,14 @@ We define four task-knowledge levels for humans, that will lead to different beh
 Using the knowledge of a task of a human, the system is able to adapt plan generation, explanation, and monitoring to that user.
 
 \section{Plan Generation}
-\label{sec-plan_management-plan_generation}
+\label{sec:plan_management-plan_generation}
 One of the goals of our system is flexibility; we consider important important the possibility to interface with external components. We built an intermediate Plan Generation module that interacts with external planners and returns plans, represented in a common format that can be handled by other modules. 
 
 In particular, we require that each planner produces a tree of tasks, showing the decomposition of the plan, which will be helpful in the explanation and monitoring phases; and a set of streams, one per agent, which is useful during the execution of the plan. We introduce casual links between actions, even of different streams, to ensure synchronization. A casual link $l=(a1,a2)$ indicates that action $a1$ should be execute before action $a2$. This ensures that all the preconditions to execute $a2$ are fullfilled. Moreover, if $a1$ and $a2$ are executed by different agents, and if there a shared resource linked to the action, the casual link indicates that the resource will be released by the agent only after $a1$ is completed. An example of these data structures is shown in Figure \ref{fig:plan_management-plan_structure}
 
 \begin{figure}[ht!]
  \centering
-  \includegraphics{img/plan_management/plan_data_example.pdf}
+  \includegraphics[scale=0.45]{img/plan_management/plan_data_example.pdf}
  \caption{a) A tree plan data structure used in our system, representing a possible decomposition to clean a room
  with two agents, a robot, and a human. Blue ellipses represent tasks, green ellipses represent
  actions assigned to the human, and yellow ellipses actions assigned to the robot. Each decomposition is grouped
@@ -164,7 +167,9 @@ In particular, we require that each planner produces a tree of tasks, showing th
 
 At the moment, we tested two different planners with our system, which will be shown in the next subsections.
 
+
 \subsection{Human-Aware Task Planner}
+\label{subsec:plan_management-hatp}
 Computing a plan in complex environments can be very complex and time consuming. An useful approach to reduce the search space in planning is introducing the knowledge of an expert in the system, in order to guide the planner toward desiderable states. An implementation of this idea is HTN, where the domain expert specifies a hierarchical library of operations, called methods, when the operation is a node in the hierarchy, and actions, when the operation is a leaf. HATP is a planning framework that extends HTN for human-robot interaction tasks. Among the capacities of HATP we can find:
 \begin{itemize}
 \item Multi-Agent. HATP is able to plan for different agents at the same time, humans and robots. The planner can also compute "joint actions", that involves more agents at the same time.
@@ -175,7 +180,7 @@ Computing a plan in complex environments can be very complex and time consuming.
 Plans are represented as an HTN tree decomposition and as a set of streams, one per agent, which shows which actions each agent needs to perform. Casual links are introduced between streams to ensure synchronization.
 
 \subsection{Human-Aware Probabilistic Planner}
-\label{subsec-plan_management_happ}
+\label{subsec:plan_management-happ}
 
 % dietterich2000hierarchical
 % This paper presents a new approach to hierarchical reinforcement learning based on de-
@@ -216,23 +221,26 @@ Plans are represented as an HTN tree decomposition and as a set of streams, one 
 
 
 \subsection{Adapting Plan Generation to Human Knowledge}
-\label{subsec-plan_generation-adapting_knowledge}
+\label{subsec:plan_generation-adapting_knowledge}
 When interacting with humans, it is important to take into account others' knowledge and capacities when planning. We consider two different policies for our planner: teaching, where the planner will look for plans not known to the human, in order to teach him of different ways of achieving a task; and efficiency, where the robot will try to maximize the number of human tasks known when creating a plan. These ideas were represented as social rules.
 
 To illustrate our planner and the new social rule let us consider an example where a human and a robot have to cook an apple pie. We can consider all the basic actions of this domain (pick, place, cut, etc.) as "common knowledge", but the human might not know how to perform all the higher level involved tasks. If our policy favors teaching, 
-the plan should should choose a decomposition with tasks where the human has a low knowledge level  On the other hand, if our policy is efficiency the plan should allocate to the human tasks where he is more competent, so that explanations and mistakes are reduced. Using this rule, the robot is able to adapt its plan generation to the knowledge of the user concerning tasks contained in the shared plan. In Figure \ref{fig:plan_management-adapting_plan_knowledge} we show an example of plan adaptation for this task with the two policies, using the mental model in Table \ref{table_plan_management-apple_pie_human_knowledge}
+the plan should should choose a decomposition with tasks where the human has a low knowledge level  On the other hand, if our policy is efficiency the plan should allocate to the human tasks where he is more competent, so that explanations and mistakes are reduced. Using this rule, the robot is able to adapt its plan generation to the knowledge of the user concerning tasks contained in the shared plan. In Figure \ref{fig:plan_management-adapting_plan_knowledge} we show an example of plan adaptation for this task with the two policies, using the mental model in Table \ref{table:plan_management-apple_pie_human_knowledge}
 
  
  \begin{table}
 \centering
 \scriptsize
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{c|c}
-Cook(ApplePie) & New \\
-PrepareDough(Bowl Mould) & New \\
-PrepareMixture(Bowl Mould) & Intermediate \\
-PrepareFruits(Apple Bowl Mould) & Intermediate
-Bake(Mould) & Intermediate
+\begin{tabular}{|c|c|}
+\hline
+Task & Knowledge Level \\ \hline \hline
+Cook(ApplePie) & New \\ \hline
+PrepareDough(Bowl Mould) & New \\ \hline
+PrepareMixture(Bowl Mould) & Intermediate \\ \hline
+PrepareFruits(Apple Bowl Mould) & Intermediate \\ \hline
+Bake(Mould) & Intermediate \\ 
+\hline
 \end{tabular}
 \caption{Mental model for a human in the Cook Apple
  scenario in Figure \ref{fig:plan_management-adapting_plan_knowledge} }
@@ -243,7 +251,7 @@ Bake(Mould) & Intermediate
 
 \begin{figure}[ht!]
  \centering
-  \includegraphics{img/plan_management/adapting_plan_knowledge.pdf}
+  \includegraphics[scale=0.5]{img/plan_management/adapting_plan_knowledge.pdf}
  \caption{Allocation of tasks of a plan to cook an Apple Pie for two agents, a robot and a human, using the knowledge values in table \ref{table:plan_management-apple_pie_human_knowledge}. A) shows an 'efficiency' policy for this task, while b) shows a 'teaching' policy for the same task. Blue ellipses represent tasks involving both agents, green ellipses represent tasks assigned to the human, and yellow ellipses tasks assigned to the robot. Each decomposition is grouped in a blue rectangle. Black arrows link a method to its decomposition, while blue arrows represent casual links. Squares with a "..." label represent decompositions that are not shown in this picture.}
  \label{fig:plan_management-adapting_plan_knowledge}
  \end{figure}
@@ -257,7 +265,7 @@ If a user is not able to perform a certain task, the planner will never chose th
 
 \section{Plan Explanation}
 \label{sec:plan_management-plan_explanation}
-Once the system has generated a collaborative plan, if the current modality is 'Robot Leader', the plan must be shared with the human partners. The robot will present and negotiate plans using speech, which is supported by several studies, such as \cite{Lalle2013,tomasello2005}.
+Once the system has generated a collaborative plan, if the current modality is 'Robot Leader', the plan must be shared with the human partners. The robot will present and negotiate plans using speech, which is supported by several studies, such as \cite{Lallee2013,tomasello2005}.
 
 \subsection{Plan Preprocessing}
 The structured tree generated by the planner represents a solution to achieve the goal. In order to explain this plan to users, the system will process it, removing unnecessary information. In particular, our algorithm follows two rules:
@@ -300,13 +308,14 @@ There may be situation where the plan is very long, and explaining all of it at 
 \end{table}
 
 \section{Plan Negotiation}
-\label{plan_managemet-plan_negotiation}
+\label{sec:plan_management-negotiation}
 Once the robot has presented the plan to his collaborators, it can start a negotiation phase. 
 
 We introduce a simple negotiation algorithm, that starts with the robot asking humans for approval of the plan, inquiring what is wrong in case of disagreement. We handle two different human requests. First, the user can express his preferences, either to perform a task previously assigned to the robot or to not perform a task assigned to him. The other possibility is to inform the robot that the user cannot perform an action. The system will store these information and try to find a new plan, taking them into account, before starting a new explanation and negotiation phase.
  
+
 \section{Plan Management}
-\label{sec:plan_management-planExecution}
+\label{sec:plan_management-plan_manager}
 
 Once the plan has been accepted, the agents can start executing it. The three different plan management modalities presented imply different strategies.
 
@@ -324,7 +333,7 @@ In the "Human Leader" and "Equal Partners" modalities the robot should not inter
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[]{img/plan_management/manage_plan_not_leader.pdf}
+ \includegraphics[scale=0.6]{img/plan_management/manage_plan_not_leader.pdf}
  \caption{The plan management algorithm used when the current modality is not "Robot Leader". The algorithm is composed by different threads, one for each agent. In this instance, the left lane represents the robot's management thread, while the right a human's management thread. Elliptic nodes represent operations. Diamond nodes, representing divergences in the algorithm, where adding where we tought that they might simplify the understanding of the algorithm. Arrows imply a transition between nodes, with the label of the arrow representing the condition of the transition, when present. The absence of a label implies that a transition is always applied. The blue circle node, called "start", represents the start of the algorithm. The green and red circle node, instead, represent the success or failure of the algorithm.}
  \label{fig:plan_management-manage_plan_not_leader}
  \end{figure}
@@ -423,6 +432,7 @@ When verbally guiding the user, if the current node has only one child, we  go d
 
 
 \subsection{Adaptive Parallel Plan Management Algorithm}
+\label{subsec:plan_management-adaptive_parallel_plan_manager}
 In real cooperative operations, a serialized execution is not enough. The most natural way to interact is, in fact, parallelizing the agents' actions when this is possible. We created a new plan management algorithm to address this issue. We will illustrate its main points.
 
 \subsubsection{Plan Preprocessing}
@@ -431,6 +441,7 @@ To start, we pre-process the plan streams produced by the Task Planner. Normally
 We will, so, analyze each node $n$:
 \begin{itemize}
 \item We look in the plan tree structure for the oldest ancestor of $n$, that we call $a$, where $kn(a) \geq intermediate$. Note that this nodes must exist, as $n$ is a leaf (since the plan streams are composed only by leafs of the structure tree), and we consider leaves as common actions, as explained in section \ref{sec:plan_management-human_knowledge}.
+
 \item If $a$ is different than $n$, let $[n_1..n_m]$ be the list of children of $a$. We substite this list, in the plan stream, with $a$. We set the casual links of $a$ with the predecessor of $n1$ in the stream and the successor of $n_m$ in the stream (if they exit).
 \item For each casual link $l$ starting from any node $m$, where $m$ is a node in a different agent's plan stream, we erase $l$, but record this information in a $had_casual_link$ flag of the node.
 \end{itemize}
@@ -452,7 +463,7 @@ We will start with the control block algorithm, shown in Figure \ref{fig:plan_ma
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[]{img/plan_management/manage_plan_leader_control_block.pdf}
+ \includegraphics[scale=0.45]{img/plan_management/manage_plan_leader_control_block.pdf}
  \caption{The control block of the parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in Figure \ref{fig:plan_management-manage_plan_not_leader}, with the exception of yellow rectangles, which represent other blocks in the algorithm.}
  \label{fig:plan_management-manage_plan_leader_control_block}
  \end{figure}
@@ -470,9 +481,9 @@ We continue explaining the action block algorithm, shown in Figure \ref{fig:plan
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[]{img/plan_management/manage_plan_leader_action_block.pdf}
+ \includegraphics[scale=0.45]{img/plan_management/manage_plan_leader_action_block.pdf}
  \caption{The action block of the parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in Figure \ref{fig:plan_management-manage_plan_leader_control_block}. The algorithm starts from the ControlBlock node.}
- \label{fig:plan_management-manage_plan_leader_control_block}
+ \label{fig:plan_management-manage_plan_leader_action_block}
  \end{figure}
 
 
@@ -488,7 +499,7 @@ Finally, we explain the explain user block algorithm, shown in Figure \ref{fig:p
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[]{img/plan_management/manage_plan_leader_explanation_block.pdf}
+ \includegraphics[scale=0.5]{img/plan_management/manage_plan_leader_explanation_block.pdf}
  \caption{The explain block of the parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in Figure \ref{fig:plan_management-manage_plan_leader_control_block}. The algorithm starts from the ControlBlock node.}
  \label{fig:plan_management-manage_plan_leader_explain_block}
  \end{figure}
@@ -506,69 +517,58 @@ Now, we will explain the user plan management algorithm, shown in Figure \ref{fi
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[]{img/plan_management/manage_plan_leader_humans.pdf}
+ \includegraphics[scale=0.5]{img/plan_management/manage_plan_leader_humans.pdf}
  \caption{The human parallel plan management algorithm used when the current modality is "Robot Leader". The symbols used are the same as in the previous image, Figure \ref{fig:plan_management-manage_plan_leader_control_block}.}
- \label{fig:plan_management-manage_plan_leader_control_block}
+ \label{fig:plan_management-manage_plan_leader_humans}
  \end{figure}
-
-
-We do not describe the update of human knowledge, as it is the same as in the sequential plan management algorithm.
-
 
 
 \subsubsection{Human Knowledge and Warnings}
 Maintaining human knowledge is done exactly in the same way as the sequential warning. The robot will issue a warning to a human when he commits a mistake.
 
 \subsubsection{Replanning}
-When the plan manager reports a failure, the system needs to look for a new plan. If possible, we would like to create a plan with a different task allocation. First, sometimes a failure will be created not by a human mistake or by an operation failure, but simply because the robot needs to look for another plan, because the human did something unexpected. Second, the explanation process can be time expensive, so we want to minimize the number of explained tasks. Third, we think it's more natural to correct only small parts of a plan, instead of creating a completely new one. We deal with this issue in different ways in HATP and HAPP.
+When the plan manager reports a failure, the system needs to look for a new plan. If possible, we would like to create a plan which contains the same high-level task allocation. Sometimes, when the Plan Manager fails, there is no need to completely change the plan. Instead, it might be sufficient to repair only a part of it. For example, we can imagine a scenario where a human might execute task $t1$ using resource $r1$ or $r2$. Perhaps the robot computed a plan where the human will use resource $r1$, while itself will use $r2$ to achieve another task.
 
-In HATP, we introduce a new cost rule. When presenting a plan, we record which nodes have been presented to each agent. We penalize plans where these tasks are assigned to other agents. This way, the planner will prefer to use the same task allocation, but will change it if needed.
+If the human does not follow this plan, and uses $r2$ to compute its task,  it might be faster to just repair the plan, looking for a solution where the task allocation is the same, but the robot uses $r1$ instead to achieve its task. This way, we avoid starting a new explanation\\negotiation phase, which could look useless and not natural to the human collaborator.
 
-In HAPP, we don't perform a full replan, but simply replan in the current active MMDP. 
+%  We deal with this issue in different ways in HATP and HAPP.
+
+In HATP, we introduce a new cost rule. When presenting a plan, we record which nodes have been presented and assigned to each agent. While planning, we penalize plans with a different task allocation. This way, the planner will prefer to use the same task allocation, but will change it if needed, for example because the original plan is no longer achievable.
+
+%In HAPP, we can just perform a partial replan, by interrogating the currently active MMODP.  
 
 
 \section{Plan Monitoring}
+\label{section:plan_management-plan_monitoring}
+
 \subsection{Introduction}
-During the execution of a plan, the robot will monitor other agents. In general, having a shared plan, the robot knows what is the user's next expected action, and can monitor if it's accomplished. Plan monitoring poses a number of different issues:
+During the execution of a plan, the robot will monitor other agents. In general, having a shared plan, the robot knows what is the user's next expected action, and can monitor if it is accomplished. Plan monitoring poses a number of different issues:
 \begin{itemize}
-\item Understanding when the next expected action has been performed. In some situations the robot will monitor the execution of a specific action. In this event, it needs to understand when the action has been performed.
-\item Understanding when the next expected task has been performed. In some situations, the robot wants to give a human cooperator the freedom to perform a subtask has it sees fit. This is a more complex problem than monitoring a specific action, since the robot needs to reason on the results of sequences of actions.
+\item Understanding when the next expected action has been performed. In some situations the robot will monitor the execution of a specific action. In this event, it needs to understand when the action has been completed.
+\item Understanding when the next expected task has been performed. In some situations, the robot wants to give a human cooperator the freedom to perform a subtask has he sees fit. This is a more complex problem than monitoring a specific action, since the robot needs to reason on the results of sequences of actions.
 \item Evaluating the human engagement in the current task. The robot needs to understand if the human is trying to accomplish its current task, if he momentarily interrupted it, or if he abandoned it.
 \end{itemize}
 
 \subsection{Monitoring Plans}
-When executing a shared goal, the Plan Management Layer needs to interact with the Intention and Actions recognition module in the Situation Assessment Layer. Normally, this module only monitors single goals. This is not enough when actively cooperating in a joint task, since actions may vary if the load of the task is shared. While performing a shared plan, we create a new intention for each node in the plan tree that can be currently performed (meaning, if it has conditional links to other nodes, they have already been accomplished). We associate to these intentions the linked MMDP, as previously explained in \ref{subsec:plan_management-happ}, and the context node "have a shared plan", which is treated as evidence with the value true. We call these intentions $plan intentions$.
+When executing a shared goal, the Plan Management Layer needs to interact with the Intention and Actions recognition module in the Situation Assessment Layer. Normally, this module only monitors single goals. This is not enough when actively cooperating in a joint task, since actions may vary if the load of the task is shared. While performing a shared plan, we create a new intention for each node in the plan tree that can be currently performed (meaning, if it has casual links to other tasks, they have already been satisfied). We associate to these intentions the linked MMDP, as previously explained in \ref{subsec:plan_management-happ},
+ and the context node "have a shared plan", which is treated as evidence with a true value . We call these intentions $plan intentions$.
 
-We associate to each known intention a precomputed "expected length", which is the time to accomplish the linked goal.
+We associate to each known intention a precomputed "expected length", which is the expected time to accomplish the linked goal.
 
-The robot can be updated at each time on what actions have been performed, using the mechanisms described in Section \ref{sec:situation_assesssment-intention_recognition}. This way, the robot can compare the actions performed by humans, with those that should be performed following the shared plan.
+The robot can be updated at each time on what actions have been performed, using the mechanisms described in Section \ref{sec:situation_assessment-intention_recognition}. This way, the robot can compare actions that are actually performed by humans with those that should be performed following the shared plan.
 
-Using the Intention and Action Recognition module, the robot can infer in which intention the human is currently involved. If the current involved intention equals the task to monitor, the robot infers that the human is actively working to complete it's task. The task will be completed when the linked MMDP reaches a goal state, and at that point the monitor procedure will return a success.
+Using the Intention and Action Recognition module, the robot can infer which is currently the most likely human intention. If the current intention equals the task to monitor, the robot infers that the human is actively working to complete its task. We consider the task, and the monitor procedure, as completed when the linked MMDP reaches a goal state.
 
 If the human is currently not involved in the monitored task there are three possibilities:
 \begin{itemize}
-	\item the human has momentarily interrupted the task. This can be inferred if the human is currently involved in another intention, which doesn't belong to the $plan intentions$, and who's expected length is short. In this case, the monitor won't return an error until a predefined $allowed_time$.
-	\item the human has abandoned the task.  This can be inferred if the human is currently involved in another intention, which doesn't belong to the $plan intentions$, and who's expected length is long. The monitor will return a "not involved error". 
-	\item the human is performing another task in the shared goal. This can be inferred if the human is currently involved in another intention, which belongs to the $plan intentions$. In this case the monitor will return a "other task error"
+	\item the human has momentarily interrupted the task. This can be inferred if the human is currently involved in another intention, which does not belong to the $plan intentions$, and whose expected length is $short$. In this case, the monitor procedure will not return an error until a predefined $allowed_time$.
+	\item the human has abandoned the task.  This can be inferred if the human is currently involved in another intention, which does not belong to the $plan intentions$, and whose expected length is $long$. The monitor will return a $not involved error$. 
+	\item the human is performing another task in the shared goal. This can be inferred if the human is currently involved in another intention, which belongs to the $plan intentions$. In this case the monitor will return a $other task error$. 
 \end{itemize}
 
 
 \subsection{Monitoring and Unseen Actions}
-Often, in cooperative tasks, the agents will operate in different locations, and so their actions won't be observable at all time. Perhaps one of the agents is preparing a cake in the kitchen,  while the robot is preparing the table. While we don't deal, in this work, with these issues, there are studies on plan recognition in partially observable environments, like \cite{geib2005partial}.
-
-
-
-\subsection{Failed Monitoring and Replanning}
-What happens when a human is not engaged in the current task? There are three possibilities:
-\begin{itemize}
-\item The human is momentarily doing another task: in this case, the robot will simply wait, without considering the human's assigned task as failed.
-\item The human is engaged in a different long-term task, related to the current scenario: in this case, the robot will act differently depending on the current modality. In the 'robot leader' mode, the monitoring will be considered as failure. In the 'Equal Partners' or 'Human Leader' modalities, the robot will create a new plan, and try to adapt to the human.  
-\item The human is engaged in a different long-term task, not related to the current scenario. In this case, the monitor will return a failure.
-\end{itemize}
-
-To understand if a task is 'short term' or 'long term' we can hand-code these information, linking it to the intentions. We infer that a human is engaged in a different task, but still related to the same scenario, if the likelihood that the human intention is its assigned task is low, but the likelihood that the human intention is the shared goal is still high. 
-
-
+Often, in cooperative tasks, agents will operate in different locations, and so they can not observe each other actions all the time. Perhaps one of the agents is cooking in the kitchen,  while the robot is preparing the table for dinner. While we do not deal, in this work, with these issues, there are several studies on plan recognition in partially observable environments, like \cite{geib2005partial}.
 
 \section{Experiments and Discussion}
 \label{sec:plan_management-experiments}
@@ -576,7 +576,7 @@ In this section, we present a set of experiments which where performed to evalua
 
  \subsection{Experiment}
  \label{sec:plan_management-experiment}
-To test our system, we have chosen a scenario where a human is trying to prepare two desserts, an apple pie and a banana pie, without knowing how. The robot has the task to guide and assist the user, as shown in Figure \ref{fig:pla_management-scenario}. 
+To test our system, we have chosen a scenario where a human is trying to prepare two desserts, an apple pie and a banana pie, without knowing how. The robot has the task to guide and assist the user, as shown in Figure \ref{fig:plan_management-scenario}. 
 
 \begin{figure}[ht!]
 
@@ -584,12 +584,11 @@ To test our system, we have chosen a scenario where a human is trying to prepare
  \begin{tabular}{cc}
   \includegraphics[width=0.29\textwidth]{img/plan_management/scenario.JPG}
  \end{tabular}
-   \vspace{-6pt}
  \caption{Illustration of the cooking pies scenario}
  \label{fig:plan_management-scenario}
  \end{figure}
 
-We created a domain representing the necessary task knowledge to be used by the different modules, and tested the scenario with the previous explained 'efficiency policy'. We used HATP as Task Planner, in this  scenario.
+We created a domain representing the necessary task knowledge to be used by the different modules, and tested the scenario with the previous explained 'efficiency policy'. We used HATP as Task Planner.
 To cook the apple pie, five main tasks are needed. We imagine that the robot is not able to prepare the dough or the fruits, because he can not reach them. The task distribution will be as follows.
 
 \begin{figure*}[ht!]
@@ -648,7 +647,6 @@ The users gave marks along a Likert scale from one (disagree) to five (agree) to
   \includegraphics[width=0.24\textwidth]{img/plan_management/ustudy9.png} &
   \includegraphics[width=0.19\textwidth]{img/plan_management/ustudy11.png}
  \end{tabular}
-  \vspace{-6pt}
  \caption{\textit{Left}: The user listens to recorded robot explanation and chooses the action to take. \textit{Right}: At the end, the user evaluates the interaction using a Likert scale.}
  \label{fig:plan_management-user_study}
  \end{figure}
@@ -667,10 +665,10 @@ We also asked how the robot partner was perceived. While in BS, the robot is not
  \begin{figure}[ht!]
  \centering
  \begin{tabular}{cc}
-  \includegraphics[width=0.41\textwidth]{img/plan_management/respvalue3.png}
+  \includegraphics[width=0.45\textwidth]{img/plan_management/respvalue3.png}
  \end{tabular}
  \caption{Average users' rating of the interaction on several criteria. Blue for KS and red for BS.}
- \label{fig:results}
+ \label{fig:plan_management-results}
  \end{figure}
 
 This study sheds light on how users were able to perceive the robot adaptation to their knowledge concerning task distribution, task explanation and monitoring. In addition, the robot partner was perceived as smarter and the interaction seemed a bit more natural to the users. However these first results need to be confirmed with study on a larger population. Also, as the scenario was simulated, results on a real robot might differ.

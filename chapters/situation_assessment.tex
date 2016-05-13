@@ -2,7 +2,7 @@
 
 \chapter{Situation Assessment} % Main chapter title
 
-\label{chap-situation_assessment} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{chapter:situation_assessment} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 \lhead{Chapter . \emph{Situation Assessment}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
@@ -74,7 +74,7 @@ This layer is composed by different elements, as shown in Fig. \ref{fig:situatio
 \end{itemize}
 
 
- \begin{figure}[h!]
+ \begin{figure}[ht!]
 	\centering
 	\includegraphics[scale=0.45]{img/situation_assessment/situation_assessment_overview}
 	\caption{Overview of the different modules composing the Situation Assessment Layer}
@@ -92,7 +92,13 @@ In our system, we chose to simplify perception issues, focusing on reasoning asp
 Regarding humans, we use a motion capture software to identify and track agents moving in the environment. Using different tags, we can track the head, shoulders, and right arm of a human. Our situation assessment component has also been tested using a laser and RGB based detector in the SPENCER european project \footnote{http://www.spencer.eu/}.
 
 
-%TODO: image of MOCAP and VIMAN
+ \begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.7, trim={0 3cm 0 0}]{img/situation_assessment/explore.pdf}
+	\caption{The robot explores the environment, recognizing objects through tags, and building a representation of the environment}
+	\label{fig:situation_assessment-explore}
+\end{figure}
+
 
 \section{Human-Robot Communication}
 \label{sec:situation_assessment-communication}
@@ -163,7 +169,7 @@ When monitoring a human, we set Context Nodes and Observation Nodes as \textit{e
 
 An example of IG, taken from an experiment, can be seen in figure \ref{fig:situation_assessment-intention_graph}. In the following paragraphs, we will explain the role of these layers of nodes, and how the conditional dependencies between them are computed.
 
- \begin{figure}[h!]
+ \begin{figure}[ht!]
 	\centering
 	\includegraphics[trim={2cm 11cm 11cm 17cm},clip,scale=0.45]{img/situation_assessment/cookieScenario.pdf}
 	\caption{A scene from our experiment. The yellow arrows show possible actions and their associated probabilities. The diagram represents the current IG. Green circles represent evidence nodes and blue circles other nodes. For the Context Nodes (top of the graph), we represented nodes with a false value as greyed out, and nodes with a true value as green. The most likely nodes in the graph are represented with a glowing effect. The observation nodes where compressed in a single block to simplify the diagram}
@@ -201,6 +207,14 @@ We assume, in this work, that at each moment a human can only execute a single a
 
 When the robot infers that an action has been performed, it updates the world state with its $postconditions$, triggering an update on the beliefs of all present agents. The current human intention is recorded in the Database, in order to be used by the Goal Manager.
 
+ \begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.8, trim={0 4cm 0 0}]{img/situation_assessment/pick.pdf}
+	\caption{The human picks an object and the robot updates accordingly the world state. The spheres surrounding objects show when the human's hand is considered to be near an object.}
+	\label{fig:situation_assessment-pick}
+\end{figure}
+
+
 \subsection{Proactive Behaviors}
 \label{subsec:situation_assessment-proactive_behaviors}
 Information about the most likely intention and action will be introduced in the database, to be read by the Goal Management module. Based on this information, the robot can execute two different proactive behaviors: correcting the belief state of the human, and proactively helping him to achieve his task.
@@ -210,10 +224,10 @@ Having a wrong or incomplete belief on the world state can lead agents to execut
 
 We propose a simple solution, where the robot warns the human of the detected divergent belief for that action. For example, Bob wants to drink tea from a closed, opaque bottle, which the robot knows is empty (perhaps because another agent drank the last glass), while Bob does not. When he approaches the bottle, the robot detects that his most likely intention (using the process described in \ref{sec:situation_assessment-intention_recognition}) is to drink tea. The system calculates the expected rewards from taking the bottle in the two belief models and obtains different values. The system checks the property values associated to the bottle in the two mental models, and extracts the differences. Using this information, the robot corrects the divergent belief, informing the human that the bottle is now empty. 
 
-To implement this idea, in our system, detecting the need to correct a belief state, the Intention and Action Recognition module will introduce all the needed information in the Database, which will be read by the Goal Manager in the form of a "warn agent" goal with high priority (as will be explained in chapter \ref{chapter-goal_management}).
+To implement this idea, in our system, detecting the need to correct a belief state, the Intention and Action Recognition module will introduce all the needed information in the Database, which will be read by the Goal Manager in the form of a "warn agent" goal with high priority (as will be explained in chapter \ref{chapter:goal_management}).
 
 \subsubsection{Performing a part of the plan}
-There are situations in which the robot should help the human achieve its goal by acting. The Goal Management layer will consider new inferred intentions as possible goals for the robot, and will communicate with the Plan Production and Management layer to achieve them, as explained in chapters \ref{chapter-goal_management}, \ref{chapter-plan_management}, and \ref{chapter-plan_execution}. 
+There are situations in which the robot should help the human achieve its goal by acting. The Goal Management layer will consider new inferred intentions as possible goals for the robot, and will communicate with the Plan Production and Management layer to achieve them, as explained in chapters \ref{chapter:goal_management}, \ref{chapter:plan_management}, and \ref{chapter:plan_execution}. 
 
 
 \section{Experiments and Discussion}
@@ -313,9 +327,9 @@ We calculated p-values and performed our tests using a significance value $\alph
 
 Analyzing the results of our equivalence tests, shown in Fig. \ref{fig:situation_assessment-user_study_results}, produces some interesting information. 1) The behavior of our system is often close to human capacities. 19 tests out of 21 passed our requirements for significance level, often with very low p-value scores. 2) Context and Divergent Belief are necessary. A system without these skills would only have been able to model properly the \textit{No Clues} cases. 3) There are still some missing aspects in our system. We failed to reject the null hypothesis for two tests. In \textit{Divergent Belief Bob} users rated higher the \textit{Eat Cookie} intention than the \textit{Drink Water} intention, possibly because they thought that since \textit{Bob} filled the \textit{Cookie Box} he may want to eat a \textit{Cookie}. This makes us think that humans use deep temporal reasoning to evaluate intentions, considering the whole history of actions performed by agents.  
 
- \begin{figure}[h!]
+ \begin{figure}[ht!]
 	\centering
-	\includegraphics[clip,scale=0.32]{img/situation_assessment/pvalues1.pdf}
+	\includegraphics[clip,scale=0.5]{img/situation_assessment/pvalues1.pdf}
 	\caption{Experiment results. Results from the two scenarios are represented as graphs. Intentions, as estimated by the humans and the robot, are represented by different colors, as shown in the legend of the graphs, with estimations of the same intention by the robot or the human placed in adjacent position. Each column represents the likelihood of an intention, expressed as a percentile score. P-values from the equivalence tests are shown, linking the estimation of an intention by the humans and by the robot.}
 	\label{fig:situation_assessment-user_study_results}
 \end{figure}
