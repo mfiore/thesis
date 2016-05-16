@@ -18,9 +18,9 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="102.0" width="290.0" x="514.0430000000001" y="361.864"/>
-          <y:Fill color="#99CCFF" color2="#00CCFF" transparent="false"/>
+          <y:Fill color="#3E8B3E" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#000000" visible="true" width="147.28125" x="71.359375" y="40.8515625">Goal Management<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="147.28125" x="71.359375" y="40.8515625">Goal Management<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -35,9 +35,9 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="102.0" width="290.0" x="514.0430000000001" y="181.0"/>
-          <y:Fill color="#99CCFF" color2="#00CCFF" transparent="false"/>
+          <y:Fill color="#3E8B3E" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#000000" visible="true" width="175.3427734375" x="57.32861328125" y="40.8515625">Situation Assessment<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="175.3427734375" x="57.32861328125" y="40.8515625">Situation Assessment<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -52,9 +52,9 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="102.0" width="290.0" x="514.0430000000001" y="542.728"/>
-          <y:Fill color="#99CCFF" color2="#00CCFF" transparent="false"/>
+          <y:Fill color="#3E8B3E" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#000000" visible="true" width="271.7294921875" x="9.13525390625" y="40.8515625">Plan Production and Management<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="271.7294921875" x="9.13525390625" y="40.8515625">Plan Production and Management<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -69,9 +69,9 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="102.0" width="290.0" x="514.0430000000001" y="723.5919999999999"/>
-          <y:Fill color="#99CCFF" color2="#00CCFF" transparent="false"/>
+          <y:Fill color="#3E8B3E" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#000000" visible="true" width="120.7783203125" x="84.61083984375" y="40.8515625">Plan Execution<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="120.7783203125" x="84.61083984375" y="40.8515625">Plan Execution<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -152,7 +152,6 @@ Human Commands<y:LabelModel>
       </data>
     </node>
     <node id="n8">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="852.5" y="265.5"/>
