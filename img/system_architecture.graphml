@@ -71,7 +71,7 @@
           <y:Geometry height="102.0" width="290.0" x="514.0430000000001" y="723.5919999999999"/>
           <y:Fill color="#3E8B3E" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="120.7783203125" x="84.61083984375" y="40.8515625">Plan Execution<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="189.3564453125" x="50.32177734375" y="40.8515625">Execution Management<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
