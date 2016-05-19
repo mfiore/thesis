@@ -249,7 +249,13 @@ TODO\ldots
 \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
 {
 \textbf{MDP} & \textbf{M}arkov \textbf{D}ecision \textbf{P}rocess \\
-\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+\textbf{POMDP} & \textbf{P}artially \textbf{O}bservable \textbf{M}arkov \textbf{D}ecision \textbf{P}rocess \\
+\textbf{MOMDP} & \textbf{M}ixed \textbf{O}bservability \textbf{M}arkov \textbf{D}ecision \textbf{P}rocess \\
+\textbf{BN} & \textbf{B}ayesan \textbf{N}etwork \\
+\textbf{DBN} & \textbf{D}ynamic \textbf{B}ayesan \textbf{N}etwork \\
+\textbf{IG} & \textbf{I}ntention \textbf{G}raph \\
+\textbf{HATP} & \textbf{H}uman-\textbf{A}ware \textbf{T}ask \textbf{P}lanner \\
+\textbf{HAPP} & \textbf{H}uman-\textbf{A}ware \textbf{P}robabilistic \textbf{P}lanner \\
 }
 
 %----------------------------------------------------------------------------------------
@@ -257,16 +263,16 @@ TODO\ldots
 %----------------------------------------------------------------------------------------
 
 %\clearpage % Start a new page
-%
-\lhead{\emph{Definitions}} % Set the left side page header to "Physical Constants"
-%
-\begin{itemize}
-\item Agent: a human or robot.
-\item Entity: an agent, an agent's joint, or an object.
-\item Joint: an agent is composed by different joints (e.g. head, hand for a human; gripper, base, for a robot).
-\item Action:  a tuple $(name, preconditions, target, postconditions)$. The $name$ of an action is a unique string that identifies it. The $preconditions$ are a list of properties that must be true in order to realize the action. In our system, an action is executed on a $target$, which can be a physical object, like a cup, but also an area of the environment, like a room. The $postconditions$ are the set of properties, and their values, affected by the action's execution.
-\item Fact: a statetement composed by a $pubject$, a $predicate$, and a $value$.
-\end{itemize}
+% %
+% \lhead{\emph{Definitions}} % Set the left side page header to "Physical Constants"
+% %
+% \begin{itemize}
+% \item Agent: a human or robot.
+% \item Entity: an agent, an agent's joint, or an object.
+% \item Joint: an agent is composed by different joints (e.g. head, hand for a human; gripper, base, for a robot).
+% \item Action:  a tuple $(name, preconditions, target, postconditions)$. The $name$ of an action is a unique string that identifies it. The $preconditions$ are a list of properties that must be true in order to realize the action. In our system, an action is executed on a $target$, which can be a physical object, like a cup, but also an area of the environment, like a room. The $postconditions$ are the set of properties, and their values, affected by the action's execution.
+% \item Fact: a statetement composed by a $pubject$, a $predicate$, and a $value$.
+% \end{itemize}
 
 %----------------------------------------------------------------------------------------
 %	SYMBOLS
