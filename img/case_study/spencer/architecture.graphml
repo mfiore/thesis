@@ -71,7 +71,7 @@
           <y:Geometry height="132.0" width="406.0" x="492.08600000000024" y="821.5919999999999"/>
           <y:Fill color="#3E8B3E" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="120.7783203125" x="142.61083984375" y="19.747669117647206">Plan Execution<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="20.296875" modelName="custom" textColor="#FFFFFF" visible="true" width="189.3564453125" x="108.32177734375" y="19.747669117647206">Execution Management<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -170,7 +170,6 @@ Human Task Knowledge<y:LabelModel>
       </data>
     </node>
     <node id="n9">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="54.0" width="318.2668195199999" x="539.9525902400003" y="230.0"/>
@@ -188,7 +187,6 @@ Human Task Knowledge<y:LabelModel>
       </data>
     </node>
     <node id="n10">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="54.0" width="318.2668195199999" x="539.9525902400003" y="158.0"/>
@@ -206,7 +204,6 @@ Human Task Knowledge<y:LabelModel>
       </data>
     </node>
     <node id="n11">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="54.0" width="318.2668195199999" x="535.9525902400003" y="633.0"/>
@@ -224,7 +221,6 @@ Human Task Knowledge<y:LabelModel>
       </data>
     </node>
     <node id="n12">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="54.0" width="318.2668195199999" x="535.9525902400003" y="878.0"/>

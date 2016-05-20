@@ -15,7 +15,6 @@
   <graph edgedefault="directed" id="G">
     <data key="d0"/>
     <node id="n0">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="144.0" width="159.0" x="1057.0" y="325.5"/>
@@ -34,7 +33,6 @@
       </data>
     </node>
     <node id="n1">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="144.0" width="159.0" x="657.0" y="325.5"/>
@@ -58,9 +56,8 @@
           <y:Geometry height="51.0" width="150.84000000000015" x="854.1199999999959" y="411.14500000000896"/>
           <y:Fill color="#CCFFCC" color2="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="45.90625" modelName="custom" textColor="#000000" visible="true" width="103.568359375" x="23.635820312500073" y="2.546875">Throw
-(WALLE_TAPE
-PINK_TRASHBIN)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="75.91796875" x="37.46101562500007" y="9.53125">Throw
+(TAPE1 BIN)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -76,9 +73,8 @@ PINK_TRASHBIN)<y:LabelModel>
           <y:Geometry height="51.0" width="150.84000000000015" x="661.2174999999966" y="331.1500000000101"/>
           <y:Fill color="#FFFF99" color2="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="45.90625" modelName="custom" textColor="#000000" visible="true" width="76.837890625" x="37.00105468750007" y="2.546875">Give
-(LOTR_TAPE
-HUMAN)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="100.515625" x="25.162187500000073" y="9.53125">Give
+(TAPE1 HUMAN)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -94,8 +90,8 @@ HUMAN)<y:LabelModel>
           <y:Geometry height="51.0" width="150.19999999999948" x="431.14749999999884" y="331.1500000000101"/>
           <y:Fill color="#FFFF99" color2="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="81.51953125" x="34.34023437499974" y="9.53125">Take
-(LOTR_TAPE)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="51.35546875" x="49.42226562499974" y="9.53125">Take
+(TAPE1)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -142,7 +138,6 @@ HUMAN)<y:LabelModel>
       </data>
     </node>
     <node id="n7">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="356.4375" y="345.16250000000673"/>
@@ -160,7 +155,6 @@ HUMAN)<y:LabelModel>
       </data>
     </node>
     <node id="n8">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="356.4375" y="417.992500000006"/>
@@ -183,9 +177,8 @@ HUMAN)<y:LabelModel>
           <y:Geometry height="51.0" width="150.84000000000015" x="1063.9974999999927" y="331.1500000000101"/>
           <y:Fill color="#FFFF99" color2="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="45.90625" modelName="custom" textColor="#000000" visible="true" width="81.384765625" x="34.72761718750007" y="2.546875">Give
-WALLE_TAPE
-HUMAN<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="100.515625" x="25.162187500000073" y="9.53125">Give
+(TAPE2 HUMAN)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -201,8 +194,8 @@ HUMAN<y:LabelModel>
           <y:Geometry height="51.0" width="150.19999999999948" x="854.4399999999962" y="331.1500000000101"/>
           <y:Fill color="#FFFF99" color2="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="90.748046875" x="29.725976562499795" y="9.53125">Take
-(WALLE_TAPE)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="51.35546875" x="49.42226562499968" y="9.53125">Take
+(TAPE2)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -218,9 +211,8 @@ HUMAN<y:LabelModel>
           <y:Geometry height="51.0" width="150.84000000000015" x="1247.654999999997" y="411.14500000000896"/>
           <y:Fill color="#CCFFCC" color2="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="45.90625" modelName="custom" textColor="#000000" visible="true" width="103.568359375" x="23.635820312500073" y="2.546875">Throw
-(WALLE_TAPE
-PINK_TRASHBIN)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="75.91796875" x="37.46101562500007" y="9.53125">Throw
+(TAPE2 BIN)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -236,9 +228,8 @@ PINK_TRASHBIN)<y:LabelModel>
           <y:Geometry height="51.0" width="150.84000000000015" x="660.2174999999966" y="411.14500000000896"/>
           <y:Fill color="#CCFFCC" color2="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="45.90625" modelName="custom" textColor="#000000" visible="true" width="76.837890625" x="37.00105468750007" y="2.546875">Receive
-(LOTR_TAPE
-ROBOT)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="97.9609375" x="26.439531250000073" y="9.53125">Receive
+(TAPE1 ROBOT)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -254,9 +245,8 @@ ROBOT)<y:LabelModel>
           <y:Geometry height="51.0" width="150.84000000000015" x="1060.9974999999927" y="411.14500000000896"/>
           <y:Fill color="#CCFFCC" color2="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="45.90625" modelName="custom" textColor="#000000" visible="true" width="76.837890625" x="37.00105468750007" y="2.546875">Receive
-(LOTR_TAPE
-ROBOT)<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="97.9609375" x="26.439531250000073" y="9.53125">Receive
+(TAPE2 ROBOT)<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -287,7 +277,6 @@ ROBOT)<y:LabelModel>
       </data>
     </edge>
     <edge id="e2" source="n1" target="n10">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="79.51141008748141" sy="-4.919916488744377" tx="0.0" ty="0.0"/>
@@ -298,7 +287,6 @@ ROBOT)<y:LabelModel>
       </data>
     </edge>
     <edge id="e3" source="n1" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="79.50491953403048" sy="-2.7901542989604877" tx="0.0" ty="0.0"/>
@@ -309,7 +297,6 @@ ROBOT)<y:LabelModel>
       </data>
     </edge>
     <edge id="e4" source="n10" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-79.46213200704346" ty="-3.8755550960447067"/>
@@ -320,7 +307,6 @@ ROBOT)<y:LabelModel>
       </data>
     </edge>
     <edge id="e5" source="n2" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-79.51018357880344" ty="-4.956014053193485"/>
@@ -331,7 +317,6 @@ ROBOT)<y:LabelModel>
       </data>
     </edge>
     <edge id="e6" source="n0" target="n11">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="79.53576726370466" sy="-4.402032465451953" tx="0.0" ty="0.0"/>
