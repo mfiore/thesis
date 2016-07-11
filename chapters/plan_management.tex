@@ -179,75 +179,7 @@ Computing a plan in complex environments can be very hard and time consuming. A 
 
 Plans are represented as an HTN tree decomposition and as a set of streams, one per agent, which shows which actions each agent needs to perform. Casual links are introduced between streams to ensure synchronization.
 
-\subsection{Human-Aware Probabilistic Planner}
-\label{subsec:plan_management-happ}
-
-In some situations, agents can work in dynamic environments, and need to constantly adapt their actions to the current state of the world. In this cases, the plan needs to be continuously recreated or repaired, which can be extensive. We deal with this issue we developed a Human-Aware Probabilistic Planner, based on MDPs. Our goal is replicating the characteristics of HATP in a probabilistic domain, so we took the following choices:
-
-\begin{itemize}
-\item Centralization. We will use a single planner, which chooses actions for all the involved agents.
-\item Hierarchical. The domain will be split in different modules, which interact to solve the issue. Hierarchical models allow us to speed up the computation of the MDP policy, and to reuse models in different domains and tasks.
-\item Tightly Coupled. We will focus on problems where the agent's interaction can be frequent.
-\item No Communication. We assume that all the agents have a perfect knowledge on the world state, and plan to deal with knowledge issues outside of the planner. Current planners that try to include communication issues often focus on loosely coupled interactions between the agents, in order to simplify the domain and be able to compute a policy for the problem. Since we choose to focus on tightly coupled problems, we can not use this solution, and so prefer to avoid communication issues at this level.
-\end{itemize}
-
-The starting point for this planner was the single agent MDP. We enhanced the classical model with the following capabilities:
-
-Parameters. 
-
-We can define parameters in our MDP, and assign to different values. When receiving the world state, the MDP will use information about the assigned parameters to convert this state, which we will call \textit{real_space}, to the MDP space, which we will call \textit{parameter_space}. 
-
-For example, let's imagine a scenario of a room, with different furnitures and object. Let's define the state space of a generic MDP to take an object in this room. We can consider as variables the location of the agent, \textit{agent_isAt}, which can assume value in the set ${f_1, f_2, f_3}$, where $f_i$ represent a furniture in the room. We can define an object variable, \textit{object_isAt}, which can assume the same values as the \textit{agent_isAt} variable. If we define two parameter variables, \textit{agent} and \textit{object}, and link them to the \textit{agent_isAt} and \textit{object_isAt} variables, we can create a generic MDP which can be used to plan for any agent to take an object in this room.
-
-For example, in the real world, we have two agents, \textit{Bob} and \textit{Greg}, and three objects \textit{glue}, \textit{book}, \textit{smartphone}. If we assign the \textit{agent} parameter to \textit{Bob} and the \textit{object} parameter to \textit{book}, when receiving the complete world state, the MDP will assign as \textit{agent_isAt} the location of Bob, and as \textit{object_isAt} the location of the book, discarding unneeded variables.
-
-Parameters allow us to create smaller, generic MDPs, which can be reused easily.
-
-
-Macro Actions.
-
-We add to the normal set of actions of an MDP \textit{macro actions}, linked to other MDPs, which allow us to create a hierarchy of MDPs. The transition and reward function of a macro action needs to be computed in a different way, since it depends on the sub mdp, and the action can take several time-steps. Several ways have been studied to compute these functions, like the MAXQ algorithm, presented in \cite{dietterich2000hierarchical}. In this work, we compute these functions as shown in \cite{hauskrecht1998hierarchical}. In general, we decided to create a first implementation using simple, well-known algorithms, and plan to study in the future how to optimize them. We call $macro$ the set of macro_actions of the MDP, and $sub(a)$ the sub-MDP linked to action $a$.
-
-
-Abstract States.
-
-In some situation it can make sense in a model to group a part of the values of a variable. Imagine, for example, the case where an agent needs to perform a series of operations on the furniture $f_1$ in the room. In this case, we could model the  values of the \textit{agent_isAt} variable as ${f_1 , other\_location}$, greatly reducing the state space. In this situation we say that \textit{agent_isAt} is an \textit{abstract variable}. We build a map $abstract_values$ for each abstract variable, which links real world values to values of the model (e.g. $f_2 \rightarrow other\_location$). This map will be used to convert from the $real_space$ to the $parameter_space$ of the model. Teh choice of using abstract variables needs to be carefully weighted, because abstract variables can impact on the quality of the solution of the model.
-
-
-Now we will explain how we build a Multi-Agent MDP (MAMDP), starting from $n$ single-agent models, one for each agent. 
-
-\begin{itemize}
-\item $S=(\bigcup_{i=1}^{n}S_i \ par(S_i))\cup \bigtimes_{i=1}^{n}par(S_i)$, where $S$ is the state space of the MAMDP, $S_i$ is the state space of the agents MDPs, $n$ is the number of agents, $par(S_i)$ is the parameter variables of the $ith$ MDP. We defined the state space of the MAMDP as the union of the state spaces of its single-agent MDPs excluding their parameter variables. For the parameter variables we will do the cross product of those of the single agent MDPs, renaming them to add a string to identify its agent (e.g. \textit{object} will become \textit{objectp1} for the first MDP). We make this choice because parameters could be assigned to different values in the two single agent MDPs, and so need to be treated as separate variables even if they have the same semantic meaning.
-\item $A=(\bigtimes_{k=1}^{n} A_k) \cup JointActions$, where $A_k$ is the actions set of the agents MDPs, and $JointActions$ is the set of collaborative actions. The actions of the MAMDP are a concatenation of the actions of the single MDPS. We add to this the special set of $JointActions$, which are actions that the agents can use to cooperate. For example, if there is a resource in a single agent MDP which two agents can possess, we introduce a $handover$ action between the two agents. For each $a_i \in A$, if there is a sub-action $a_{ki}$ of agent $k$ which is a macro action, we create a new MAMDP and assign it as sub-mamdp of $a_i$. This sub-MAMDP will be created from $n$ MDP models, as for its father, in the following way. Let $f$ be the father MAMDP, $s$ the sub-MAMDP, $a$ the macro-action of $f$. $ \foreach MDP m_k \in f$ we assign an MDP $m_j$ in $s$ where:\\
-$m_j= \begin{cases}
-	m_k & & \quad \text{if } a_{ki} \not\in macro_{k} \\
-	sub_k(a_{ki}) & \quad \text{if } a_{ki} \in macro_{k}
-\end{cases}$ \\
-where $macro_k$ is the set of macros of mdp $m_k$ and $sub_k(a_{ki})$ is the sub-MDP in MDP $k$ linked to action $a_{ki}$.
-\item $T(s_i,a,s_j)=
-	\begin{cases}
-		\prod_{i=1}^{n}(T_k(s_{ki},a_k,s{kj})   & \quad \text{if } !isIncongruent \\
-		0   & \quad \text{if } else
-	\end{cases}$ \\
-	The transition function is computed in several steps. First of all, the state $s_i$ is converted to the single agent states $s_{ki}$, where $k$ is the index of the agent. Then, the we obtain the probability from the transition function $T_k(s_{ki},a_k,s{kj}$. At the last step we check if the transitions of the different agents lead to an incongruent state (i.e. a state where an object is in two different locations). This is done by converting the states $s_{kj}$ in the \textit{real_space} and checking the values of the different variables. We say that a state is incongruent if two non abstract variables have a different value in the two mdps. If one or both the variables are abstract we check if their $abstract_values$ for the current variable value have a value in common. If not, we consider the state incongruent.
-\item $C(s_i,a,s_j)= 
-	\begin{cases}
-		max_{k=1}^{n}(C_k(s_{ki},a_k,s_{kj}))  & \quad \text{if } s_j \not\in G \\
-		\sum_{k} Q_k(s_{ki} \forall s_{ki} \in G_k  & \quad \text{if } s_j \in G
-		\\
-	\end{cases} $	\\
-		 where $C_k$ is the cost function of an agent MDP. The cost function of the MAMDP is chosen by taking the maximum cost of the single agent actions that are executed, if the state $s_j$ is not a goal state. If it's a goal state, we take as cost an estimation of the time required by the other agents to complete their tasks, if they do not cooperate. In this way, we encourage the MAMDP to choose plan where the agents cooperate and do not only try to achieve their goal.
-
-\item $SS=\bigcap_{k=1}^n (SS_k)$, where $SS_k$ is the set of starting states of a single agent MDP. The starting states of the MAMDP is set to the intersection of the single agents starting states.
-
-\item $G=\bigcup_{k=1}^n (G_k) $, where $G_k$ is the set of goal states of a single agent MDP. The goal states of the MAMDP is the intersection of the single agent goal states. The idea of this choice is that an MDP terminates when one of the agent has achieved its goal. At this point, if there is a higher level 
-\end{itemize}
-
-The result of this fusion is an MDP, that can be solved with well-known algorithms, like value iteration. A model like this could, in general, be very complex but, using macro actions, parameters, and abstract states we can reduce the state space of the model, making it solvable. 
-
-The action space of the joint model is calculated as the cross product of the action spaces of the single model. When 
-
-
+\
 
 \subsection{Adapting Plan Generation to Human Knowledge}
 \label{subsec:plan_generation-adapting_knowledge}
@@ -292,6 +224,110 @@ To properly compute the cost of a plan, the planner will also upgrade accordingl
 
 The planner can receive information produced from a dialog system that allows to negotiate plans, as explained in section \ref{sec:plan_management-negotiation}. Using this system, the preference and abilities of users are recorded in the Situation Assessment layer. 
 If a user is not able to perform a certain task, the planner will never chose this action for him. If he user prefers to perform, or not to perform, a specific task, the planner will update the cost functions accordingly with a reward or penality to assign that task to him.
+
+\section{Human-Aware Probabilistic Planning}
+subsection{Human-Aware Probabilistic Planner}
+\label{subsec:plan_management-happ}
+
+In some situations, the current environment, or other agents' actions, is very unpredictable, and the system needs to constantly adapt its plans to the current state of the world, by replanning or repairing processes, which can be expensive. To deal with this issue we developed a Human-Aware Probabilistic Planner, based on MDPs. Our goal is replicating the characteristics of HATP in a probabilistic domain. We designed this planner with the following ideas:
+
+\begin{itemize}
+\item Centralization. We will use a single planner, which chooses actions for all the involved agents.
+\item Hierarchical. The domain will be split in different modules, which interact to solve the issue. Hierarchical models allow us to speed up the computation of the MDP policy, to reuse models in different domains and tasks, and can be helpful to produce HTN-like tree structures, which can be used in plan explanation and monitoring.
+\item Tightly Coupled. We will focus on problems where the agents' interactions are frequent.
+\item No Communication. The planner will  assume that all the agents have perfect knowledge on the world state. The rest of the system will have to taske care of maintaining users' knowledge, ensuring the correct execution of the plan. and plan to deal  issues outside of the planner. Current planners that try to include communication issues often focus on loosely coupled interactions between the agents, in order to simplify the domain and be able to compute a policy for the problem. Since we choose to focus on tightly coupled problems, we can not use this solution, and so prefer to avoid communication issues at this level.
+\end{itemize}
+
+
+\subsection{Single-Agent MDP}
+The starting point for this planner was the single agent MDP. We start with the classical model $(S,A,T,C,G,SS)$, where $S$ is the system space, $A$ is the set of actions, $T(s_i,a,s_j)$ is the probability to transition from state $s_i$ to state $s_j$, after taking action $a$, $C(s,a)$ is the cost of taking action $a$ in state $s$, $G \in S$ is the set of goal states, and $SS \in S$ is the set of starting states. We develop this model in the following way:
+
+\subsubsection{Parameters}
+We can define parameters in our MDP, and assign them to different values. The list of parameters, and their current values, is called the \textit{parameter_instance} of the model. Parameters can be linked to variables and values. 
+
+For example, let's imagine a scenario of a room, with different furnitures and object. Let's define the state space of a generic MDP to take an object in this room. We can consider as variables the location of the agent, \textit{agent_isAt}, which can assume value in the set ${f_1, f_2, f_3}$, where $f_i$ represent a furniture in the room. We can define an object variable, \textit{object_isAt}, which can assume the same values as the \textit{agent_isAt} variable. If we define two parameter variables, \textit{agent} and \textit{object}, and link them to the \textit{agent_isAt} and \textit{object_isAt} variables, we can create a generic MDP which can be used to plan for any agent to take an object in this room.
+
+The MDP receives as input, when consulted to select an action, the state of the world,  which we will call \textit{real_space}. The \textit{real_space} will be converted, using the \textit{parameter_instance} to the \textit{parameter_space}, which will be actually used by the model in its computations. 
+
+For example, in the real world, we have two agents, \textit{Bob} and \textit{Greg}, and three objects \textit{glue}, \textit{book}, \textit{smartphone}. If we assign the \textit{agent} parameter to \textit{Bob} and the \textit{object} parameter to \textit{book}, when receiving the complete world state, the MDP will assign as \textit{agent_isAt} the location of Bob, and as \textit{object_isAt} the location of the book, discarding unneeded variables.
+
+Parameters allow us to create smaller, generic MDPs, which can be reused easily.
+
+
+\subsubsection{Actions and Macro Actions}
+We define actions as a tuple $(subject,action\_name,object,target)$, where each element of the tuple is called a $part$ of an action.  We represent the action as a string, composed by its $parts$, joined by the the character "_" as deimiter. We define the function $convertPar(a)$ and $convertReal(a)$ to convert action $a$ to the \textit{real_space} or the \textit{parametrized_space}.
+
+We add to the normal set of actions of an MDP \textit{macro actions}, linked to other MDPs, which allow us to create a hierarchy of MDPs. The transition and reward function of a \textit{macro action} needs to be computed in a different way, since it depends on the sub mdp, and the action can take several time-steps. Several ways have been studied to compute these functions, like the MAXQ algorithm, presented in \cite{dietterich2000hierarchical}. In this work, we compute these functions as shown in \cite{hauskrecht1998hierarchical}. In general, we decided to create a first implementation using simple, well-known algorithms, and plan to study in the future how to optimize them. We call $macro$ the set of \textit{macro actions} of the MDP, and $sub(a)$ the sub-MDP linked to the \textit{macro action} $a$.
+
+\subsection{Name and Parameter Name}
+We define for each MDP class a \textit{name}, which identifies it, and a \textit{parametrized_name}, which includes \textit{parameter_instance}. The \textit{name} is defined using the same tuple as an action. 
+
+For example, an MDP to get object could have as \textit{name} $agent\_get\_object$ and has \textit{parametrized_name}, in a certain moment, $Greg\_get\_book$.
+
+We define a function $assignParameterFromActionName(a)$ which creates the \textit{parameter_instance} of the MDP based on an action name. This function can be very useful when using \textit{macro actions}, by assigning parameters to the MDP from the \textit{macro action} and then consulting the sub-MDP.
+
+For example, if the \textit{macro action} $Greg\_get\_book$ is linked to the $agent\_get\_object$ MDP, this function would assign to the $agent$ parameter the value $Greg$ and to the $object$ parameter the value $book$.
+
+
+\subsubsection{Abstract States}
+
+In some situation it can make sense in a model to group a part of the values of a variable. Imagine, for example, the case where an agent needs to perform a series of operations on the furniture $f_1$ in the room. In this case, we could model the  values of the \textit{agent_isAt} variable as ${f_1 , other\_location}$, greatly reducing the state space. In this situation we say that \textit{agent_isAt} is an \textit{abstract variable}. We build a map $abstract_values$ for each abstract variable, which links real world values to values of the model (e.g. $f_2 \rightarrow other\_location$). This map will be used to convert from the $real_space$ to the $parameter_space$ of the model. Teh choice of using abstract variables needs to be carefully weighted, because abstract variables can impact on the quality of the solution of the model.
+
+\subsection{Multi-Agent MDP}
+Now we will explain how we build a Multi-Agent MDP (MAMDP), starting from $n$ single-agent models, one for each agent. 
+
+\subsection{State Space}
+
+$S=(\bigcup_{i=1}^{n}S_i \ par(S_i))\cup \bigtimes_{i=1}^{n}par(S_i)$, where $S$ is the state space of the MAMDP, $S_i$ is the state space of the agents MDPs, $n$ is the number of agents, $par(S_i)$ is the parameter variables of the $ith$ MDP. We defined the state space of the MAMDP as the union of the state spaces of its single-agent MDPs excluding their parameter variables. For the parameter variables we will do the cross product of those of the single agent MDPs, renaming them to add a string to identify its agent (e.g. \textit{object} will become \textit{objectp1} for the first MDP). We make this choice because parameters could be assigned to different values in the two single agent MDPs, and so need to be treated as separate variables even if they have the same semantic meaning.
+
+\subsection{Actions}
+$A=(\bigtimes_{k=1}^{n} A_k) \cup JointActions$, where $A_k$ is the actions set of the agents MDPs, and $JointActions$ is the set of collaborative actions. The actions of the MAMDP are a concatenation of the actions of the single MDPS. We add to this the special set of $JointActions$, which are actions that the agents can use to cooperate. For example, if there is a resource in a single agent MDP which two agents can possess, we introduce a $handover$ action between the two agents. For each $a_i \in A$, if there is a sub-action $a_{ki}$ of agent $k$ which is a macro action, we create a new MAMDP and assign it as sub-mamdp of $a_i$. This sub-MAMDP will be created from $n$ MDP models, as for its father, in the following way. Let $f$ be the father MAMDP, $s$ the sub-MAMDP, $a$ the macro-action of $f$. $ \foreach MDP m_k \in f$ we assign an MDP $m_j$ in $s$ where:\\
+$m_j= \begin{cases}
+	m_k & & \quad \text{if } a_{ki} \not\in macro_{k} \\
+	sub_k(a_{ki}) & \quad \text{if } a_{ki} \in macro_{k}
+\end{cases}$ \\
+where $macro_k$ is the set of macros of mdp $m_k$ and $sub_k(a_{ki})$ is the sub-MDP in MDP $k$ linked to action $a_{ki}$.
+
+\subsection{Transition Function}
+$T(s_i,a,s_j)=
+	\begin{cases}
+		\prod_{i=1}^{n}(T_k(s_{ki},a_k,s{kj})   & \quad \text{if } !isIncongruent \\
+		0   & \quad \text{if } else
+	\end{cases}$ \\
+	The transition function is computed in several steps. First of all, the state $s_i$ is converted to the single agent states $s_{ki}$, where $k$ is the index of the agent. Then, the we obtain the probability from the transition function $T_k(s_{ki},a_k,s{kj}$. At the last step we check if the transitions of the different agents lead to an incongruent state (i.e. a state where an object is in two different locations). This is done by converting the states $s_{kj}$ in the \textit{real_space} and checking the values of the different variables. We say that a state is incongruent if two non abstract variables have a different value in the two mdps. If one or both the variables are abstract we check if their $abstract_values$ for the current variable value have a value in common. If not, we consider the state incongruent.
+
+\subsection{Cost Function}
+$C(s_i,a,s_j)= 
+	\begin{cases}
+		max_{k=1}^{n}(C_k(s_{ki},a_k,s_{kj}))  & \quad \text{if } s_j \not\in G \\
+		\sum_{k} Q_k(s_{ki} \forall s_{ki} \in G_k  & \quad \text{if } s_j \in G
+		\\
+	\end{cases} $	\\
+		 where $C_k$ is the cost function of an agent MDP. The cost function of the MAMDP is chosen by taking the maximum cost of the single agent actions that are executed, if the state $s_j$ is not a goal state. If it's a goal state, we take as cost an estimation of the time required by the other agents to complete their tasks, if they do not cooperate. In this way, we encourage the MAMDP to choose plan where the agents cooperate and do not only try to achieve their goal.
+
+\subsection{Start and Goal States}
+$SS=\bigcap_{k=1}^n (SS_k)$, where $SS_k$ is the set of starting states of a single agent MDP. The starting states of the MAMDP is set to the intersection of the single agents starting states.
+
+$G=\bigcup_{k=1}^n (G_k) $, where $G_k$ is the set of goal states of a single agent MDP. The goal states of the MAMDP is the intersection of the single agent goal states. The idea of this choice is that an MDP terminates when one of the agent has achieved its goal. At this point, if there is a higher level 
+
+\subsection{Discussion}
+
+The result of this fusion is an MDP, that can be solved with well-known algorithms, like value iteration. A model like this could, in general, be very complex but, using macro actions, parameters, and abstract states we can reduce the state space of the model, making it solvable. 
+
+We require two things to create an MAMDP: a $name$, which will be used to save its informations, and a list of $n$ MDPs $MDP_k$, one for each agent. 
+
+The action space of the joint model is calculated as the cross product of the action spaces of the single model. When there are several macro actions in the agent models, this could result in the creation and solving of several sub-models, which can significantly slow down the computation of a solution for the model. We can reduce this process by making the following considerations:
+\begin{itemize}
+\item We can save compute MAMDPs and reuse them in different branches of the hierarchy, if needed. When creating a new MAMDP, we will look to see if there is already an existing MAMDP with the same $name$ and, if so, we will use it.
+\item We can use the concept of parameters to reduce the number of compute sub-MAMDPs. For each macro action $a$, we first define the list of needed sub-MDPs, as previously explained. We create the parametrized name of the sub-MAMDP by concatenating the parametrized name of these sub-MDPs. We first set the $name$ of the sub-MAMDP as the concatenation of the $name$ of the sub-MDPs, and then edit each of its $part$s in the following way:
+$name_i=\begin{cases}
+	name_i & \quad \text{if } !parametersInCommon(name_i)
+	parametrized\_name_i & \quad \text{if } !parametersInCommon(name_i,i)
+\end{cases}$ where $parametersInCommon(name_i)$ is a function that returns true if $name_i$ is a parameter in sub-MDP $MDP_i$, and there is a sub-MDP $MDP_j$ where $name_i$ is a parameter or variable. \\
+
+The idea behind this choice is the following. If the sub-MDPs do not have parameter in common, we can use a generic MAMDP to represent this instance. For example, if we create an MAMDP for the macro action $agent1_clean_table-agent2_clean_shelf$, we can use a generic MAMDP $agent_agent_glue-agent_get_book$ since the sub-MDP models do not have parameters in common. If instead we create an MAMDP for the macro action $agent1_clean_table-agent2_clean_table$ we create a specialized MAMDP, since there are parameters in common ($table$) and if we treat them as different objects there could be incongruences in the MAMDP planning.
+\end{itemize}
+
 
 \section{Plan Explanation}
 \label{sec:plan_management-plan_explanation}
