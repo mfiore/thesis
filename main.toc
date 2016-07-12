@@ -1,0 +1,132 @@
+\contentsline {chapter}{Abstract}{ii}{dummy.1}
+\@LN@changevadjust \vspace {1em}
+\contentsline {paragraph}{Version fran\c caise}{iv}{section*.1}
+\contentsline {chapter}{Acknowledgements}{v}{dummy.2}
+\@LN@changevadjust \vspace {1em}
+\contentsline {chapter}{Contents}{vi}{dummy.3}
+\contentsline {chapter}{List of Figures}{ix}{dummy.4}
+\contentsline {chapter}{List of Tables}{xi}{dummy.5}
+\contentsline {chapter}{Abbreviations}{xii}{dummy.6}
+\@LN@changevadjust \vspace {2em}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Contributions}{3}{section.1.1}
+\contentsline {section}{\numberline {1.2}System overview}{3}{section.1.2}
+\contentsline {section}{\numberline {1.3}Organization of the Thesis}{5}{section.1.3}
+\contentsline {section}{\numberline {1.4}Published Works}{5}{section.1.4}
+\contentsline {chapter}{\numberline {2}Situation Assessment}{7}{chapter.2}
+\contentsline {section}{\numberline {2.1}Introduction}{7}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}What is Situation Assessment?}{7}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Theory of Mind}{8}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Intention Recognition}{9}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.4}Dialogue}{10}{subsection.2.1.4}
+\contentsline {section}{\numberline {2.2}System Overview}{10}{section.2.2}
+\contentsline {section}{\numberline {2.3}Object and Human Detection}{12}{section.2.3}
+\contentsline {section}{\numberline {2.4}Human-Robot Communication}{12}{section.2.4}
+\contentsline {section}{\numberline {2.5}World Model and Geometrical Reasoning}{12}{section.2.5}
+\contentsline {section}{\numberline {2.6}Belief Management}{14}{section.2.6}
+\contentsline {section}{\numberline {2.7}Intention and Action Inference}{15}{section.2.7}
+\contentsline {subsection}{\numberline {2.7.1}From Contexts to Intentions}{16}{subsection.2.7.1}
+\contentsline {subsection}{\numberline {2.7.2}From Intentions to Actions}{17}{subsection.2.7.2}
+\contentsline {subsection}{\numberline {2.7.3}From Actions to Observations}{18}{subsection.2.7.3}
+\contentsline {subsection}{\numberline {2.7.4}Intention and Action Inference}{18}{subsection.2.7.4}
+\contentsline {subsection}{\numberline {2.7.5}Proactive Behaviors}{19}{subsection.2.7.5}
+\contentsline {subsubsection}{\numberline {2.7.5.1}Correcting Belief State}{19}{subsubsection.2.7.5.1}
+\contentsline {subsubsection}{\numberline {2.7.5.2}Performing a part of the plan}{21}{subsubsection.2.7.5.2}
+\contentsline {section}{\numberline {2.8}Experiments and Discussion}{21}{section.2.8}
+\contentsline {subsection}{\numberline {2.8.1}Case Study}{21}{subsection.2.8.1}
+\contentsline {subsubsection}{\numberline {2.8.1.1}Cookie Scenario}{22}{subsubsection.2.8.1.1}
+\contentsline {subsubsection}{\numberline {2.8.1.2}Keys Scenario}{23}{subsubsection.2.8.1.2}
+\contentsline {subsection}{\numberline {2.8.2}User Study}{23}{subsection.2.8.2}
+\contentsline {subsection}{\numberline {2.8.3}Robot implementation}{24}{subsection.2.8.3}
+\contentsline {subsection}{\numberline {2.8.4}Discussion}{25}{subsection.2.8.4}
+\contentsline {chapter}{\numberline {3}Goal Management}{27}{chapter.3}
+\contentsline {section}{\numberline {3.1}Introduction}{27}{section.3.1}
+\contentsline {section}{\numberline {3.2}Overview}{28}{section.3.2}
+\contentsline {section}{\numberline {3.3}Generating and Choosing Goals}{28}{section.3.3}
+\contentsline {chapter}{\numberline {4}Plan Production and Management}{30}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introduction}{30}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Cooperation between agents}{30}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Multi Agent Planning}{31}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Plan Explanation and Negotiation}{32}{subsection.4.1.3}
+\contentsline {subsection}{\numberline {4.1.4}Plan Management}{32}{subsection.4.1.4}
+\contentsline {section}{\numberline {4.2}Overview}{33}{section.4.2}
+\contentsline {section}{\numberline {4.3}Plan Management Modalities}{34}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Robot leader}{34}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Human Leader}{35}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Equal Partners}{35}{subsection.4.3.3}
+\contentsline {section}{\numberline {4.4}Human Knowledge and Plan Management}{35}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Representing Human Knowledge in a Task}{35}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Maintaining Human Knowledge in a Task}{36}{subsection.4.4.2}
+\contentsline {section}{\numberline {4.5}Plan Generation}{37}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Human-Aware Task Planner}{37}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Adapting Plan Generation to Human Knowledge}{38}{subsection.4.5.2}
+\contentsline {section}{\numberline {4.6}Human-Aware Probabilistic Planning}{40}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}Single-Agent MDP}{40}{subsection.4.6.1}
+\contentsline {subsubsection}{\numberline {4.6.1.1}Parameters}{41}{subsubsection.4.6.1.1}
+\contentsline {subsubsection}{\numberline {4.6.1.2}Actions and Macro Actions}{41}{subsubsection.4.6.1.2}
+\contentsline {subsection}{\numberline {4.6.2}Name and Parameter Name}{42}{subsection.4.6.2}
+\contentsline {subsubsection}{\numberline {4.6.2.1}Abstract States}{42}{subsubsection.4.6.2.1}
+\contentsline {subsection}{\numberline {4.6.3}Multi-Agent MDP}{42}{subsection.4.6.3}
+\contentsline {subsubsection}{\numberline {4.6.3.1}Name and Parameter Name}{43}{subsubsection.4.6.3.1}
+\contentsline {subsubsection}{\numberline {4.6.3.2}State Space and Parameters}{43}{subsubsection.4.6.3.2}
+\contentsline {subsection}{\numberline {4.6.4}Actions}{44}{subsection.4.6.4}
+\contentsline {subsection}{\numberline {4.6.5}Transition Function}{44}{subsection.4.6.5}
+\contentsline {subsection}{\numberline {4.6.6}Cost Function}{45}{subsection.4.6.6}
+\contentsline {subsection}{\numberline {4.6.7}Start and Goal States}{45}{subsection.4.6.7}
+\contentsline {subsection}{\numberline {4.6.8}Discussion}{45}{subsection.4.6.8}
+\contentsline {section}{\numberline {4.7}Plan Explanation}{46}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Plan Preprocessing}{47}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}Plan Presentation}{47}{subsection.4.7.2}
+\contentsline {section}{\numberline {4.8}Plan Negotiation}{48}{section.4.8}
+\contentsline {section}{\numberline {4.9}Plan Management}{48}{section.4.9}
+\contentsline {subsection}{\numberline {4.9.1}The robot is not leader}{48}{subsection.4.9.1}
+\contentsline {subsection}{\numberline {4.9.2}The robot is leader}{50}{subsection.4.9.2}
+\contentsline {subsection}{\numberline {4.9.3}Sequential Adaptive Plan Management Algorithm}{50}{subsection.4.9.3}
+\contentsline {subsection}{\numberline {4.9.4}Explanation of the sequential plan management algorithm}{52}{subsection.4.9.4}
+\contentsline {subsubsection}{\numberline {4.9.4.1}Only the robot is involved (lines \nobreakspace {}\ref {alg:onlyRobotStart}-\nobreakspace {}\ref {alg:onlyRobotEnd})}{52}{subsubsection.4.9.4.1}
+\contentsline {subsubsection}{\numberline {4.9.4.2}The collaborator's knowledge level on the task is \textit {new} (lines\nobreakspace {}\ref {alg:newStart}-\nobreakspace {}\ref {alg:newEnd})}{53}{subsubsection.4.9.4.2}
+\contentsline {subsubsection}{\numberline {4.9.4.3}The collaborator's knowledge level on the task is \textit {beginner} (lines \nobreakspace {}\ref {alg:beginnerStart}-\nobreakspace {}\ref {alg:beginnerEnd})}{53}{subsubsection.4.9.4.3}
+\contentsline {subsubsection}{\numberline {4.9.4.4}The collaborator's knowledge level on the task is \textit {intermediate} (lines\nobreakspace {}\ref {alg:interStart}-\nobreakspace {}\ref {alg:interEnd})}{53}{subsubsection.4.9.4.4}
+\contentsline {subsubsection}{\numberline {4.9.4.5}The collaborator's knowledge level on the task is \textit {expert} (lines\nobreakspace {}\ref {alg:interStart}-\nobreakspace {}\ref {alg:interEnd})}{53}{subsubsection.4.9.4.5}
+\contentsline {subsection}{\numberline {4.9.5}Adaptive Parallel Plan Management Algorithm}{53}{subsection.4.9.5}
+\contentsline {subsubsection}{\numberline {4.9.5.1}Plan Preprocessing}{53}{subsubsection.4.9.5.1}
+\contentsline {subsubsection}{\numberline {4.9.5.2}Algorithm}{54}{subsubsection.4.9.5.2}
+\contentsline {subsubsection}{\numberline {4.9.5.3}Human Knowledge and Warnings}{57}{subsubsection.4.9.5.3}
+\contentsline {subsubsection}{\numberline {4.9.5.4}Replanning}{59}{subsubsection.4.9.5.4}
+\contentsline {section}{\numberline {4.10}Plan Monitoring}{59}{section.4.10}
+\contentsline {subsection}{\numberline {4.10.1}Introduction}{59}{subsection.4.10.1}
+\contentsline {subsection}{\numberline {4.10.2}Monitoring Plans}{60}{subsection.4.10.2}
+\contentsline {subsection}{\numberline {4.10.3}Monitoring and Unseen Actions}{60}{subsection.4.10.3}
+\contentsline {section}{\numberline {4.11}Experiments and Discussion}{61}{section.4.11}
+\contentsline {subsection}{\numberline {4.11.1}Experiment}{61}{subsection.4.11.1}
+\contentsline {subsection}{\numberline {4.11.2}User Study}{62}{subsection.4.11.2}
+\contentsline {subsection}{\numberline {4.11.3}Results}{63}{subsection.4.11.3}
+\contentsline {chapter}{\numberline {5}Plan Execution}{65}{chapter.5}
+\contentsline {section}{\numberline {5.1}Introduction}{65}{section.5.1}
+\contentsline {section}{\numberline {5.2}Overview}{66}{section.5.2}
+\contentsline {section}{\numberline {5.3}Action Executor}{67}{section.5.3}
+\contentsline {section}{\numberline {5.4}Collaborative Planners}{67}{section.5.4}
+\contentsline {chapter}{\numberline {6}Case Study}{69}{chapter.6}
+\contentsline {section}{\numberline {6.1}Human-Aware Robot Guide}{69}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Introduction}{69}{subsection.6.1.1}
+\contentsline {subsubsection}{\numberline {6.1.1.1}Overview on the topic}{69}{subsubsection.6.1.1.1}
+\contentsline {subsubsection}{\numberline {6.1.1.2}Motivations}{70}{subsubsection.6.1.1.2}
+\contentsline {subsection}{\numberline {6.1.2}Building a Robot Guide}{71}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}Environment-Based Situation Assessment}{72}{subsection.6.1.3}
+\contentsline {subsection}{\numberline {6.1.4}Task and Motion Planning Problems}{73}{subsection.6.1.4}
+\contentsline {subsection}{\numberline {6.1.5}Collaborative Guide Planner }{74}{subsection.6.1.5}
+\contentsline {subsection}{\numberline {6.1.6}Representing a group}{75}{subsection.6.1.6}
+\contentsline {subsubsection}{\numberline {6.1.6.1}Guiding a User}{76}{subsubsection.6.1.6.1}
+\contentsline {subsubsection}{\numberline {6.1.6.2}Adapting the Robot's Speed}{77}{subsubsection.6.1.6.2}
+\contentsline {subsubsection}{\numberline {6.1.6.3}Suspending the task}{78}{subsubsection.6.1.6.3}
+\contentsline {subsection}{\numberline {6.1.7}Laboratory Experiments and Analysis}{78}{subsection.6.1.7}
+\contentsline {subsection}{\numberline {6.1.8}Results on Airport Deployment}{80}{subsection.6.1.8}
+\contentsline {subsubsection}{\numberline {6.1.8.1}Integration with Other Components}{80}{subsubsection.6.1.8.1}
+\contentsline {subsubsection}{\numberline {6.1.8.2}User Study}{80}{subsubsection.6.1.8.2}
+\contentsline {subsubsection}{\numberline {6.1.8.3}Discussion}{83}{subsubsection.6.1.8.3}
+\contentsline {section}{\numberline {6.2}Robot Helper}{84}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Introduction}{84}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}Experiment Description}{84}{subsection.6.2.2}
+\contentsline {subsection}{\numberline {6.2.3}Handover Collaboration Planner}{85}{subsection.6.2.3}
+\contentsline {subsection}{\numberline {6.2.4}Experiments}{86}{subsection.6.2.4}
+\contentsline {subsection}{\numberline {6.2.5}Discussion}{88}{subsection.6.2.5}
