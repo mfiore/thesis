@@ -1,15 +1,77 @@
 % Chapter Template
 
-\section{Methods} % Main chapter title
+\chapter{Methods} % Main chapter title
 
 \label{appendix-methods} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 \lhead{Appendix A . \emph{Methods}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
-
+In this appendix, we introduce the main methods used in our work. Section~\ref{sec:methods-mdp} gives a short introduction to the subject of MDPs, while\ref{sec:methods-hmdp} shows an extension to link MDPs in hierarchies, and\ref{sec:methods-pomdp} shows how Markov Models are used in partially observable domains. Finally, section \ref{sec:methods-bayesian_networks} introduces the Bayesian Network model. The purpose of this appendix is only to give a short overview in these topics. For more details, the reader can consult specific books and surveys, such as \cite{2012Mausam}.
+  
 \section{Markov Decision Processes}
+\label{sec:methods-mdp}
+A MDP models the decision process of an intelligent agent that needs to act in an environment where the results of its actions is partly random. MDPs are a well known and actively researched topic in artificial intelligence, with several applications, like reinforcement learning.
 
-\section{Partially Observable Markov Decision Processes}
+Formally a MDP is a tuple $S,A,T,R$, where: 
+\begin{itemize}
+\item $S$ is the system state.
+\item $A$ is the set of actions that the agent can execute.
+\item $T(s,a,s')$ is the transition functions, that models the probability that taking action $a$ in state $s$ will lead to state $s'$.
+\item $R(s,a,s')$ is the reward function, giving a finite numeric reward obtained by executing action $a$ in state $s$ and reaching state $s'$.
+\end{itemize}
+
+The solution of a MDP is a policy $pi(s)$ that links to each state the best action that the agent should execute to maximize his reward.
+
+There are several ways to represent this problem:
+\begin{itemize}
+\item Finite-Horizon: in this case the system assumes that the MDP will terminate after a known number of time steps. Picture for example, a student that has one week to prepare for an exam, and must choose the best course of actions to execute in this limited time.
+\item Infinite-Horizon: in this case the reward obtained by the agent is accumulated over an infinite sequence of time steps. There are many scenarios that can be represented with this framework, like for example the managing of a business. In this case, to force a policy to converge to a stationary value, we introduce a discount factor $\gamma$, set to a value $0 \leq \gamma 1$. The discount factor allows us to privilege shorter term rewards.
+\item Indefinite-Horizon: in this kind of scenario the process of the agent has a known end, but the number of time steps necessary to reach this goal is unknown. Imagine, for example, the process of an agent who is trying to build a house. The goal will be reached when the house is fully built, but the process might take more or less time depending on different factors.  A possible representation of this kind of problems introduces a set of goal states $G \ in S$ and substitues the reward function $R$ with a cost function $C(s,a,s')$, that models the cost of executing an action in state $s$ and reaching state $s'$. Usually, $C(s,a,s')>0 \forall s \not \in G$ and $C(s,a,s')=0 \forall s \in G$. The goal of the system becomes minimizing the cost obtained by the agent to reach a goal state.
+\end{itemize}
+
+In some situations, it can be also convenient to specify a set of starting states $S_0 \in S$ which effectively allow us to exclude `unreachable states', simplifying the computation of the solution of the model.
+
+There are several well known algorithms, like value iteration, to compute the policy of the model. Computing the policy also allows us to build the action value function \(Q(s,a)\) that associates to a state $s$ and an action $a$ the expected reward (or cost). 
+
+\section{Hierarchical Markov Decision Processes}
+
+It can be natural to divide problems in a set of smaller subproblems, which can be handled more easily, and whose solutions can be combined to solve the original problem. 
+
+We can represent this idea in MDPs, by enhancing our model in the following way:
+\begin{itemize}
+\item $M \in A$ is the set of macro actions. Each macro action invokes a sub-MDP on execution, and can possibly terminate in more time-steps.
+\item  $T(s,m,s')$ is the hierarchical transition function, which models the probabilty of transitioning from state $s$ to state $s'$, after executing macro action $m$.
+\item $R(s,m,s')$ is the hierarchical reward function, giving a finite numeric reward obtained by executing macro action $m$ in state $s$ and reaching state $s'$.
+\end{itemize}
+
+Sub-Tasks can only be executed in a subset $S_t$ of the state space $S$, and terminates when reaching a goal state $g_t \in G_t$.
+
+Special care must be taken to compute the hierarchical transition and reward functions, since the sub-tasks can take several time-steps to be completed. Several ways have been studied to compute these functions, like the MAXQ algorithm, presented in \cite{dietterich2000hierarchical}, and solving a set of linear systems of equations, as shown in \cite{hauskrecht1998hierarchical}.
+
+If the state space of the sub-MDPs is limited hierarchical models be very efficient. In hierarchical models, the flow of information is bottom-up, and the decisions taken at lower levels of the hierarchy are independent of the higher-level goal to be achieved. This leads the policies to be recursively optimal, and not hierarchically optimal, meaning the sub-models might choose actions that are not optimal to achieve the global goal.
+
+\section{Partially Observale Markov Decision Processes}
+
+POMDPs are an extension of MDPs that model a much more complex scenario, where the agent is not able to observe the world state fully model scenarios where the agent cannot observe the world state fully. At each time steps the agent receives a list of observations, which he can use to infer the world state.
+
+Formally, the POMDP is a tuple $(S,A,T,R,\Omega,O,\gamma)$. We will describe the new aspects of this model:
+\begin{itemize}
+\item $\Omega$ is a set of observations.
+\item $O(o,s,a)$ is the probability of observing observation $o$ while being in state $s$ and executing action $a$.
+\end{itemize}
+
+In this kind of model the agent can take actions that do not immediately lead to reward, but help him receive observations to have a better understanding of the world state. At each moment, the system will maintain a belief $b(s)$, which is the current probabilty of being in state $s$.
+
+POMDPs are much harded to solve than MDPs, because they have a continuous and infinite state space, given by the probability distributions over the states. Approximate algorithms, like point-based methods, are very popular in these models.
+future.
 
 \section{Bayesian Networks}
+ A BN is a probabilistic model, composed by a directed acyclic graph with random variables as nodes. Edges between the nodes represent conditional dependencies between the associated variables. We can associate a probability function to each node, depending on its parent variables, that produces the probability distribution of the variable represented by the node. 
 
+ Bayesian Networks can be a very powerful instrument. When we acquire information we can consider a part of the nodes as "evidence", fixing their value and using them to have a better estimation of the other nodes' probabilities. 
+
+ Bayesian Networks support both "top-down" reasoning (i.e. casual, from causes to effects) and "bottom up" reasoning (i.e. diagnostic, from effects to causes).
+
+There are several well-known algorithms that can be used to perform probabilistic queries on the model, to learn parameters in the conditional dependencies of the nodes, or even to learn the structure of a model.
+
+DBNs are a powerful extensions of BNs, which is able to represent sequences of variables. DBNs have several applications, like speech and gesture recognition.
