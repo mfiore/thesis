@@ -1,0 +1,334 @@
+Prob: context gives a prior. The prior is too powerful on the calculation
+
+
+approach table
+
+withouth context and MB
+
+p(node AlreadyDrank==0) = 0.5 
+p(node AlreadyDrank==1) = 0.5 
+p(node DrinkWater==0) = 0.5 
+p(node DrinkWater==1) = 0.5 
+p(node HotDay==0) = 0.5 
+p(node HotDay==1) = 0.5 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0.5 
+p(node ReorderTable==1) = 0.5 
+p(node agent_move_kitchen==0) = 0.998267 
+p(node agent_move_kitchen==1) = 0.0017331 
+p(node agent_move_table==0) = 0.0017331 
+p(node agent_move_table==1) = 0.998267 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_move_table==0) = 0 
+p(node distance_agent_move_table==1) = 0 
+p(node distance_agent_move_table==2) = 0 
+p(node distance_agent_move_table==3) = 1 
+p(node distance_agent_move_table==4) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_move_table==0) = 0 
+p(node toward_agent_move_table==1) = 1 
+
+
+
+without MB
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 0.4 
+p(node AlreadyDrank==1) = 0.6 
+p(node DrinkWater==0) = 1 
+p(node DrinkWater==1) = 0 
+p(node HotDay==0) = 0.6 
+p(node HotDay==1) = 0.4 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0 
+p(node ReorderTable==1) = 1 
+p(node agent_move_kitchen==0) = 0.998267 
+p(node agent_move_kitchen==1) = 0.0017331 
+p(node agent_move_table==0) = 0.0017331 
+p(node agent_move_table==1) = 0.998267 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_move_table==0) = 0 
+p(node distance_agent_move_table==1) = 0 
+p(node distance_agent_move_table==2) = 0 
+p(node distance_agent_move_table==3) = 1 
+p(node distance_agent_move_table==4) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_move_table==0) = 0 
+
+
+
+with context
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 1 
+p(node AlreadyDrank==1) = 0 
+p(node DrinkWater==0) = 0.307692 
+p(node DrinkWater==1) = 0.692308 
+p(node HotDay==0) = 0 
+p(node HotDay==1) = 1 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0.692308 
+p(node ReorderTable==1) = 0.307692 
+p(node agent_move_kitchen==0) = 0.998267 
+p(node agent_move_kitchen==1) = 0.0017331 
+p(node agent_move_table==0) = 0.0017331 
+p(node agent_move_table==1) = 0.998267 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_move_table==0) = 0 
+p(node distance_agent_move_table==1) = 0 
+p(node distance_agent_move_table==2) = 0 
+p(node distance_agent_move_table==3) = 1 
+p(node distance_agent_move_table==4) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_move_table==0) = 0 
+p(node toward_agent_move_table==1) = 1  0 
+p(node toward_agent_move_table==0) = 0 
+p(node toward_agent_move_table==1) = 1 
+
+
+Take Bottle
+
+
+without context
+
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 0.5 
+p(node AlreadyDrank==1) = 0.5 
+p(node DrinkWater==0) = 0.5 
+p(node DrinkWater==1) = 0.5 
+p(node HotDay==0) = 0.5 
+p(node HotDay==1) = 0.5 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0.5 
+p(node ReorderTable==1) = 0.5 
+p(node agent_move_counter==0) = 0.997409 
+p(node agent_move_counter==1) = 0.00259067 
+p(node agent_move_kitchen==0) = 0.997409 
+p(node agent_move_kitchen==1) = 0.00259067 
+p(node agent_take_bottle==0) = 0.00518135 
+p(node agent_take_bottle==1) = 0.994819 
+p(node distance_agent_move_counter==0) = 0 
+p(node distance_agent_move_counter==1) = 1 
+p(node distance_agent_move_counter==2) = 0 
+p(node distance_agent_move_counter==3) = 0 
+p(node distance_agent_move_counter==4) = 0 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_take_bottle==0) = 0 
+p(node distance_agent_take_bottle==1) = 0 
+p(node distance_agent_take_bottle==2) = 0 
+p(node distance_agent_take_bottle==3) = 1 
+p(node distance_agent_take_bottle==4) = 0 
+p(node toward_agent_move_counter==0) = 1 
+p(node toward_agent_move_counter==1) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_take_bottle==0) = 0 
+p(node toward_agent_take_bottle==1) = 1 
+
+
+without mb
+
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 0.4 
+p(node AlreadyDrank==1) = 0.6 
+p(node DrinkWater==0) = 1 
+p(node DrinkWater==1) = 0 
+p(node HotDay==0) = 0.6 
+p(node HotDay==1) = 0.4 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0 
+p(node ReorderTable==1) = 1 
+p(node agent_move_counter==0) = 0.997409 
+p(node agent_move_counter==1) = 0.00259067 
+p(node agent_move_kitchen==0) = 0.997409 
+p(node agent_move_kitchen==1) = 0.00259067 
+p(node agent_take_bottle==0) = 0.00518135 
+p(node agent_take_bottle==1) = 0.994819 
+p(node distance_agent_move_counter==0) = 0 
+p(node distance_agent_move_counter==1) = 1 
+p(node distance_agent_move_counter==2) = 0 
+p(node distance_agent_move_counter==3) = 0 
+p(node distance_agent_move_counter==4) = 0 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_take_bottle==0) = 0 
+p(node distance_agent_take_bottle==1) = 0 
+p(node distance_agent_take_bottle==2) = 0 
+p(node distance_agent_take_bottle==3) = 1 
+p(node distance_agent_take_bottle==4) = 0 
+p(node toward_agent_move_counter==0) = 1 
+p(node toward_agent_move_counter==1) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_take_bottle==0) = 0 
+p(node toward_agent_take_bottle==1) = 1 
+
+with context
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 1 
+p(node AlreadyDrank==1) = 0 
+p(node DrinkWater==0) = 0.307692 
+p(node DrinkWater==1) = 0.692308 
+p(node HotDay==0) = 0 
+p(node HotDay==1) = 1 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0.692308 
+p(node ReorderTable==1) = 0.307692 
+p(node agent_move_counter==0) = 0.997409 
+p(node agent_move_counter==1) = 0.00259067 
+p(node agent_move_kitchen==0) = 0.997409 
+p(node agent_move_kitchen==1) = 0.00259067 
+p(node agent_take_bottle==0) = 0.00518135 
+p(node agent_take_bottle==1) = 0.994819 
+p(node distance_agent_move_counter==0) = 0 
+p(node distance_agent_move_counter==1) = 1 
+p(node distance_agent_move_counter==2) = 0 
+p(node distance_agent_move_counter==3) = 0 
+p(node distance_agent_move_counter==4) = 0 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_take_bottle==0) = 0 
+p(node distance_agent_take_bottle==1) = 0 
+p(node distance_agent_take_bottle==2) = 0 
+p(node distance_agent_take_bottle==3) = 1 
+p(node distance_agent_take_bottle==4) = 0 
+p(node toward_agent_move_counter==0) = 1 
+p(node toward_agent_move_counter==1) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_take_bottle==0) = 0 
+p(node toward_agent_take_bottle==1) = 1 
+
+
+
+fill glass
+
+without context
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 0.58189 
+p(node AlreadyDrank==1) = 0.41811 
+p(node DrinkWater==0) = 0.0905478 
+p(node DrinkWater==1) = 0.909452 
+p(node HotDay==0) = 0.41811 
+p(node HotDay==1) = 0.58189 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0.909452 
+p(node ReorderTable==1) = 0.0905478 
+p(node agent_fill_glass_bottle==0) = 0.156524 
+p(node agent_fill_glass_bottle==1) = 0.843476 
+p(node agent_move_counter==0) = 0.986436 
+p(node agent_move_counter==1) = 0.0135637 
+p(node agent_move_kitchen==0) = 0.979248 
+p(node agent_move_kitchen==1) = 0.0207524 
+p(node agent_place_bottle_table==0) = 0.877792 
+p(node agent_place_bottle_table==1) = 0.122208 
+p(node distance_agent_fill_glass_bottle==0) = 0 
+p(node distance_agent_fill_glass_bottle==1) = 0 
+p(node distance_agent_fill_glass_bottle==2) = 0 
+p(node distance_agent_fill_glass_bottle==3) = 1 
+p(node distance_agent_fill_glass_bottle==4) = 0 
+p(node distance_agent_move_counter==0) = 0 
+p(node distance_agent_move_counter==1) = 1 
+p(node distance_agent_move_counter==2) = 0 
+p(node distance_agent_move_counter==3) = 0 
+p(node distance_agent_move_counter==4) = 0 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node distance_agent_place_bottle_table==0) = 0 
+p(node distance_agent_place_bottle_table==1) = 0 
+p(node distance_agent_place_bottle_table==2) = 1 
+p(node distance_agent_place_bottle_table==3) = 0 
+p(node distance_agent_place_bottle_table==4) = 0 
+p(node toward_agent_fill_glass_bottle==0) = 0 
+p(node toward_agent_fill_glass_bottle==1) = 1 
+p(node toward_agent_move_counter==0) = 1 
+p(node toward_agent_move_counter==1) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+p(node toward_agent_place_bottle_table==0) = 0 
+p(node toward_agent_place_bottle_table==1) = 1 
+
+
+
+
+
+with context
+p(node ActionsOr==0) = 0 
+p(node ActionsOr==1) = 1 
+p(node AlreadyDrank==0) = 1 
+p(node AlreadyDrank==1) = 0 
+p(node DrinkWater==0) = 0.00661915 
+p(node DrinkWater==1) = 0.993381 
+p(node HotDay==0) = 0 
+p(node HotDay==1) = 1 
+p(node IntentionsOr==0) = 0 
+p(node IntentionsOr==1) = 1 
+p(node ReorderTable==0) = 0.993381 
+p(node ReorderTable==1) = 0.00661915 
+p(node agent_fill_glass_bottle==0) = 0.0117662 
+p(node agent_fill_glass_bottle==1) = 0.988234 
+p(node agent_move_counter==0) = 0.996103 
+p(node agent_move_counter==1) = 0.00389736 
+p(node agent_move_kitchen==0) = 0.992131 
+p(node agent_move_kitchen==1) = 0.00786885 
+p(node distance_agent_fill_glass_bottle==0) = 0 
+p(node distance_agent_fill_glass_bottle==1) = 0 
+p(node distance_agent_fill_glass_bottle==2) = 0 
+p(node distance_agent_fill_glass_bottle==3) = 1 
+p(node distance_agent_fill_glass_bottle==4) = 0 
+p(node distance_agent_move_counter==0) = 0 
+p(node distance_agent_move_counter==1) = 1 
+p(node distance_agent_move_counter==2) = 0 
+p(node distance_agent_move_counter==3) = 0 
+p(node distance_agent_move_counter==4) = 0 
+p(node distance_agent_move_kitchen==0) = 0 
+p(node distance_agent_move_kitchen==1) = 1 
+p(node distance_agent_move_kitchen==2) = 0 
+p(node distance_agent_move_kitchen==3) = 0 
+p(node distance_agent_move_kitchen==4) = 0 
+p(node toward_agent_fill_glass_bottle==0) = 0 
+p(node toward_agent_fill_glass_bottle==1) = 1 
+p(node toward_agent_move_counter==0) = 1 
+p(node toward_agent_move_counter==1) = 0 
+p(node toward_agent_move_kitchen==0) = 1 
+p(node toward_agent_move_kitchen==1) = 0 
+
