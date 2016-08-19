@@ -261,3 +261,26 @@ where $parametersInCommon(name\_part_{i,k})$ is a function that returns true if 
 The idea behind this choice is the following. If the sub-MDPs do not have parameters in common, we can use a generic MAMDP to represent this instance. For example, if we create an MAMDP for the macro action $agent1\_clean\_table-agent2\_clean\_shelf$, we can use the MAMDP $agent\_clean\_furniture-agent\_clean\_furniture$ since the sub-MDP models do not have parameters in common, and their actions will not conflict.
 
  If instead we create an MAMDP for the macro action $agent1\_clean\_table-agent2\_clean\_table$ we create a specialized MAMDP, since there are parameters in common ($table$) and if we treat them as different objects there could be incongruences in the MAMDP planning.
+
+
+
+
+
+ 
+\subsection{Monitoring Tasks}
+When executing a shared goal, the Plan Production and Management layer needs to interact with the Intention and Action Recognition module in the Situation Assessment layer. Normally, this module is not able to monitor joint goals, since the inference mechanism presented in subsection \ref{sec:situation_assessment-action_evaluation} is based on single-agent MDPs. To solve this issue, while performing a shared plan, we create, in the Situation Assessment layer, a new intention for each node in the HTN tree whose task can be currently performed (meaning, if it has causal links to other tasks, they have already been satisfied). We associate to these intentions the linked MAMDP, as previously explained in \ref{subsec:plan_management-happ},
+ and the context node \textit{have a shared plan}, which is treated as evidence with a true value. We call these intentions \textit{plan intentions}.
+
+We associate to each known intention a precomputed \textit{expected length}, which is the expected time to accomplish the linked goal.
+
+The robot can be updated at each time on what actions have been performed, using the mechanisms described in section \ref{sec:situation_assessment-intention_recognition}. This way, the robot can compare actions that are actually performed by humans with those that \textit{should} be performed following the shared plan.
+
+\subsection{Evaluating Human Engagement}
+Using the Intention and Action Recognition module, the robot can infer which is currently the most likely human intention. If the current intention equals the task to monitor, the robot infers that the human is actively working to complete its task. We consider the task, and the monitor procedure, as completed when the linked MAMDP reaches a goal state.
+
+If the human is currently not involved in the monitored task there are three possibilities:
+\begin{itemize}
+	\item The human has momentarily interrupted the task. This can be inferred if the human is currently involved in another intention, which does not belong to the \textit{plan intentions}, and whose expected length is \textit{short}. In this case, the monitor procedure will not return an error until a predefined \textit{allowed time}.
+	\item The human has abandoned the task.  This can be inferred if the human is currently involved in another intention, which does not belong to the \textit{plan intentions}, and whose expected length is \textit{long}. The monitor will return a \textit{not involved error}. 
+	\item The human is performing another task in the shared goal. This can be inferred if the human is currently involved in another intention, which belongs to the \textit{plan intentions}. In this case the monitor will return an \textit{other task error}. 
+\end{itemize}
