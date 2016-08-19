@@ -26,80 +26,14 @@ It seems that robots need to have an equivalent of these mechanism, in order to 
 
 The goal of this work is, instead, to provide a framework to allow a robot to work in social environments and execute joint actions with humans in a natural way. We have built our system using psychology as an inspiration, without trying to replicate accurately human mechanisms, an area of work studied in cognitive systems. 
 
-There are still few robotic architectures that take humans into account at all levels, from planning to execution. We will briefly review some examples, and will detail some of their aspects in the future chapters:
-\begin{itemize} 
-\item \cite{trafton2013act} presents ACT-R/E, a cognitive architecture, based
-on the ACT-R architecture, used for human robot interaction tasks. The
-architecture aims at simulating how humans think, perceive and act in
-the world. ACT-R/E has being tested in different scenarios, such as
-theory of mind and hide and seek, to show its capacity of modeling
-human behaviors and thought. Being a cognitive architecture, ACT-R/E is focused more on modeling human 
-cognition, and not on efficiently solving tasks, and thus, it could encounter issues in handling complex human-robot cooperative tasks. 
-
-
-\item In \cite{Fong_2006} the authors present  HRI/OS, an agent-based system
-that allows humans and robots to work in teams. In this system, a central unit, called Task Manager, coordinates and manages the achievement of a goal, by decomposing the problem in smaller tasks, and assigning them to human and robot agents. Agents are assumed to work in parallel and independently on their own tasks. When an agent encounters a difficulty, it can send a request for help. Other agents can answer and provide the needed assistency. HRI/OS implements a spatial reasoning component, which allows communication between agents to be more natural and effective. This system is conceived for team based work on loosely coupled problems. It does not provide a sophisticated cognitive model, or the skills required to execute in a natural way tightly coupled problems, where the agents need to solve a task by frequently interacting and performing actions together. 
-
-
-\item  The HAMMER architecture \cite{demiris2003distributed} is a system, inspired by
-research in biology, that can be used for HRI. The main idea of this architecture is
-using the robot schemas for both prediction and execution of motions. \cite{johnson2005perceptual} extends the system to include visual perspective taking, increasing the cognitive capacities of the robot.  This architecture has been tested in experimental settings involving imitation of another robot's movements and with a human demonstrator.  The system is mainly focused on prediction tasks and does not present a way to model the mental state of other humans, which is very important to correctly understand others' actions and goals.
-
-\item In \cite{BreazealGB09} the authors present a cognitive architecture for HRI. The system uses a simulation approach, similar to HAMMER, where the robot schemes can be used for both prediction and for execution. This architecture is able to infer human goals and actions, as well as modeling human beliefs on the state of the world. While supporting human-robot cooperation, the architecture does not directly present models for aspects such as sharing plans, monitoring their execution, and executing joint actions. 
-
-
-\item In \cite{clodic2009shary} the authors present the LAAS architecture
- for human robot interaction, tested in domestic environments to
-perform tasks such as serving a drink to a person. The decisional layer of this architecture
-is composed by three modules: the Task Agenda, which manages the high-level goals and tasks of the 
-robot; SHARY, a supervision system able to execute tasks, monitor the execution of actions performed by humans, and perform simple exchanges of information between the robot and humans; and HATP, a human aware task planner, able to build plans that include humans and robots. Our work is an
-evolution of this architecture which includes new aspects, like spatial
-reasoning and modeling of joint actions.
-
-
-\end{itemize}
-
 \section{Contributions}
 
 The main contributions of this work are the following:
 \begin{itemize}
-\item Building a supervision system for human robot interaction. This systems aims at being able to execute cooperative human-robot actions in a natural and efficient way. It has been built by integrating new components, developed in this work, with existing components.
+\item Building a supervision system for Human-Robot Interaction (HRI). This systems aims at being able to execute cooperative human-robot actions in a natural and efficient way. It has been built by integrating new components, developed in this work, with existing components.
 \item Developing a novel algorithm to infer human goals and intentions. This algorithm, based on Markov Decision Processes (MDP), and Bayesian Networks (BN), allows the robot to better understand humans by reasoning not only on their actions, but also on their knowledge and awareness of the environment. The algorithm is efficient and scalable, and has been tested in a user study to prove that it is able to approach the capacity of humans to infer intentions.
 \item Developing a multi-agent probabilistic planning algorithm, based on MDPs. This planner is able, starting from a list of single-agent MDP models, to build a multi-agent model, taking into account issues such as cooperation and conflicts in the agents' actions. The planner was developed to work on tightly coupled problems, when agents interactions are frequent. The complexity associated to probabilistic planners is partially mitigated by introducing features such as parameters, abstract states, and hierarchical models. We consider as agents both humans and robots, in this work.
 \item Evaluating the different components in user studies. During these we performed two user studies to evaluate the capacity of the system to infer human intentions, and how its adaptive plan explanation and management skills are perceived by humans. In addition, parts of the system, joined with components of other partners in an European project, where evaluated with real users in a robot guide scenario, ran at the airport of Schiphol in Amsterdam.
-\end{itemize}
-
-\section{System overview}
-\label{intro-system_overview}
-%TODO: add urls, PR2, GAZEBO, ROS, SPENCER, GTP, Move_Base, Moveit
-The supervision system was developed with the following goals:
-\begin{itemize}
-\item Flexibility. The system is able to work in different scenarios, environments, and on different robots.
-\item Extendibility. The system can be easily extended by adding or substituting modules, to introduce different capacities, without having an impact on existing components.
-\item Human-Awareness. The system supports human in all its layers. Human belief management, multi-agent planning, human-aware motion and execution, and simple forms of direct interaction are explicitly included in its components.
-\end{itemize}
-
-To achieve these goals we use the well-known ROS framework\footnote{http://www.ros.org/}, which naturally supports different robots and modules. The system has been implemented and tested in simulation, using the GAZEBO simulator\footnote{http://gazebosim.org/}, and on two different robots, the PR2 by Willow Garage\footnote{https://www.willowgarage.com/pages/pr2/overview}, and the SPENCER robot\footnote{http://www.spencer.eu/}, developed in an European research project. The system has also been used in the SAPHARI European project\footnote{http://www.saphari.eu/}, to execute a cooperative scenario, where a robot and a human had to clean a table together.
-
-The supervision system is composed by the following layers, as shown in figure \ref{fig:intro-system_architecture}:
-\begin{itemize}
-\item Situation Assessment. This layer produces symbolic information, using geometrical and temporal reasoning, starting from perception data. Using Situation Assessment, the robot is able to compute information like the reachability of objects, which actions have been performed by humans, and the spatial relationships (distance, orientation, and their variations) between humans and the robot. This layer also includes a Database, which collects all the symbolic information produced by the system. The Database is able to represent the knowledge of different agents, as viewed by the robot. Using this feature, the robot can represent, for example, the fact that a human does not know, or that he has wrong information, about the location of an object. 
-\item Goal Management. This layer manages the different goals of the robot. Goals can be directly received from exernal inputs, like a human or a terminal, or generated by the robot starting from information present in the Database. For example, after deducing that the human is looking for his glasses in the Situation Assessment Layer, the Goal Management Layer can create a goal to fetch them. 
-\item Plan Production and Management. This layer is in charge of producing and managing plans to achieve the current goal. The system supports multi-agent plans, and so the robot will monitor other agents' action, to check if they conform to the shared-plan, and interact with the Execution Manager layer to execute the robot's actions. Plans can be managed in three different modalities: robot leader, human leader, and equal partners. Human-Awareness is supported by adapting  production, explanation, and management of plans to the level of experience on the task of the robot's partners. Additionally, this layer supports a simple form of plan negotiation, which allows humans to express preference in the allocation of tasks.
-\item Execution Management. This layer handles the execution of the robot's actions, including joint actions shared with other agents. Human safety and robustness are achieved by stopping and resuming operations  when unexpected or dangerous situations arise, like a human moving into the operative area of the robot.
-\end{itemize}
-
- \begin{figure}[h!]
-	\centering
-	\includegraphics[scale=0.45]{img/intro/system_architecture.pdf}
-	\caption[System architecture]{This picture shows the different layers of the system.}
-	\label{fig:intro-system_architecture}
-\end{figure}
-
-The system can also easily interact with different modules, which can be changed depending on the current needs:
-\begin{itemize}
-\item Task Planner. The Plan Production and Management layer provides an interface for different planners. New planners can be introduced by creating a bridge that respects the interface provided.
-\item Motion Planners and Executors. The Execution Management layers is interfaced with a set of motion planners and an executor to accomplish the robot's movements and actions. New modules can be introduced by respecting the interface used in the layer.
 \end{itemize}
 
 \section{Organization of the Thesis}

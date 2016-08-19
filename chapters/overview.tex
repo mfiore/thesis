@@ -1,0 +1,83 @@
+
+\chapter{System Overview}
+\label{chapter-system_overview}
+
+\lhead{Chapter 2. \emph{System Overview}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+
+In this chapter we provide an overview on our system. Section \ref{sec:overview-intro} provides an overview of some relevant architectures, which consider humans at multiple levels. 
+
+\section{Introduction}
+\label{sec:overview-intro}
+
+While different authors have studied HRI, most works focus on specific aspects of the problem, like how robots are perceived by children ~\cite{kozima2007children}, or how they can navigate in human environments ~\cite{sisbot2007human}. Few robotic architectures, at the moment that take humans into account at all levels, from planning to execution. We will briefly review some examples, and will detail some of their aspects in the future chapters:
+\begin{itemize} 
+\item \cite{trafton2013act} presents ACT-R/E, a cognitive architecture, based
+on the ACT-R architecture, used for human robot interaction tasks. The
+architecture aims at simulating how humans think, perceive and act in
+the world. ACT-R/E has being tested in different scenarios, such as
+theory of mind and hide and seek, to show its capacity of modeling
+human behaviors and thought. Being a cognitive architecture, ACT-R/E is focused more on modeling human 
+cognition, and not on efficiently solving tasks, and thus, it could encounter issues in handling complex human-robot cooperative tasks. 
+
+\item In \cite{Fong_2006} the authors present  HRI/OS, an agent-based system
+that allows humans and robots to work in teams. In this system, a central unit, called Task Manager, coordinates and manages the achievement of a goal, by decomposing the problem in smaller tasks, and assigning them to human and robot agents. Agents are assumed to work in parallel and independently on their own tasks. When an agent encounters a difficulty, it can send a request for help. Other agents can answer and provide the needed assistency. HRI/OS implements a spatial reasoning component, which allows communication between agents to be more natural and effective. This system is conceived for team based work on loosely coupled problems. It does not provide a sophisticated cognitive model, or the skills required to execute in a natural way tightly coupled problems, where the agents need to solve a task by frequently interacting and performing actions together. 
+
+\item  The HAMMER architecture \cite{demiris2003distributed} is a system, inspired by
+research in biology, that can be used for HRI. The main idea of this architecture is
+using the robot schemas for both prediction and execution of motions. \cite{johnson2005perceptual} extends the system to include visual perspective taking, increasing the cognitive capacities of the robot.  This architecture has been tested in experimental settings involving imitation of another robot's movements and with a human demonstrator.  The system is mainly focused on prediction tasks and does not present a way to model the mental state of other humans, which is very important to correctly understand others' actions and goals.
+
+\item In \cite{BreazealGB09} the authors present a cognitive architecture for HRI. The system uses a simulation approach, similar to HAMMER, where the robot schemes can be used for both prediction and for execution. This architecture is able to infer human goals and actions, as well as modeling human beliefs on the state of the world. While supporting human-robot cooperation, the architecture does not directly present models for aspects such as sharing plans, monitoring their execution, and executing joint actions. 
+
+\item In \cite{clodic2009shary} the authors present the LAAS architecture
+ for human robot interaction, tested in domestic environments to
+perform tasks such as serving a drink to a person. The decisional layer of this architecture
+is composed by three modules: the Task Agenda, which manages the high-level goals and tasks of the 
+robot; SHARY, a supervision system able to execute tasks, monitor the execution of actions performed by humans, and perform simple exchanges of information between the robot and humans; and HATP, a human aware task planner, able to build plans that include humans and robots. Our work is an
+evolution of this architecture which includes new aspects, like spatial
+reasoning and modeling of joint actions.
+
+\end{itemize}
+
+\section{Characteristics}
+
+In this work, our goal was developing a system allowing a robot to interact with a human in a way that is pleasing for the human, but also efficient and safe. To do so, we have developed an architecture composed by different layers, and, at each layer, we have asked ourselves the question: how can we consider the human at this level? While working on this problem we realized that our robot can show three different faces, which we called the robot observer, the robot coworker, and the robot teacher.
+
+In the robot observer case, the robot is costantly monitoring the environment, reasoning on the environment in order to understand the current situation.  Including humans in this kind of scenario means reasoning on their activities and on their effects on the environment. In particular, we are interested in having an estimation of a human's \textit{intention}. In literature about psychology \cite{bruner1981} and philosophy \cite{bratman1984}, an intention is the wish and will to achieve a goal. Intentions emerge from contextual causes (motivations) and are present until the goal is achieved or abandoned, pushing agents to undertake actions leading to that goal. While a human can have many goals, short or long-termed, we are interested in inferring what is the current goal that they he is trying to achieve with his activites, and see if the robot can provide help. The robot observer can help an elderly person to remember to take its medicine, or indicate to somebody the locations of their keys, if they are looking for them.
+
+In the robot coworker case, the robot needs to perform a task together with a human. The goal of this robot is not to complete a task, but to complete it \textit{together} with a human.  It is important that the robot is able to produce and manage collaborative plans, which include not only its actions, but also the ones of the human. This in area of artificial intelligence called multi-agent planning. In our system an \textit{agent} is a robot or a human which is able to act and influence the environment. 
+
+While we have developed our system with the goal of being generic, being able to work in different tasks and problems, we are particularly interested in tightly coupled tasks, where the human and the robot need to interact, often by performing \textit{joint actions}. We consider as \textit{joint actions} a cooperative task, performed by the human and by the robot together. In this situations creating a classical plan could not be enough, since the robot needs to costantly adapt to the human's actions. For example, in the case of handover, where the robot is giving an object to the human, the robot can not simply extend its arm and release the object at some point, but needs to find a good position where the exchange can be performed, eventually moving this position depending on the human's acitions, understand when the object can be safely released, and also if the human is actually going to take the object or is, momentarely or definitevely, doing something else.
+
+Finally, in the robot teacher case, the robot is trying to explain a complex task to a human, in an efficient and interesting way. In order to do so, it is important the robot understands what the human knows and is able to do. Tasks are often composed by repetitive or similar operations, and stating every single action can be boring for a human, particularly if he already has some expertise in this problem. 
+
+It is important to understand that these three aspects of the robot are not actually separated. The robot robot coworker needs the reasoning skills of the observer, in order to produce efficient plans for the current situations, and to cooperate with the human. Similarly, the robot observer needs the coworker's abilities if it wants to act, helping the human to achieve his goal. The robot teacher needs the coworker's (and in turn, the observer) capacity to create shared plans.
+
+
+\section{Architecture}
+To respect these characteristics, we designed a supervision system composed by the following layers, as shown in figure \ref{fig:intro-system_architecture}:
+
+\begin{itemize}
+\item Situation Assessment. This layer produces symbolic information, using geometrical and temporal reasoning, starting from perception data. Using Situation Assessment, the robot is able to compute information like the reachability of objects, which actions have been performed by humans, and the spatial relationships (distance, orientation, and their variations) between humans and the robot. This layer also includes a Database, which collects all the symbolic information produced by the system. The Database is able to represent the knowledge of different agents, as viewed by the robot. Using this feature, the robot can represent, for example, the fact that a human does not know, or that he has wrong information, about the location of an object. 
+\item Goal Management. This layer manages the different goals of the robot. Goals can be directly received from exernal inputs, like a human or a terminal, or generated by the robot starting from information present in the Database. For example, after deducing that the human is looking for his glasses in the Situation Assessment Layer, the Goal Management Layer can create a goal to fetch them. In this work we developed very simple rule mechanisms to manage goals. Since this layer is not a crucial point in our system we will not present it in this thesis.
+\item Plan Production and Management. This layer is in charge of producing and managing plans to achieve the current goal. The system supports multi-agent plans, and so the robot will monitor other agents' action, to check if they conform to the shared-plan, and interact with the Execution Management layer to execute the robot's actions. Plans can be managed in three different modalities: robot leader, human leader, and equal partners.  Human-Awareness is supported by adapting  production, explanation, and management of plans to the level of experience on the task of the robot's partners. Additionally, this layer supports a simple form of plan negotiation, which allows humans to express preference in the allocation of tasks.
+\item Execution Management. This layer handles the execution of the robot's actions, including joint actions shared with other agents. Human safety and robustness are achieved by stopping and resuming operations  when unexpected or dangerous situations arise, like a human moving into the operative area of the robot.
+\end{itemize}
+
+ \begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.45]{img/intro/system_architecture.pdf}
+	\caption[System architecture]{This picture shows the different layers of the system.}
+	\label{fig:intro-system_architecture}
+\end{figure}
+
+The system can also easily interact with different modules, which can be changed depending on the current needs:
+\begin{itemize}
+\item Task Planner. The Plan Production and Management layer provides an interface for different planners. New planners can be introduced by creating a bridge that respects the interface provided.
+\item Motion Planners and Executors. The Execution Management layers is interfaced with a set of motion planners and an executor to accomplish the robot's movements and actions. New modules can be introduced by respecting the interface used in the layer.
+\end{itemize}
+
+
+To achieve these goals we use the well-known ROS framework\footnote{http://www.ros.org/}, which naturally supports different robots and modules. The system has been implemented and tested in simulation, using the GAZEBO simulator\footnote{http://gazebosim.org/}, and on two different robots, the PR2 by Willow Garage\footnote{https://www.willowgarage.com/pages/pr2/overview}, and the SPENCER robot\footnote{http://www.spencer.eu/}, developed in an European research project. 
+
+The system has been used in two european projects: SPENCER, whose tasks was building a human-aware robot to guide passengers in an airport scenario; and SAPHARI European project\footnote{http://www.saphari.eu/}, where it was used to execute a cooperative scenario, where a robot and a human had to clean a table together.
