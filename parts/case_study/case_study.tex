@@ -6,6 +6,8 @@
 
 \lhead{Chapter 6. \emph{Case Study}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
+
+
 In this chapter we present some applications of our system. First, in section~\ref{sec:case_study-spencer} presents a human aware robot guide. subsection~\ref{subsec:case_study-spencer-intro} presents the subject and the motivations of our application. subsection~\ref{subsec:case_study-spencer-robot_guide} shows how we adapted our architecture to scenario. subsection~\ref{subsec:case_study-spencer-intention} introduces a new intention recognition algorithm developed for this task, based on environmental informaton. The scenario required a different approach to task planning than the one we developed, and we show our solution in subsection~\ref{subsec:case_study-spencer-planning}. To guide humans, we developed a new collaborative planner, which is shown in subsection~\ref{subsec:case_study-spencer-collaborative_guide_planner}. Finally, subsections \ref{subsec:case_study-spencer-lab_experiments} and \ref{subsec:case_study-spencer-airport} show our results in a laboratory and in a real environment.
 
 A second application is presented in section~\ref{sec:case_study-helper}. subsection~\ref{subsec:case_study-helper-intro} introduces this problem. subsection~\ref{subsec:case_study-helper-handover} shows the collaborative planner developed to execute handovers with humans. subsection~\ref{subsec:case_study-helper-experiments} shows our experiments with this scenario. Finally, in ~\ref{subsec:case_study-helper-discussion} we review the main achivements shown with this application. 
@@ -120,11 +122,20 @@ We developed a new collaborative planner to guide users to a destination. The pl
 \subsection{Representing a group}
 Our system has been built with the assumption that the robot would navigate in a crowded environment, where its followers could be often occluded. In addition, after speaking with our partners, we understood that the perception components would not be able to maintain a stable identifier for members of the groups, meaning that the robot would not be able to realiably understand if a group of users is following it. We tried to maintain a good balance between accuracy, trying to guide effective users and not people whose which are going in the same direction as the robot, and robustness, copying with unreliable perception.
 
+
+%%write the observations that we use
+
 We built our collaborative planner following these ideas:
 \begin{itemize}
-\item The robot will record a list $g$ composed by the identifiers of the group at the start of the scenario. During this scenario, it will maintain a list $f$, composed by users that are still tracked whose identifier is in $g$, and another list $o$, composed by all the tracked people whose distance from the robot is less than a costant $d$. 
-\item As long as $f$ is not empty, the robot will choose a \textit{best} follower $b$ from this list, and try to guide him, using the collaborative planner. The \textit{best} follower is chosen by considering the user whose behavior is the most consistent with the robot, by taking into account the speed, distance and orientation of the user.
-\item If $f$ is empty, but $o$ is not, the robot will choose a \textit{best} follower $b$ from $o$, and try to guide him, using the collaborative planners.
+\item The robot will record a list $g$ composed by the identifiers of the group at the start of the scenario. During this scenario, it will maintain a list $f$, composed by users that are still tracked whose identifier is in $g$, and another list $o$, composed by all the tracked people whose distance from the robot is less than a constant $d$. 
+\item As long as $f$ is not empty, the robot will choose a \textit{best} follower $b$ from this list, and try to guide him, using the collaborative planner. The \textit{best} follower is chosen by considering the user whose behavior is the most consistent with the robot, by following a set of rules:
+	\begin{enumerate}
+		\item If there is only one agent $a$ in $f$ so that $a\_isIn=robot\_area$ and $a\_isMoving=true$ AND $a\_isTowardRobot=true$ he is the \textit{best follower}. If there are more agents that satisfy this condition, the \textit{best follower} is the closest to the robot. Our preferable condition for best follower is somebody who is moving toward the robot and staying behind it, as we assume that he is following it.
+		\item if no agent satisfies condition 1, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isTowardRobot=true$ he is the \textit{best follower}. If there are more agents that satisfy this condition, the \textit{best follower} is the closest to the robot. If there is no one that is moving toward the robot, we choose an agent that is not moving but still oriented toward the robot, as he could just have stopped for some moments before resuming following.
+		\item if no agent statisfies condition 1 or 2, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isMoving=false$ AND $a\_isTowardRobot=False$ he is the \textit{best follower}. If the previous conditions are not statisfied, we choose an agent that is not moving, behind the robot, and not oriented toward it. There could be humans that have stopped following and are speaking between themselves, or looking at a screen.
+		\item otherwise, \textit{the best follower} is the closest to the robot.
+	\end{enumerate}
+\item If $f$ is empty, but $o$ is not, the robot will choose a \textit{best} follower $b$ from $o$, by following the rules that we just introduced (substituting $f$ for $o$). If the robot has lost track of its group, it will try guiding other persons that have a behavior consistent with that of a follower.
 \item If  both $f$ and $o$ are empty, the robot will abandon the task.
 \end{itemize}
 
@@ -158,8 +169,10 @@ To adapt to the speed of the group, the robot defines a desired range of distanc
 
 In our study, $dr_1$ and $dr_2$ were predefined values, but they could be learnt and adapted to the users during the task, since different people could prefer following the robot at different distances and positions.
 
-The robot should also not constantly change speed, in order to give time to users to adapt to its new chosen speed, and so we defined a temporal threshold in which we do not allow the robot to repeat an \textit{accelerate} or \textit{decelerate} action.
+The robot should also not constantly change speed, in order to give time to users to adapt to its new chosen speed, and so we defined a temporal threshold $t$ in which we do not allow the robot to repeat an \textit{accelerate} or \textit{decelerate} action.
 
+The robot changed its speed in increments or decrements of a constant $s$ , in meter for seconds. In our preliminary studies at the airport, we tested several constants for $t$ and $s$, and found that increments of 0.1 $m\/s$ and a threshold of 2 seconds showed the best behavior for the robot. 
+  
 We studied two different situations where the robot can proactively try to influence the speed of the group.
 \begin{itemize}
 \item There is a time limit to reach the destination. In this case the robot must balance the desire to satisfy the group with the task urgency. Different situations will require different policies. For example, in an airport scenario, the robot could prioritize arriving on time, warning users if their speed would render the goal not achievable, while in other situations the robot could try to arrive in time but still avoid to adopt speeds that are uncomfortable for the group.
@@ -323,22 +336,7 @@ The environment is composed by two different furniture, a $TABLE$ and a $SHELF$,
 
 For this scenario, we used a previous version of our system, with the addition of the Handover Collaboration Planner, used to execute human-robot and robot-human handovers. In particular, in this version, the robot does not take into account the knowledge level of users when producing or managing plans. Also, human tracking will be done using a depth camera, mounted on the ceiling.
 
-\subsection{Handover Collaboration Planner}
-\label{subsec:case_study-helper-handover}
-We implemented a MOMDP model to handle handovers between humans and robots. This model will output high-level actions, adapted by the Action Executor, depending on the current situation. Decisions will be made based on the following variables:
 
-\begin{itemize}
-\item The status of advancement of the task. This variables, whose values are \textit{\{not\_completed, touching, completed\}}, is set by the Action Executor module, in the Execution Management layer, depending on the current advancement of the task. The variable will be set as $completed$ when the handover has been performed, $touching$ when the robot detects pressure on the gripper used for the handover, and $not\_completed$ otherwise. 
-\item The quality of commitment of the user. This variable has the same meaning as in the collaborative planner for guiding presented in \ref{subsec:case_study-spencer-collaborative_guide_planner} and can assume the same values, but is estimated from different variables. We will still consider the distance and orientation of the human toward the robot, but also the pose of its arm, particularly if its extended toward the robot. 
-\item A timer. The variable is used in the same way as in the collaborative planner for guiding, presented in subsection~\ref{subsec:case_study-spencer-collaborative_guide_planner}.
-\end{itemize}
-
-The possible actions of this model are the following:
-\begin{itemize}
-\item Continue. The Action Executor will continue with the handover, which, depending on the situation, will prompt the system to extend the arm or activate the gripper.
-\item Wait. The system will wait for the user if he is not engaged in the task.
-\item Abandon. The system will abandon the task when the user is no longer interested in performing it. 
-\end{itemize} 
 
 \subsection{Experiments}
 \label{subsec:case_study-helper-experiments}
@@ -501,4 +499,3 @@ The system is able to represent different belief states for different agents and
 \textbf{The system is able to monitor human actions}.
 The system was able to understand when the human performed action such as taking or throwing objects.
 \end{itemize}
-

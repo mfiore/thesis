@@ -1,8 +1,7 @@
-\part{The Robot Observer} % Main chapter title
-
+\part{The Robot Observer} % Main chapter 
 \label{part:robot_observer} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Part 1. \emph{The Robot Observer}} % Change X to a consecutive number; this is for the header on each page - perhaps a
+\lhead{Part II. \emph{The Robot Observer}} % Change X to a consecutive number; this is for the header on each page - perhaps a
 
 
 In any application that is not entirely composed by repetitive, precomputed actions, robots need reasoning skills, which severely depend on the quality of the representation of the current environment. This representation can be more or less complex, depending on the application. 
@@ -13,7 +12,7 @@ Imagine, for example, a robot whose task is cleaning the floor of a room. In the
 
 Now, imagine a household robot that needs to actively help a family that lives in an apartment, by fetching objects, providing information, and helping to accomplish various tasks. Let us imagine that one of the members of the family, Greg, is moving in the living room, searching around, while exclaming `Where are my glasses?'. In the ideal situation, our robot would try to help Greg, by giving him information such as `They are on the table to your right', or even by fetching them for him. 
 
-Clearly, in this scenario, the robot needs deeper reasoning skills. It needs to understand that the user is looking for its glasses, to link them to their actual physical location, to compute the spatial relationship between the table and the glasses, and to provide information in a natural way. In fact, if the robot would tell Greg that the glasses are in the position $(3.2, 5.0 , 1.3)$, Greg would very likely be very perplexed. A more natural way would be to inform Greg that his glasses are on a table, whose location is pointed taking into account Greg's position.
+Clearly, in this scenario, the robot needs deeper reasoning skills. It needs to understand that the user is looking for its glasses, to link them to their actual physical location, to compute the spatial relationship between the table and the glasses, and to provide information in a natural way. In fact, if the robot would tell Greg that the glasses are in the position $(3.2, 5.0 , 1.3)$, Greg would likely be very perplexed. A more natural way would be to inform Greg that his glasses are on a table, whose location is pointed taking into account Greg's position.
 
 In this case, having sophisticated sensors is, of course, important but not sufficient. The robot needs also to \textit{reason} on the sensor's data in order to produce meaningful information. For example: laser points and camera images need to be integrated to recognize objects and humans; spatial relationships  (e.g. the glasses are on the table) have to be properly modeled; actions performed by humans, and their effects on the environment, need to be recognized; and so on. 
 
@@ -21,8 +20,10 @@ The process of reasoning on data to produce symbolic information is called \text
 
 While in many applications robots can benefit from a situation assessment component, being able to perform complex reasoning on data is particularly important in HRI. If the robot is able to take better decisions (i.e.  efficient, safe, socially acceptable, natural) than it will be perceived in a more positive manner by humans. 
 
+Situation assessment is the fundamental skill for the robot observerer. In this part, we will show the situation assessment mechanisms of our system. Chapter~\ref{chapter:belief_management} shows how we can use geometrical reasoning in order to understand what the robot and other humans know and perceive about the current environment. Chapter~\ref{chapter:intention_recognition} show how our robot is able to infer the current intention of a human and the actions it performs. Finally, chapter~\ref{chapter:observer_results} details a user study that we developed to validate our intention recognition algorithm.
 
 
 
-\input{chapters/situation_assessment.tex} 
-\input{chapters/intention_recognition.tex} 
+\input{parts/observer/belief_management.tex} 
+\input{parts/observer/intention_recognition.tex} 
+\input{parts/observer/observer_results.tex} 

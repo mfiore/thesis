@@ -2,21 +2,41 @@
 
 \label{chapter:plan_execution} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Chapter 8. \emph{Human Knowledge}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+milliez2016using
 
+
+\lhead{Chapter 8. \emph{Human Knowledge}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\item Explain a plan to human agents. Depending on the human expertise on the tasks to be performed, the robot will adapt the explanations, focusing more deeply on tasks that agents do not know how to perform. This idea is supported by research on Intelligent Tutoring Systems \cite{brusilovskiy1994construction}  and on e-learning \cite{brusilovskiy2005}, which  prove the necessity of keeping and updating a model of the learner's knowledge to efficiently teach a task.
+  \item Negotiate a plan. Our system has some simple mechanics allowing a human to reject a plan, specifying which parts of it he does not want to perform. The robot will take the human's preference into account when producing a new plan.
+  
+
+
+\section{Plan Negotiation}
+\label{sec:plan_management-negotiation}
+Once the robot has presented the plan to his collaborators, it can start a negotiation phase. 
+
+We introduce a simple negotiation algorithm, that starts with the robot asking humans for approval of the plan, inquiring what is wrong in case of disagreement. We handle two different human requests. First, the user can express his preferences, either to perform a task previously assigned to the robot or to not perform a task assigned to him. The other possibility is to inform the robot that the user cannot perform an action. The system will store these information and try to find a new plan, taking them into account, before starting a new explanation and negotiation phase.
+
+
+
+
+
+Some authors have started to investigate this topic in robotics. In \cite{Petit2012}, a human is able to teach new plans to a robot verbally through ``spoken language programming''. \cite{Sorce2015} studies the inverse problem, where the system is able to explain plans to users. 
+
+In order to form  shared plans, agents often communicate, explaining tasks to each other and negotiating to agree on a solution. In \cite{Lallee2013} the authors suggest that joint plans should be fully communicated in order to sustain effective collaboration. 
 
 
 
 \section{Human Knowledge and Plan Management}
 \label{sec:plan_management-human_knowledge}
 \subsection{Representing Human Knowledge in a Task}
-Among the topics of this chapter, we will consider different ways to use human knowledge in planning issues. In order to do so, we introduce a new property: the human's knowledge of a task, which will be maintained in the Situation Assessment layer. 
+Among the topics of this chapter, we will consider different ways to use human knowledge in planning issues. In order to do so, we introduce a new attribute: the human's knowledge of a task, which will be maintained in the Situation Assessment layer. 
 
-This property is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this property, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix\_wheel, car, expert)$. 
+This attribute is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this attribute, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix\_wheel, car, expert)$. 
 
 Parameters can be deeply linked to the knowledge of a task. In general, we can divide task parameters in two categories:
 \begin{itemize}
-\item Class-Link. In some situation, knowledge of a task is not linked to the specific instance of a parameter, but to a whole class. For example, we can imagine that if Bob knows how to paint the living room, he will know how to paint every room in a house. We could represent this property as $(Bob, paint, house\_room, expert)$. We can notice that the parameter, in this case, is $house\_room$, representing the class of rooms belonging to a house, and not $living\_room$.
+\item Class-Link. In some situation, knowledge of a task is not linked to the specific instance of a parameter, but to a whole class. For example, we can imagine that if Bob knows how to paint the living room, he will know how to paint every room in a house. We could represent this attribute as $(Bob, paint, house\_room, expert)$. We can notice that the parameter, in this case, is $house\_room$, representing the class of rooms belonging to a house, and not $living\_room$.
 \item Instance-Link. In other cases, instead, knowledge of a task is deeply linked to specific instances of parameters. For example, knowing how to fix the motor of a specific car, would not necessary translate in knowing how to fix the motor of every car.
 \end{itemize}
 
@@ -82,26 +102,6 @@ The planner can receive information produced from a dialog system that allows to
 If a user is not able to perform a certain task, the planner will never chose this action for him. If he user prefers to perform, or not to perform, a specific task, the planner will update the cost functions accordingly with a reward or penality to assign that task to him.
 
 
-\section{Plan Explanation}
-\label{sec:plan_management-plan_explanation}
-Once the system has generated a collaborative plan, if the current modality is \textit{robot leader}, the plan must be shared with the human partners. The robot will present and negotiate plans using speech, which is supported by several studies, such as \cite{Lallee2013,tomasello2005}.
-
-\subsection{Plan Preprocessing}
-The HTN generated by the planner represents a solution to achieve the goal. In order to explain this plan to users, the system will process it, removing unnecessary information. In particular, our algorithm follows two rules:
-\begin{itemize}
-	\item  We remove recursive tasks. If a node $n$ of the tree contains the same method as its parent, $parent(n)$, it will be replaced by its children, $children(n)$. 
-	\item We replace nodes with a single child by their children.
-\end{itemize}
-
-
-More formally:
-\begin{enumerate}
-\item $\textbf{if}$ $(compare(n, parent(n)))$ \textbf{then} $n \leftarrow children(n)$
-\item $\textbf{if}$ $(children(n).size() == 1)$ \textbf{then} $n \leftarrow children(n)$
-\end{enumerate}
-
-where $compare(n1,n2)$ is true if the two nodes have the same method.
-
 \subsection{Plan Presentation}
 Before executing the plan, the robot will present the goal and the proposed allocation of high-level tasks to give a global view of the chosen strategy. Standard natural language generation is used, as shown in table \ref{table:plan_management-pie-present}. 
 In some situations, the plan will be too long to explain it at the same time to a user, which could then be confused or annoyed. For this reason, when presenting the plan, the robot will verbalize only the first $N$  highest level tasks. We have chosen $N$=$3$ based on our own experience during tests with the system, but we can imagine to adapt it to the complexity of the domain, or even to specific users. The robot will present the first steps of the plan, perform a negotiation phase, and then execute them. Once these tasks have been executed, the robot will repeat the present/negotiate/execute process until the plan is completed or aborted.
@@ -128,9 +128,6 @@ In some situations, the plan will be too long to explain it at the same time to 
 \end{table}
 
 
-
-
-
 \subsection{Sequential Adaptive Plan Management Algorithm}
 \label{subsec:plan_management-sequential_plan_management}
 We start this subsection by showing our sequential plan management algorithm, and then we explain it.
@@ -138,32 +135,32 @@ We start this subsection by showing our sequential plan management algorithm, an
 %\begin{algorithm}
 \begin{algorithmic}[1]
 \For{n$:=$nodes.start to n$:=$nodes.end}
-	\If{$agents$(n) = \{robot\}}\label{alg:onlyRobotStart}
-    	\If{$children(n) \neq \emptyset$ $\wedge$ $user\_kn(n)$ = new\par
+  \If{$agents$(n) = \{robot\}}\label{alg:onlyRobotStart}
+      \If{$children(n) \neq \emptyset$ $\wedge$ $user\_kn(n)$ = new\par
         \hskip\algorithmicindent $\wedge$ $teachPolicy$}
-        	\State $execute\_tree(children(n))$
+          \State $execute\_tree(children(n))$
             \State $user\_kn(n) :=$ beginner
         \Else
-         	\State $execute(n)$
+          \State $execute(n)$
         \EndIf\label{alg:onlyRobotEnd}
     \ElsIf{$user\_kn(n)$ = new}\label{alg:newStart}
-     	\State $explain(n)$
+      \State $explain(n)$
         \If{$children(n)$ $\neq \emptyset$}
-          	\State $execute\_tree(children(n))$
+            \State $execute\_tree(children(n))$
             \State $user\_kn(n)$ $:=$ beginner
         \Else
-         	\State $monitor(n)$
+          \State $monitor(n)$
         \EndIf\label{alg:newEnd}
     \ElsIf{$user\_kn(n)$ = beginner}\label{alg:beginnerStart}
-      	\If{$propose\_explain(n)$}
-          	\State $user\_kn(n)$ $:=$ new
+        \If{$propose\_explain(n)$}
+            \State $user\_kn(n)$ $:=$ new
             \State $(\dots)$ \Comment{Same process as new}
         \Else
-          	\State $monitor(n)$
+            \State $monitor(n)$
         \EndIf\label{alg:beginnerEnd}
     \ElsIf{$user\_kn(n)$ = intermediate\par
     \hskip\algorithmicindent $\vee$ $user\_kn(n)$ = expert}\label{alg:interStart}
-      	\State $monitor(n)$
+        \State $monitor(n)$
     \EndIf\label{alg:interEnd}
 \EndFor
 \end{algorithmic}
@@ -210,6 +207,19 @@ When verbally guiding the user, if the current node has only one child, we  go d
 % if expert
 \subsubsection{The collaborator's knowledge level on the task is \textit{expert} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})}
  In case of an \textit{expert} knowledge level on the current task, we  proceed as for the previous knowledge level, downgrading the level to \textit{intermediate} if the user makes a mistake and keeping the \textit{expert} level if he performs the task as expected.
+
+
+
+\subsubsection{Replanning}
+When the plan manager reports a failure, the system needs to look for a new plan. If possible, we would like to create a plan which contains the same high-level task allocation. Sometimes, when the Plan Manager fails, there is no need to completely change the plan. Instead, it might be sufficient to repair only a part of it. For example, we can imagine a scenario where a human might execute task $t_1$ using resource $r_1$ or $r_2$. Perhaps the robot computed a plan where the human will use resource $r_1$, while itself will use $r_2$ to achieve another task.
+
+If the human does not follow this plan, and uses $r_2$ to compute its task,  it might be faster to just repair the plan, looking for a solution where the task allocation is the same, but the robot uses $r_1$ instead to achieve its task. This way, we avoid starting a new explanation\textbackslash negotiation phase, which could look useless and not natural to the human collaborator.
+
+%  We deal with this issue in different ways in HATP and HAPP.
+
+In HATP, we introduce a new cost rule. When presenting a plan, we record which nodes have been presented and assigned to each agent. While planning, we penalize plans with a different task allocation. This way, the planner will prefer to use the same task allocation, but will change it if needed, for example because, using the previous task allocation, the goal is no longer achievable.
+
+%In HAPP, we can just perform a partial replan, by interrogating the currently active MMODP.  
 
 
 
@@ -313,6 +323,3 @@ In both studies, we asked the participants how the system could be improved. Sev
 
 %
 
-
-
- 
