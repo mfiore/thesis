@@ -63,15 +63,15 @@ Plans can be managed in three different modalities. The robot can be the leader,
 A number of modules implement this ideas, as shown in figure \ref{fig:plan_management-architecture}:
 \begin{itemize}
 \item Task Planner. Creates a shared plan for the involved agents. We consider the Task Planner as an external module. Our system has been integrated with the HATP planner, which we will introduce in section~\ref{sec:plan_management-hatp}. We have also recently introduced a probabilistic multi-agent planner based on MDPs, which we will discuss in chapter~\ref{chapter:mamdp}.
-\item Plan Management. Manages the current plan, interacting with the Task Execution layer to execute the robot's action and with the Situation Assessment layer to monitor humans' actions.
+\item Plan Manager. Manages the current plan, interacting with the Task Execution layer to execute the robot's action and with the Situation Assessment layer to monitor humans' actions.
 \end{itemize}
 
-After receiving a goal from the Goal Management layer, the Plan Management module sends a request to the Task Planner to look for a suitable plan. After receiving a plan, this module will interact with the Task Execution and Situation Assessment layer to execute it. 
+After receiving a goal from the Goal Management layer, the Plan Manager module sends a request to the Task Planner to look for a suitable plan. After receiving a plan, this module will interact with the Task Execution and Situation Assessment layers to execute it. 
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[scale=0.5]{img/coworker/plan_management/plan_management_architecture.pdf}
-	\caption[The architecture of the Plan Production and Management layer]{The architecture of the Plan Management layer. Light green rounded rectangles represent modules, while dark green rectangles layers. The Task Planner is shown as a blue rectangle to indicate that it is a module external to the system. Arrows represent message exchanged between components, with the label detailing the message.}
+	\caption[The architecture of the Plan Management layer]{The architecture of the Plan Management layer. Light green rounded rectangles represent modules, while dark green rectangles layers. The Task Planner is shown as a blue rectangle to indicate that it is a module external to the system. Arrows represent message exchanged between components, with the label detailing the message.}
 	\label{fig:plan_management-architecture}
 \end{figure}
 
@@ -83,9 +83,16 @@ Parts of this chapter were presented in \cite{Lallement2014,fioreiser2014}.
 When acting together, agents sometimes do not have the same decision power, with one of them assuming the role of a leader. We represent this idea, in our system, by proposing three different modalities: \textit{robot leader}, \textit{human leader}, and \textit{equal qartners}. The robot is able to switch from one modality to another during the execution of a plan. For example, if the current modality is \textit{robot leader} and the Robot receives a command from a user, it will switch to the \textit{human leader} modality, after interrupting its current action.
 
 \subsection{Robot leader}
+\label{subsec:plan_management-robot_leader}
 In this modality the robot, after computing the plan, will present it to the user and start executing it. The robot will track the status of humans, informing them of which actions they should execute. This modality can be helpful when interacting with  naive users or in tasks where the robot has a better knowledge of the  domain or of the environment than the other agents.
 
-While the robot could simply present the computed plan by verbalizing all of its actions, we have developed an algorithm to adapt this process to the expertise of a user in the tasks to execute. We will present this algorithm in chapter~\ref{chapter:knowledge}.
+We have developed two different algorithms to present the computed algorithm to user. In the first, simpler case, the robot will verbalize sequentially all the actions, stating which agent should perform them. 
+
+For example, the plan presented in figure~\ref{fig:plan_management-streams} would be explained in the following way: ``I will place the book on the table. You will remove the dust from the desk and then place the duster on the desk. After that, I will take the duster and then I will remove the dust from the desk".
+
+To create this kind of verbalization we create a textual representation for each object and task, and then verbalize it with a text-to-speech application. Using simple rules, we follow the plan streams and verbalize each nodes. To create a more interesting and varied explanation, we use some connective words between nodes. We added some randomness in the algorithm. For example, the robot will casually select words such as ``At this point", ``After that", or ``Then" to introduce an task. Since this algorithm is not a focus of our work we will not present it in details.
+
+ We have also developed a more advanced algorithm to adapt this process to the expertise of a user in the tasks to execute. We will present this algorithm in chapter~\ref{chapter:knowledge}.
 
 \subsection{Human Leader}
 The human can also create plans, interacting with the robot by using a
@@ -186,6 +193,8 @@ At the moment, we have implemented and integrated in our system only monitoring 
 
 \subsection{Monitoring Actions}
 At all time, as previously explained in chapter~\ref{chapter:intention}, the system constantly observes the environment, monitoring which actions are executed. As previously said, each action that can be executed by a human needs to have the same representation in the Situation Assessment and Plan Management layers. When the plan manager needs to monitor an action $a$ of a human stream, its $preconditions$ will be satisfied (since, if we are monitoring $a$, all of its causal links have been already satisfied). This means that $a$ will be in the IG for the human, which will be monitoring its execution.
+
+As we said in section~\label{subsec:intention-unknown_intentions}, the single-agent MDP mechanism that we introduced in chapter~\ref{chapter:intention} is not sufficient to monitor a joint goal, and so the IG for the human, in the coworker scenario, only includes Actions and Observation nodes.
 
 The Plan Manager will wait for Situation Assessement to infer that an action has been performed the human. If the action is different from $a$, it will return an error, prompting a replan. Otherwise, the plan management will continue with the next action in the stream, if there are any.
 

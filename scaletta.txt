@@ -1,0 +1,31 @@
+scaletta:
+
+coworker;
+	task execution  lm   x
+	saphari			lm   x
+	mamdp			la  x
+
+teacher:
+	knowledge		la x
+	experiments		tm
+
+case study
+	spencer desc	tm
+	experiments		ta
+
+conclusions
+	conclusions     ta
+	methods			wm
+
+
+mercoledì: review
+giovedì: review
+
+
+letteratura muaddib:
+	l(m-a-o depending on how quick we proceed)
+
+
+parti da rileggere a parte: 
+	-task execution (perchè l'ho scritta oggi)
+	-esempi (in particolare l'MAMDP)

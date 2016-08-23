@@ -125,6 +125,7 @@ When the robot infers that an action has been performed, it updates the world st
 \end{figure}
 
 \subsection{Action Inference with Unknown Intentions}
+\label{subsec:intention-unknown_intentions}
 In some situations, we are interested in inferring human actions without using information from intentions. One situation is when we the robot as a shared plan with a human. The MDPs used in our implementation are able to plan only for a single-agent, and can not be used to represent the shared plan. This could be a problem, because when agents act alone, they might execute different actions than when acting together. For example, if Greg and the robot are reordering a room together, Greg might give the robot a book, because in the shared plan the robot will put it in its place. If Greg is acting alone, he will need to place the book back by himself.  
 
 In this situation, we will create an IG using only actions and observations. In this way, we can still infer which actions are executed, but we have to rely only on geometrical reasoning. Since we are using limited perception algorithms, we could easily encounter ambiguous situation, where, for example, the human moves his hand toward two close objects. In this situation, without using higher level information, the system could make mistakes, and infer that the wrong action has been performed.
