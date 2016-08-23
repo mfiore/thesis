@@ -6,7 +6,7 @@
 
 \lhead{Chapter 10. \emph{Robot Guide}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
-In this chapter we present some applications of our system. First, in section~\ref{sec:case_study-spencer} presents a human aware robot guide. subsection~\ref{sec:spencer-intro} presents the subject and the motivations of our application. subsection~\ref{sec:spencer-robot_guide} shows how we adapted our architecture to scenario. subsection~\ref{sec:spencer-intention} introduces a new intention recognition algorithm developed for this task, based on environmental informaton. The scenario required a different approach to task planning than the one we developed, and we show our solution in subsection~\ref{sec:spencer-planning}. To guide humans, we developed a new collaborative planner, which is shown in subsection~\ref{sec:spencer-collaborative_guide_planner}. Finally, subsections \ref{sec:spencer-lab_experiments} and \ref{sec:spencer-airport} show our results in a laboratory and in a real environment.
+ In this chapter we present a case study for our system: the human-aware robot guide. Section~\ref{sec:spencer-intro} presents the subject and the motivations of our application. Section~\ref{sec:spencer-robot_guide} shows how we adapted our architecture to scenario. Section~\ref{sec:spencer-intention} introduces a new intention recognition algorithm developed for this task, based on environmental informaton. The scenario required a different approach to task planning than the one we developed, and we show our solution in section~\ref{sec:spencer-planning}. To guide humans, we developed a new collaborative planner, which is shown in section~\ref{sec:spencer-collaborative_guide_planner}. 
 
 \section{Introduction}
 \label{sec:spencer-intro}
@@ -36,7 +36,7 @@ We applied our system to this problem, creating a human-aware robot guide which 
 In order to adapt our system to the robot guide scenario we had to enhance several modules, as shown in figure \ref{fig:spencer-architecture}: 
 \begin{itemize}
 \item The user is able to interact with the robot by using a tactile interface on its front. Partners in the project developed an interface that connects this tablet to requests for the robot.
-\item In this scenario we are not really interested in the intention recognition skills that we developed in chapter~\ref{chapter:situation_assessment}. In an airport there are no complex sequence of actions that humans need to perform and we will evaluate users' intentions by their trajectories and the surrounding environment. We developed an Environment-Based Intention Situation Assessment module to enhance our Situation Assessment layer, presented in section \ref{sec:spencer-intention}.  
+\item In this scenario we are not really interested in the intention recognition skills that we developed in chapter~\ref{chapter:situation_assessment}. In an airport there are no complex sequence of actions that humans need to perform and we will evaluate users' intentions by their trajectories and the surrounding environment. We developed an Environment-Based Intention Situation Assessment module to enhance our Situation Assessment layer, presented in section \ref{sec:spencer-intention}. The geometrical reasoning skills of the Situation Assessment layer will, instead, be necessary to properly guide the robot's followers. 
 \item Similarly, task planning and plan management is quite simple in this scenario. The robot will mostly vary its paths in the environment, using similar plans. We developed an A*-based task planner, which is able to find a path in a semantic map, to guide users to their destination, presented in section~\ref{sec:spencer-planning}. The Plan Management layer will receive this plan and communicate with the Task Execution layer to move the robot toward the goal.
 \item The main work, in this application, has been creating a Collaborative Planner to guide users in a human-aware way. Using this planner, our robot is able to adapt itself to users' actions, or to proactively propose new behaviors. This planner is presented in section~\ref{sec:spencer-collaborative_guide_planner}.
 \end{itemize} 
@@ -61,6 +61,7 @@ We introduced, in the Situation Assessment layer, the ability able to create act
 \begin{itemize}
 \item Information Screen Area. This area, shown in figure \ref{fig:spencer-screen_area} is linked to information screens present in the environment. Using this information, the robot can recognize that humans are looking at the screen, and  start a proactive behavior, like approaching to offering help or information.
 \item Touristic Point Area. These areas are linked to interesting sights and attractions in the environment. We can imagine, for example, to associate these areas to paintings, statues, or even rooms in a museum. Knowing that a human is in a touristic point area, and looking at an attraction, the robot could approach the human and tell him some interesting information about it.
+\item Robot Area. We assumed, at a first step (wrongly, as explained in section~\ref{sec:spencer_results-descussion}, that users would follow the robot mainly from behind, and sometimes from its sides. We created a polygonal area and linked it to the robot. This area is a trapezoidal figure, as shown in figure~\ref{fig:spencer-robot_area}. We will explain its use in subsection~\ref{subsec:spencer-group}.
 \end{itemize}
 
 \begin{figure}[ht!]
@@ -68,6 +69,13 @@ We introduced, in the Situation Assessment layer, the ability able to create act
 	\includegraphics[scale=0.45]{img/case_study/spencer/environment_intention.pdf}
 	\caption[Environment-Based Situation Assessment]{The Information Screen area used for environment-based intention recognition. The yellow polygon represents an area linked to the screen in the figure. Red polygons represent groups of person in the area. The person in group \textit{a} is in the screen area, but the robot will infer that he is not looking at the screen, since he is oriented in another direction. The persons in group \textit{b} are in the screen area and oriented toward the screen, so the robot infers that they are looking at it. The persons in group \textit{c} are not looking at the screen since they are either oriented in another direction or outside its area.}
 	\label{fig:spencer-screen_area}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.45]{img/case_study/spencer/robot_area.pdf}
+	\caption[Environment-Based Situation Assessment 2]{The activity area associated to the robot, used as a basis for understanding which users are following.}
+	\label{fig:spencer-robot_area}
 \end{figure}
 
 \section{Task and Motion Planning Problems}
@@ -84,24 +92,24 @@ To guide people in environments like museum or airports, the robot will need to 
 
 A first way to manage this kind of plan is simply travelling to each calculated point, sending a goal to the motion planner for the next point every time the robot reaches its sub-destination. The problem with this approach is that the path followed by the robot might be very inefficient and not look natural.
 
-Our solution was using a rolling window approach, shown in figure~\ref{fig:spencer-rolling_window}, where the motion planner will compute paths on a grid map centered on the robot, which will be updated with its position. In this way, the robot will send the next sub-goal in the calculated plan as soon as it is present in the rolling window, without waiting to reach the previous sub-goal. It is very important, with this approach to carefully select the nodes in the semantic maps so that the rolling window will contain at least two semantic nodes. If not, the motion planner would have to plan a path to a goal outside its grid map, which would generate an error.
+Our solution was using a rolling window approach, shown in figure~\ref{fig:case_study-spencer-rolling_window}, where the motion planner will compute paths on a grid map centered on the robot, which will be updated with its position. In this way, the robot will send the next sub-goal in the calculated plan as soon as it is present in the rolling window, without waiting to reach the previous sub-goal. It is very important, with this approach to carefully select the nodes in the semantic maps so that the rolling window will contain at least two semantic nodes. If not, the motion planner would have to plan a path to a goal outside its grid map, which would generate an error.
 
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[]{img/case_study/spencer/rolling_window.pdf}
 	\caption[Rolling window]{This figure shows the rolling window approach. The motion planner will compute robot paths in the grid represented by the yellow area, which is always centered on the robot. The red line and the red dots represent the sequence of goals calculated by the task planners. Each goal from this path is sent to the motion planner as soon as it is inside the window. The robot path does not pass through the closest node, since there is a further one in the rolling window.}
-	\label{fig:spencer-rolling_window}
+	\label{fig:case_study-spencer-rolling_window}
 \end{figure}
 
 \section{Collaborative Guide Planner }
 \label{sec:spencer-collaborative_guide_planner}
 
-We developed a new collaborative planner to guide users to a destination. The planner is organized as a hierarchic MOMDP, as shown in figure \ref{fig:spencer-guide_planner} and is composed by several models:
+We developed a new collaborative planner to guide users to a destination. The planner is organized as a hierarchic MOMDP, as shown in figure \ref{fig:case_study-spencer-guide_planner} and is composed by several models:
 \begin{itemize}
 \item Guide Group Model. The main MOMDP of the hierarchy, responsible of choosing the main action performed by the robot.
 \item Speed Adaptation Model. This model chooses if the robot should accelerate, decelerate, or keep the current speed.
-\item Suspend Model. This module chooses which actions to execute when the users has stopped following.
+\item Suspend Model. This module chooses which actions to execute when the users has stopped following. 
 \end{itemize}
 
 
@@ -110,65 +118,141 @@ We developed a new collaborative planner to guide users to a destination. The pl
 	\centering
 	\includegraphics[scale=0.45]{img/case_study/spencer/guide_planner.pdf}
 	\caption[Collaborative planner for guiding]{This figure shows the hierarchical MOMDP collaborative planner use to guide a Group. The arrows show the macro-actions of the root of the hierarchy, leading to sub MOMDPs.}
-	\label{fig:spencer-guide_planner}
+	\label{fig:case_study-spencer-guide_planner}
 \end{figure}
 
-\section{Representing a group}
-Our system has been built with the assumption that the robot would navigate in a crowded environment, where its followers could be often occluded. In addition, after speaking with our partners, we understood that the perception components would not be able to maintain a stable identifier for members of the groups, meaning that the robot would not be able to realiably understand if a group of users is following it. We tried to maintain a good balance between accuracy, trying to guide effective users and not people whose which are going in the same direction as the robot, and robustness, copying with unreliable perception.
+\subsection{Representing a group}
+\label{subsec:spencer-group}
+Our system has been built with the assumption that the robot would navigate in a crowded environment, where its followers could be often occluded. In addition, after speaking with our partners, we understood that the perception components would not be able to maintain a stable identifier for members of the groups, meaning that the robot would not be able to reliably understand if a group of users is following it. We tried to maintain a good balance between accuracy, trying to \textit{guide} effective users and not people which are simply going in the same direction as the robot, and robustness, copying with unreliable perception.
+
+
+%%write the observations that we use
 
 We built our collaborative planner following these ideas:
 \begin{itemize}
-\item The robot will record a list $g$ composed by the identifiers of the group at the start of the scenario. During this scenario, it will maintain a list $f$, composed by users that are still tracked whose identifier is in $g$, and another list $o$, composed by all the tracked people whose distance from the robot is less than a costant $d$. 
-\item As long as $f$ is not empty, the robot will choose a \textit{best} follower $b$ from this list, and try to guide him, using the collaborative planner. The \textit{best} follower is chosen by considering the user whose behavior is the most consistent with the robot, by taking into account the speed, distance and orientation of the user.
-\item If $f$ is empty, but $o$ is not, the robot will choose a \textit{best} follower $b$ from $o$, and try to guide him, using the collaborative planners.
+\item The robot will record a list $g$ composed by the identifiers of the group at the start of the scenario. During this scenario, it will maintain a list $f$, composed by users that are still tracked whose identifier is in $g$, and another list $o$, composed by all the tracked people whose distance from the robot is less than a constant $d$. 
+\item As long as $f$ is not empty, the robot will choose a \textit{best} follower $b$ from this list, and try to guide him, using the collaborative planner. The \textit{best} follower is chosen by considering the user whose behavior is the most consistent with the robot, by following a set of rules:
+	\begin{enumerate}
+		\item If there is only one agent $a$ in $f$ so that $a\_isIn=robot\_area$ and $a\_isMoving=true$ AND $a\_isTowardRobot=true$ he is the \textit{best follower}. If there are more agents that satisfy this condition, the \textit{best follower} is the closest to the robot. Our preferable condition for best follower is somebody who is moving toward the robot and staying behind it, as we assume that he is following it.
+		\item If no agent satisfies condition 1, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isTowardRobot=true$ he is the \textit{best follower}. If there are more agents that satisfy this condition, the \textit{best follower} is the closest to the robot. If there is no one that is moving toward the robot, we choose an agent that is not moving but still behind it and oriented toward it, as he could just have stopped for some moments before resuming following.
+		\item If no agent statisfies condition 1 or 2, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isMoving=false$ AND $a\_isTowardRobot=false$ he is the \textit{best follower}. If the previous conditions are not statisfied, we choose an agent that is not moving, behind the robot, and not oriented toward it. There could be humans that have stopped following and are speaking between themselves, or looking at a screen.
+		\item otherwise, \textit{the best follower} is the closest to the robot.
+	\end{enumerate}
+\item If $f$ is empty, but $o$ is not, the robot will choose a \textit{best} follower $b$ from $o$, by following the rules that we just introduced (substituting $f$ for $o$). If the robot has lost track of its group, it will try guiding other persons that have a behavior consistent with that of a follower.  
 \item If  both $f$ and $o$ are empty, the robot will abandon the task.
 \end{itemize}
 
-Our idea is considering that the robot's followers will \textit{act as a group}, staying together as much as they can. The robot will try to guide members of the group, but if it has lost tracking of all of them, and there is still somebody behind it which is acting in a consistent way with the guiding task, it will think that its users are still following it, but their identifiers have changed in the perception layer.
+Our idea is considering that the robot's followers will \textit{act as a group}, staying together as much as they can. The robot will try to guide members of the group, but if it has lost tracking of all of them, and there is still somebody behind it which is acting in a consistent way with the guiding task, it will think that its users are still following it, but their identifiers have changed in the perception layer. We represent this idea by tracking every user, even those whose identifier was not in $g$, that are closer to the robot than a constant $d$.  This constant was set as 8 meters after performing experiments in three different environments: our laboratory, a university hall, and the airport. 
 
 
-\subsection{Guiding a User}
-The main problem of the robot is choosing if it should still guide the group, suspend temporarily the task, or abandon it. The Guide Model is the root MOMDP of our architecture and will make this decision, based on three main variables: 
+\subsubsection{Guiding a User}
+The main problem of the robot is choosing if it should still guide the group, suspend temporarily the task, or abandon it. The Guide Model is the root MOMDP of our architecture and will make this decision. We will describe this model, which is based on the Collaborative Planners basic framework introduced in section~\ref{sec:task_execution-collaborative_planners}.
+
 \begin{itemize}
-\item The status of advancement of the task. This variable, whose values are \textit{\{not\_completed, completed\}}, is set by the Action Executor module, in the Execution Management layer, depending on the current advancement of the task. The variable will be set as $not\_completed$ until the robot as reached the final destination in the plan. 
-\item The quality of commitment of the group. This variable, whose values are \textit{\{not\_engaged, engaged, not\_interested\}}, is hidden, estimated from observations produced by the Situation Assessment layer. The observations used are: the distance of the user from the robot, its variation, the orientation of the user in respect of the  robot, and if the user is currently moving or still. We expect engaged users to have a behavior that is coherent with the task, moving to follow the robot and taking a similar path. Users are considered not engaged when they stop following, perhaps even disappearing from the robot's sight. Finally, we infer that users are not interested in following the robot if they have been \textit{not\_engaged}  for too long.
-\item A timer. This variable can assume the values \textit{\{not\_expired, expired\}}. When a user is detected as $not\_engaged$, the Action Executor starts a timer. When this timer expires, the value of this variable is set accordingly.
+	\item $S_h:\{human\_commitment\}$.
+		The hidden variable, and its values, follow the basic framework for the Collaborative Planners..
+	\item $S_o:\{task\_advancement\, timer\}$.
+		\begin{itemize}
+			\item $value(task\_advancement)=\{not\_completed,completed\}$.
+			\item $values(timer)=\{not\_expired,expired\}$.
+		\end{itemize}
+
+		The state variables are similar to the basic framework. We task advancement contains only two values: \textit{not\_completed} and \textit{completed}. When this model is invoked we assume that the group will already have set a goal and \textit{committed} to perform the joint task.
+		The Task Executor will keep track of the location of the robot, and set the task as \textit{completed} when the goal is reached.
+		We introduce a timer variable, as used in the Handover Collaborative Planner (shown in section~\ref{sec:task_execution-handover}), that is controlled by the Task Executor. The idea behind this choice is that we do not want the robot to be stuck waiting for users for too long. This timer was set at 30 seconds in the Task Executor, after experimenting with different values in our tests.
+
+	\item $A:\{continue,wait,abandon,\}$.
+
+		These three actions follow the same idea as the basic framework, but, in this case, the $continue$ and $wait$ actions are actually macros, which invoce, respectively, the Speed Adaptation Model and Suspend Model. There is no action to $engage$ users. The robot will provide information (visualizing what it is currently doing and the time needed to reach the goal) at all time using routines in the Supervision System.
+		The robot will $abandon$ the task when it is completed or when users have abbandoned it.
+
+	\item $O:\{delta\_distance,distance,orientation,is\_moving\}$.
+		\begin{itemize}
+			\item $values(delta\_distance)=\{decreasing,stable,increasing\}$.
+			\item $values(distance)=\{close,far,outOfRange\}$.
+			\item $values(orientation)=\{unknown,towardRobot,other\}$.
+			\item $values(is\_moving)=\{unknown,notMoving,moving\}$.
+			\item $values(in\_robot\_area)=\{true,false\}$.
+		\end{itemize}
+
+		The group engagement is estimated through observations, obtained from the \textit{best follower} (as explained in the previous section). Our observations are the \textit{delta\_distance} of the user (e.g. the variation of the distance) to the robot, its distance to the robot, its orientation, and if he is moving or still. When there is no \textit{best follower}, these values are \textit{unknown}.
+
+		We chose the values \textit{close}, \textit{far}, \textit{outOfRange} from experimental studies. We consider the user as \textit{close} if his distance is less than 4 meters, as \textit{far} if its less than 8 meters, and as \textit{outOfRange} otherwise.
+
+		We imagine that a user is engaged if we detect that he is following the robot, meaning that he is moving in its same direction, he is behind the robot, and he is not too far from it.
+
+	\item  $R$: the robot receives a reward for completing a task, for waiting for not enaged users, and for continuing if the user is engaged and the task is not finished.
 \end{itemize}
 
-The Guide Model can execute the following actions:
-\begin{itemize}
-\item $Continue$. A macro-action, which leads to the Speed Adaptation Model.
-\item $Wait$. A macro-action, which leads to the Suspend Model.
-\item $Abandon$. Signals the Action Executor to abandon the current task.
-\end{itemize}
 
-\subsection{Adapting the Robot's Speed}
+\subsubsection{Adapting the Robot's Speed}
 We believe that to be socially acceptable, the robot should adapt its speed to his follower. By setting its own pace at the start of the scenario the robot  would risk of being too slow, annoying users, or too fast, which would lead the robot to constantly stop to wait for users, producing an awkward behavior. Adapting to users might not be enough in some tasks, and, depending on the situation, the robot might desire to influence the behavior of its follower, to respect social rules or to accomplish its task in a more efficient way. Its important to find a balance between these two behaviors, which is the goal of the Speed Adaptation Module. 
 
 To adapt to the speed of the group, the robot defines a desired range of distances $[dr_1,dr_2]$ from the best follower $b$. The distance of $b$ from the robot, $d(b,r)$ will influence the chosen action:
 \begin{itemize}
-\item if $d(b,r)>dr_2$  the model will influence the robot to \textit{decelerate}.
 \item if $d(b,r)<dr_1$ the model will influence the robot to \textit{accelerate}.
+\item if $d(b,r)>dr_2$  the model will influence the robot to \textit{decelerate}.
 \item if $dr_1<d(b,r)<dr_2$ the model will influence the robot to maintain its current speed.
 \end{itemize} 
 
-In our study, $dr_1$ and $dr_2$ were predefined values, but they could be learnt and adapted to the users during the task, since different people could prefer following the robot at different distances and positions.
+In our study, $dr_1$ and $dr_2$ were predefined values, but they could be learnt and adapted to the users during the task, since different people could prefer following the robot at different distances and positions. During our experiments at the airport, we set these values as 1.5 meters, and 4 meters.
 
-The robot should also not constantly change speed, in order to give time to users to adapt to its new chosen speed, and so we defined a temporal threshold in which we do not allow the robot to repeat an \textit{accelerate} or \textit{decelerate} action.
+The robot should also not constantly change speed, in order to give time to users to adapt to its new chosen speed, and so we defined a temporal threshold $t$ in which we do not allow the robot to repeat an \textit{accelerate} or \textit{decelerate} action.
 
+The robot changed its speed in increments or decrements of a constant $s$ , in meter for seconds. In our preliminary studies at the airport, we tested several constants for $t$ and $s$, and found that increments of 0.1 $m\/s$ and a threshold of 1.5 seconds showed the best behavior for the robot. The starting, minimum and maximum speed of the robot where selected, again, with experimental studies, based on the confort and interest of users surrounding the robot, and of the opinions of the research team. The starting speed was selected as 1 $m\/s$, the maximum as 1.3 $m\/s$, and the minimum as 0.7 $m\/s$. The Task Executor will ignore any command to accelerate when it has already reached the maximum speed, and any command to decelerate when it as reached the minimum speed.
+  
 We studied two different situations where the robot can proactively try to influence the speed of the group.
 \begin{itemize}
 \item There is a time limit to reach the destination. In this case the robot must balance the desire to satisfy the group with the task urgency. Different situations will require different policies. For example, in an airport scenario, the robot could prioritize arriving on time, warning users if their speed would render the goal not achievable, while in other situations the robot could try to arrive in time but still avoid to adopt speeds that are uncomfortable for the group.
 \item The rules of the current environment limit the robot's speed. In this case the robot will avoid accelerating over a set speed even if it detects that its current velocity is considered too slow for the group. For example, the robot could be navigating in a construction zone.
 \end{itemize}
 
-\subsection{Suspending the task}
+We present a MOMDP model to implement these ideas:
+
+\begin{itemize}
+	\item $S_h:\{human\_intention\}$.
+		\begin{itemize}
+			\item $value(human\_intention)=\{slow\_down, maintain\_speed, accelerate\}$.
+		\end{itemize}
+	\item $S_o:\{task\_urgency\}$
+		\begin{itemize}
+			\item $value(task\_urgency)=\{normal,high\}$.
+			\item $value(environment\_limit)=\{false,true\}$.
+		\end{itemize}
+		The hidden variable of this model is the human intention, which can be to slow down, to maintain the current speed, or to accelerate.
+
+		We introduce the observed variable representing the urgency of the task. Depending on this value, the system might decide to propose a new speed without limiting only to adapt to the human's desires.
+
+		The \textit{environment\_limit} variable also informs the robot, when \textit{true}, that it has reached the speed limit for the current environment (i.e. costruction zone, has explained before) and should not accelerate.
+	
+	\item $A:\{accelerate,decelerate,continue\}$.
+	\item $O:\{highest\_density,in\_slow\_area\}$.
+		\begin{itemize}
+			\item $value(highest\_density)=\{behind,accelerate\_area\}$.
+			\item $values(in\_slow\_area)=\{false,true\}$.
+		\end{itemize}
+
+		When we designed this model, we envisioned the possibility of guiding with a realiable perception, knowing the identifiers of the members of the group, and thinking that these identifiers would be stable over the course of the scenario. 
+
+		We introduced an observation related to the distribution of the location of the members of the group. This observation can assume the value \textit{accelerate\_area} if the majority of the members of the group are closer than $d_1$ to the robot, or \textit{behind} otherwise. We also introduced the observation \textit{in\_slow\_area}, which assumes the \textit{true} value if there is any member of the group at a distance from the robot higher than $d_2$.
+
+		The idea of this choice is the following: if the majority of the members of the group would prefer a higher speed, the group intention is more likely to be $accelerate$. If even a single person would prefer to slow down, we consider the group intention as $decelerate$. This choice was made because we believe that the robot's priority, when adapting to users' needs, should be to guide the \textit{whole} group to the end. So, if a member of the group would prefer slowing down, because perhaps he is having trouble following, the robot will think that the whole group wants to \textit{decelerate}.
+
+		In reality, as explained, we used the idea of \textit{best follower} to cope with perception limits. In this case, the \textit{highest\_density} observation will simply depend on the distance of the \textit{best follower}.
+
+	\item  $R$: We can imagine different policies for this problem. In the airport scenario, we chose to have our robot simply adapt to to users needs. In this case, the robot will obtain a reward for respeting the \textit{best follower}'s intention (e.g. $accelerate$ when the intention inferred is $accelerate$, etc.). 
+
+	If we would like the robot to have a proactive behavior and propose speed depending on the task need, the robot receives a reward if he \textit{accelerates} when the task priority is \textit{high} and the group's intention is different from \textit{slowing down}.
+
+\end{itemize}
+
+
+
+\subsubsection{Suspending the task}
 In some situation, the robot needs to suspend the task, because the group has stopped following it. In this case, the robot should estimate if this suspension of the collaborative scenario is temporary or permanent, and in the latter case abandon the task. We estimate this information using the Suspend Model and the activity areas from Situation Assessment. We link activity areas to the maximum time we expect that the group will be involved in the linked activity, and with a set of proactive actions that the robot can choose to execute.
 
 In our work, we investigated a single possible proactive behavior: giving information. In this case, if we detect that one or more  members
 of the group has stopped following because it is looking at a touristic sight, or at an information screen, the robot can try to engage him and offer related information. At the moment, we just propose a simple routine-based framework for this behavior, and plan to further study it in the future. We believe that the solution of this problem could be rich, and that the robot should estimate the reaction of the group during the execution of its proactive behavior, in order to be able to interrupt if the group does not want to be helped or to resume the original task if they are satisfied by the robot's actions.
 
 We do not want the robot to be inactive for a long time  waiting for the group. If there is a small amount of time to reach the destination, or the group is engaged in the activity for a longer period of time than the one predicted, or the robot can not estimate the reason why the group stopped following, the Suspend Model can issue a warning action, and eventually abandon the task if the group does not start following it again.
-
-
 

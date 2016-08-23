@@ -5,9 +5,11 @@
 \lhead{Chapter 11. \emph{Experiments and Results}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
 
+In this chapter, we presents our experiments and results for the human-aware robot guide case study. Section~\ref{sec:spencer-lab_experiments} shows preliminary experiments performed in our laboratory, while section~\ref{sec:spencer-airport} show the real case study in the airport.
+
 
 \section{Laboratory Experiments and Analysis}
-\label{subsec:case_study-spencer-lab_experiments}
+\label{sec:spencer-lab_experiments}
 
 To have a first validation of our system, we performed experiments in a laboratory.
 
@@ -22,8 +24,8 @@ In this setting, we used Motion Capture to track users, and a navigation softwar
 
 We performed experiments with a single user following a robot on a predefined path. Data from these experiments are shown in table \ref{table:case-study-spencer-experiment_results} and in figure \ref{fig:case_study-spencer-exp_lab_result}. We start by showing speed adaptation tests:
 \begin{itemize}
-\item \textit{Adapting slow and fast}. In these two tests (figure \ref{fig:case_study-spencer-robotGuiding}) we used our system to guide respectively a user that would like to move at a slow pace, and a user that would like to move at a fast speed.
-\item \textit{No adaptation}. In this experiments the robot will not adapt to the speed of the user, setting its own pace and stopping if it is too far.
+\item \textit{Adapting slow and fast}. In these two tests (figure \ref{fig:case_study-spencer-robotGuiding}) we asked a user to follow the robot at a pace that he considered \textit{slow}, and at a pace that he considered \textit{fast}. The robot had to guide this user by adapting to his speed.  
+\item \textit{No adaptation}. In this experiments we asked a user to follow the robot at the speed that he prefers. The robot will not adapt to the speed of the user, setting its own pace and stopping if the user is too far.
 \end{itemize}
 
 Looking at the data we can see that our system shows lower values for the variance of speed and distance, which means that after a certain time it is able to find a condition of equilibrium with the human follower. The \textit{no adaptation} system shows a significantly higher variance for both values, since the robot stopped several times to wait for a user. We will now show some tests regarding the proactive behaviors of the robot:
@@ -65,8 +67,8 @@ b) Adapting robot speed to a fast user. As before, the figures show the robot an
 \end{figure}
 
 \section{Results on Airport Deployment}
-\label{subsec:case_study-spencer-airport}
-\subsubsection{Integration with Other Components}
+\label{sec:spencer-airport}
+\subsection{Integration with Other Components}
 The system was deployed in the Schiphol Airport for two different sessions, respectively of a week and of two weeks. In those weeks the team of the SPENCER project adapted the robot to the complex environment of the airport. Our system was integrated with several softwares from our partners, such as a combined laser-RGB people tracker, developed in \cite{lindermulti}, a novel localization approach, shown in \cite{kucner2015ndt}, a RTT based motion planner, shown in \cite{palmierirrt}, and cost-based social rules, introduced in \cite{okallearning}. More details on the whole SPENCER system are available in \cite{triebel2015spencer}.
 
 
@@ -116,7 +118,7 @@ Figure~\ref{fig:feedback_questionnaire} shows the results of the feedback questi
 \begin{itemize}
 \item Participants were generally happy with the robot's guiding performance.
 \item The robot can be described as friendly-looking, easy-to-use and reliable.
-\item The main issues encountered by users where related to the boarding card reader of the robot, and to its frequent abrupt stoppings.
+\item The main issues encountered by users where related to the boarding card reader of the robot, and to its frequent abrupt stoppings, caused often by false positive obstacles by the perception software. These false positives where caused by the complex conditions of light, and by the many reflective surfaces in the airport.
 \item Some users considered the speed of the robot too fast, or too slow, for their experience.
 \item Users thought that the robot guide could be useful for people inexperience with flying, or new to a particular airport.
 \item Users thought that the robot improved their customer satisfaction.
@@ -129,5 +131,5 @@ The experience in the airport showed the complexity of deploying a robot in such
 \item It is important to not make too many assumption about how users will interact with the robot. We expected users to follow the robot, staying mostly on its rear or side regions. This was not always true. In fact, several users were more interested in moving ahead of the robot, often concentrating on its behaviors more than on following it. The robot should adapt to these behaviors and not consider them as errors.
 \item Human-Aware motion in complex environments is still a hard problem. Adapting the robot's speed was not simple, because the robot had stop or slow down often to avoid obstacles. Some times false positives generated by perception can lead to abrupt stops by the robot, which are seen as annoying and unnatural by users, and could even be dangerous.
 \item Users are fascinated by robots, and are willing to ignore errors generated by the systems in short-term experiences.
-\item It is important to perform long deployments in similar scenarios with real users. A long time in the three weeks where we worked at the airport was spent adapting the robot to the scenario. Longer deployments would allow for an iterative process of design-implementation-study.
+\item It is important to perform long deployments in similar scenarios with real users. In the three weeks where we worked at the airport, many days were spent adapting the robot to the scenario. Longer deployments would allow for an iterative process of design-implementation-study.
 \end{itemize}
