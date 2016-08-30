@@ -12,7 +12,7 @@ In this appendix, we introduce the main methods used in our work. Section~\ref{s
 \label{sec:methods-mdp}
 A MDP models the decision process of an intelligent agent that needs to act in an environment where the results of its actions is partly random. MDPs are a well known and actively researched topic in artificial intelligence, with several applications, like reinforcement learning.
 
-Formally a MDP is a tuple $S,A,T,R$, where: 
+Formally a MDP is a tuple $(S,A,T,R)$, where: 
 \begin{itemize}
 \item $S$ is the system state.
 \item $A$ is the set of actions that the agent can execute.
@@ -49,7 +49,7 @@ Sub-Tasks can only be executed in a subset $S_t$ of the state space $S$, and ter
 
 Special care must be taken to compute the hierarchical transition and reward functions, since the sub-tasks can take several time-steps to be completed. Several ways have been studied to compute these functions, like the MAXQ algorithm, presented in \cite{dietterich2000hierarchical}, and solving a set of linear systems of equations, as shown in \cite{hauskrecht1998hierarchical}.
 
-If the state space of the sub-MDPs is limited, hierarchical models be very efficient. In hierarchical models, the flow of information is bottom-up, and the decisions taken at lower levels of the hierarchy are independent of the higher-level goal to be achieved. This leads the policies to be recursively optimal, and not hierarchically optimal, meaning the sub-models might choose actions that are not optimal to achieve the global goal.
+If the state space of the sub-MDPs is limited, hierarchical models can be very efficient. In hierarchical models, the flow of information is bottom-up, and the decisions taken at lower levels of the hierarchy are independent of the higher-level goal to be achieved. This leads the policies to be recursively optimal, and not hierarchically optimal, meaning the sub-models might choose actions that are not optimal to achieve the global goal.
 
 \section{Partially Observale Markov Decision Processes}
 \label{sec:methods-pomdp}

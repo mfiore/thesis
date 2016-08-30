@@ -11,21 +11,19 @@ In this chapter, we presents our experiments and results for the human-aware rob
 \section{Laboratory Experiments and Analysis}
 \label{sec:spencer-lab_experiments}
 
-To have a first validation of our system, we performed experiments in a laboratory.
-
-In this setting, we used Motion Capture to track users, and a navigation software based on \cite{sisbotTRO2007,kruse12crossing}. This software add proxemics based costs to static humans in the environment, continuously predicting and avoiding future collisions with moving persons, while  simultaneously keeping the robot as close as possible to the planned path.
+To have a first validation of our system, we performed experiments in a laboratory. In this setting, we used motion capture to track users and a navigation software based on \cite{sisbotTRO2007,kruse12crossing}. This software add proxemics based costs to static humans in the environment, continuously predicting and avoiding future collisions with moving persons, while  simultaneously keeping the robot as close as possible to the planned path.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[scale=0.2]{img/case_study/spencer/robotGuiding.png}
-	\caption[Robot Guide laboratory experiment]{This figure shows the SPENCER robot guiding a user in a laboratory}
+	\caption[Guiding a user in the laboratory]{This figure shows the SPENCER robot guiding a user in a laboratory.}
 	\label{fig:case_study-spencer-robotGuiding}
 \end{figure}
 
 We performed experiments with a single user following a robot on a predefined path. Data from these experiments are shown in table \ref{table:case-study-spencer-experiment_results} and in figure \ref{fig:case_study-spencer-exp_lab_result}. We start by showing speed adaptation tests:
 \begin{itemize}
 \item \textit{Adapting slow and fast}. In these two tests (figure \ref{fig:case_study-spencer-robotGuiding}) we asked a user to follow the robot at a pace that he considered \textit{slow}, and at a pace that he considered \textit{fast}. The robot had to guide this user by adapting to his speed.  
-\item \textit{No adaptation}. In this experiments we asked a user to follow the robot at the speed that he prefers. The robot will not adapt to the speed of the user, setting its own pace and stopping if the user is too far.
+\item \textit{No adaptation}. In this experiments we asked a user to follow the robot at the speed that he prefers. The robot did not adapt to the speed of the user, setting its own pace and stopping if the user is too far.
 \end{itemize}
 
 Looking at the data we can see that our system shows lower values for the variance of speed and distance, which means that after a certain time it is able to find a condition of equilibrium with the human follower. The \textit{no adaptation} system shows a significantly higher variance for both values, since the robot stopped several times to wait for a user. We will now show some tests regarding the proactive behaviors of the robot:
@@ -98,9 +96,9 @@ The system was tested in a user study, performed by researchers of the Universit
 
 At the end of each test, we collected three different kind of measures:
 \begin{enumerate}
-\item An individual feedback questionnaire where the users evaluated several aspects of the robot, like its behavior and aspect, on a 7-point Likert scale. In the day of testing two new questions where introduced about the robot, and a question on the participant's opinion on the robot in general.
+\item An individual feedback questionnaire where the users evaluated several aspects of the robot, like its behavior and aspect, on a 7-point Likert scale. In the second day of testing two new questions where introduced about the robot, and a question on the participant's opinion on the robot in general.
 \item A group interview, where users could discuss about their first impression of the robot, their experience in the test, and their thoughts on how to improve the systemm.
-\item  Notes taken by researchers during guide, that helped to contextualize the results of users and to record specific events that occurred during tests.
+\item  Notes taken by researchers during the test, that helped to contextualize the results of users and to record specific events that occurred during the guidance.
 \end{enumerate}
 
 
@@ -126,10 +124,11 @@ Figure~\ref{fig:feedback_questionnaire} shows the results of the feedback questi
 \end{itemize}
 
 \subsection{Discussion}
+\label{subsec:spencer_results-discussion}
 The experience in the airport showed the complexity of deploying a robot in such a complex scenario, interacting with inexperienced users. From our experiments we noticed several things:
 \begin{itemize}
-\item It is important to not make too many assumption about how users will interact with the robot. We expected users to follow the robot, staying mostly on its rear or side regions. This was not always true. In fact, several users were more interested in moving ahead of the robot, often concentrating on its behaviors more than on following it. The robot should adapt to these behaviors and not consider them as errors.
-\item Human-Aware motion in complex environments is still a hard problem. Adapting the robot's speed was not simple, because the robot had stop or slow down often to avoid obstacles. Some times false positives generated by perception can lead to abrupt stops by the robot, which are seen as annoying and unnatural by users, and could even be dangerous.
-\item Users are fascinated by robots, and are willing to ignore errors generated by the systems in short-term experiences.
-\item It is important to perform long deployments in similar scenarios with real users. In the three weeks where we worked at the airport, many days were spent adapting the robot to the scenario. Longer deployments would allow for an iterative process of design-implementation-study.
+\item \textbf{It is important to not make too many assumption about how users will interact with the robot}. We expected users to follow the robot, staying mostly on its rear or side regions. This was not always true. In fact, several users were more interested in moving ahead of the robot, often concentrating on its behaviors more than on following it. The robot should adapt to these behaviors and not consider them as errors.
+\item \textbf{Human-Aware motion in complex environments is still a hard problem}. Adapting the robot's speed was not simple, because the robot had stop or slow down often to avoid obstacles. Some times false positives generated by perception can lead to abrupt stops by the robot, which are seen as annoying and unnatural by users, and could even be dangerous.
+\item \textbf{Users are fascinated by robots}, and are willing to ignore errors generated by the systems in short-term experiences.
+\item \textbf{It is important to perform long deployments in similar scenarios with real users}. In the three weeks where we worked at the airport, many days were spent adapting the robot to the scenario. Longer deployments would allow for an iterative process of design-implementation-study.
 \end{itemize}

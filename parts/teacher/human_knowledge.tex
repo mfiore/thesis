@@ -1,12 +1,12 @@
-\chapter{Adapting Plan Generation to Human Knowledge} % Main chapter title
+\chapter{Adapting Plan Management to Human Knowledge} % Main chapter title
 
-\label{chapter:plan_execution} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{chapter:knowledge} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 
 
 \lhead{Chapter 8. \emph{Human Knowledge}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
   
-In this chapter we show how we use human knowledge to adapt the plan explanation and managent capacities of our system. Section~\ref{sec:knowledge-intro} introduces the subject, while section~\ref{sec:knowledge-overview} explains the basics of our approach to model knowledge. Section~\ref{sec:knowledge-adapting_knowledge} show how human knowledge can be used to adapt the planning capacities of HATP. Finally, sections~\ref{sec:knowledge-plan_presentation} and \ref{sec:knowledge-plan_management} respectively explain how the robot can explain plans in a human-aware way, by taking into account the knowledge of the human, and how it can guide the human in the execution of the task, by modifying our plan management algorithm.
+In this chapter we show how we use human knowledge to adapt the plan explanation and managent capacities of our system. Section~\ref{sec:knowledge-intro} introduces the subject, while section~\ref{sec:knowledge-overview} explains the basics of our approach to model knowledge. Section~\ref{sec:knowledge-adapting_knowledge} shows how human knowledge can be used to adapt the planning capacities of HATP. Finally, sections~\ref{sec:knowledge-plan_presentation} and \ref{sec:knowledge-plan_management} respectively describe how the robot can explain plans in a human-aware way, by taking into account the knowledge of the human, and how it can guide the human in the execution of the task, by modifying our plan management algorithm.
 
 
 \section{Introduction}
@@ -14,13 +14,13 @@ In this chapter we show how we use human knowledge to adapt the plan explanation
 
 In section~\ref{subsec:plan_management-robot_leader} we introduced a simple algorithm to explain a plan to a user. The problem of explaining a plan in a `naive way', by simply verbalizing all of its actions, is that the explanation can be long and not interesting. 
 
-Let us imagine a robot explaining a human a plan how to change the tires of a car. The robot could start by telling the human how to loosen the nuts of a wheel. It could tell the human to take a wrench, to apply it to a nut, and to turn it counter-clockwise. The human will need to loosen several nuts. If for each nut the robot will explain the user again to apply the wrench and turn it counter-clockwise the explanation will be much longer than what is needed. Imagine, the robot explaining every single small operation of a large plan. The result could be a nightmare for the human! A more natural way to teach this task would be explain how to loosen the first nut, and then just ask the human to loosen the others, without explaining again the process.
+Let us imagine a robot explaining a human how to change the tires of a car. The robot could start by telling the human how to loosen the nuts of a wheel. It could tell the human to take a wrench, to apply it to a nut, and to turn it counter-clockwise. The human will need to loosen several nuts. If for each nut the robot will explain the user again to apply the wrench and turn it counter-clockwise, the explanation will be much longer than what is needed. Imagine the robot explaining every single small operation of a large plan. The result could be a nightmare for the human! A more natural way to teach this task would be explain how to loosen the first nut, and then just ask the human to loosen the others, without going in-depth in each operation.
 
-This idea is validated by research on Intelligent Tutoring Systems \cite{brusilovskiy1994construction}  and on e-learning \cite{brusilovskiy2005}, which has proven  the necessity of keeping and updating a model of the learner's knowledge to efficiently teach a task.
+This idea is validated by research on Intelligent Tutoring Systems \citep{brusilovskiy1994construction}  and on e-learning \citep{brusilovskiy2005}, which has proven  the necessity of keeping and updating a model of the learner's knowledge to efficiently teach a task.
 
-This idea has still not been widely investigated in robotics. \cite{Sorce2015} show a system where the robot can learn shared plans from a human, and then transfer this knowledge to non-expert humans. The explanations of the robot are joined by a video representing what the robot perceived when it learnt the task, to give more information to the human.
+This idea has still not been widely investigated in robotics. \cite{Sorce2015} show a system where the robot can learn shared plans from a human, and then transfer this knowledge to non-expert humans. The explanations of the robot are joined by a video, representing what the robot perceived when it learnt the task, to give more information to the human.
 
-Even when the robot is a coworker, and not a teacher, research \citep{Lallee2013} suggests that joint plans should be fully communicated in order to sustain effective collaboration. The preferred method of communication in complex tasks is usually language \citep{Warneken2006,Warneken2007}.
+Even when the robot is a coworker, and not a teacher, research \citep{Lallee2013} suggests that collaborative plans should be fully communicated in order to sustain effective cooperation. The preferred method of communication in complex tasks is usually language \citep{Warneken2006,Warneken2007}.
 
 In the following sections, we will present our approach, where we adapt plan explanation and management to the knowledge of users.
 
@@ -37,9 +37,9 @@ In the following sections, we will present our approach, where we adapt plan exp
 \section{Overview}
 \label{sec:knowledge-overview}
 \subsection{Modeling Knowledge}
-Before explaining our algorithms, we introduce a new attribute among our symbolic facts (as explained in ~\ref{sec:belief_management-overview}): the knowledge of a human in a task.
+Before explaining our algorithms, we introduce a new attribute (as explained in ~\ref{sec:belief_management-overview}) among our symbolic facts: the knowledge of a human in a task.
 
-This attribute is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this attribute, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix\_wheel, car, expert)$. 
+This attribute is represented as a tuple $(human, task, parameters, value)$, where $human$ is a string identifying the subject of this attribute, $task$ is the name of the related task, $parameters$ is a list of relevant parameters used to describe the knowledge in the task, and $value$ is the level of knowledge in the task. Knowledge values can be assigned from the set $[new, beginner, intermediate, expert]$.  For example, we can represent the fact that Bob knows very well how to fix a wheel to a car with the tuple $(Bob, fix\_wheel, car, expert)$. 
 
 Parameters can be deeply linked to the knowledge of a task. In general, we can divide task parameters in two categories:
 \begin{itemize}
@@ -64,9 +64,9 @@ Using the knowledge of a task of a human, the system is able to adapt plan gener
 
 
 \subsection{Architecture}
-This process was implemented by integrating a new module in the Plan Management layer's architecture, presented in chapter~\ref{chapter:plan_management}, which we called ``Plan Explanation". This module receives as input a shared plan, from the Plan Manager, and the current knowledge of the humans involved in the plan, from the Situation Assessmen layer. With these information, it will produce a plan. Information about human's knowledge will be used also by the Plan Manager module to adapt the plan manager algorithm, as we will explain in the following sections.
+This process was implemented by integrating a new module in the Plan Management layer's architecture, presented in chapter~\ref{chapter:plan_management}, which we called `Plan Explanation'. This module receives as input a shared plan, from the Plan Manager, and the current knowledge of the humans involved in the plan, from the Situation Assessmen layer. With these information, it will adapt the knowledge of users to explain the shared plan. Information about human's knowledge will be used also by the Plan Manager module to adapt the plan management algorithm, as we will explain in the following sections.
 
-The modified architecture of the Plan Management layer is shown in figure~\ref{fig:knowledge-knowledge_architecture}.
+The modified architecture of the Plan Management layer is shown in figure~\ref{fig:knowledge-knowledge_architecture}. This work was presented in~\cite{milliez2016using}.
 
 \afterpage{\clearpage}
 \begin{sidewaysfigure}[ht!]
@@ -81,7 +81,7 @@ The modified architecture of the Plan Management layer is shown in figure~\ref{f
 \label{sec:knowledge-adapting_knowledge}
 When interacting with humans, it is important to take into account others' knowledge and capacities when planning. We consider two different policies for our planner: $teaching$, where the planner will look for plans not known to the human, in order to teach him different ways to achieve a task; and \textit{efficiency}, where the robot will try to maximize the number of human tasks known when creating a plan. These ideas were represented as social rules.
 
-To illustrate our planner and the new social rule let us consider an example where a human and a robot have to cook an apple pie. We can consider all the basic actions of this domain (pick, place, cut, etc.) as \textit{common knowledge}, but the human might not know how to perform all the higher level tasks involved. If our policy favors \textit{teaching}, 
+To illustrate these new social rules let us consider an example where a human and a robot have to cook an apple pie. We can consider all the basic actions of this domain (pick, place, cut, etc.) as \textit{common knowledge}, but the human might not know how to perform all the higher level tasks involved. If our policy favors \textit{teaching}, 
 the plan should should choose a decomposition with tasks where the human has a low knowledge level. On the other hand, if our policy is \textit{efficiency} the planner should allocate to the human tasks where he is more competent, so that explanations and mistakes are reduced. Using this rule, the robot is able to adapt its plan generation to the knowledge of the user concerning tasks contained in the shared plan. In figure \ref{fig:knowledge-adapting_plan_knowledge} we show an example of plan adaptation for this task with the two policies, using the mental model in table \ref{table:knowledge-apple_pie_human_knowledge}
 
  
@@ -110,13 +110,13 @@ Bake(Mould) & Intermediate \\
 \begin{figure}[ht!]
  \centering
   \includegraphics[scale=0.5]{img/teacher/adapting_plan_knowledge.pdf}
- \caption[Allocation of tasks of a plan to cook an Apple Pie for two agents]{Allocation of tasks of a plan to cook an Apple Pie for two agents, a robot and a human, using the knowledge values in table \ref{table:knowledge-apple_pie_human_knowledge}. A) shows an \textit{efficiency} policy for this task, while b) shows a \textit{teaching} policy for the same task. Blue ellipses represent tasks involving both agents, green ellipses represent tasks assigned to the human, and yellow ellipses tasks assigned to the robot. Each decomposition is grouped in a blue rectangle. Black arrows link a method to its decomposition, while blue arrows represent casual links. Squares with a "..." label represent decompositions that are not shown in this picture.}
+ \caption[Allocation of tasks of a plan to cook an Apple Pie for two agents]{Allocation of tasks of a plan to cook an Apple Pie for two agents, a robot and a human, using the knowledge values in table \ref{table:knowledge-apple_pie_human_knowledge}. A) shows an \textit{efficiency} policy for this task, while b) shows a \textit{teaching} policy for the same task. Blue ellipses represent tasks involving both agents, green ellipses represent tasks assigned to the human, and yellow ellipses tasks assigned to the robot. Each decomposition is grouped in a blue rectangle. Black arrows link a method to its decomposition, while blue arrows represent casual links. Squares with a `...' label represent decompositions that are not shown in this picture.}
  \label{fig:knowledge-adapting_plan_knowledge}
  \end{figure}
 
 
 
-To properly compute the cost of a plan, the planner will also upgrade accordingly the knowledge of a task once it is added to the plan. This allows the \textit{efficiency} policy to prefer plans with repetitive decompositions, that are assigned to the same user, over plans with more variable decomposition, where repetitive tasks are assigned to different agents.
+To properly compute the cost of a plan, the planner will also upgrade accordingly the knowledge of a task once it is added to the plan. This allows the \textit{efficiency} policy to prefer plans with repetitive decompositions, that are assigned to the same user, over plans with more variable decompositions, where repetitive tasks are assigned to different agents.
 
 % The planner can receive information produced from a dialog system that allows to negotiate plans, as explained in section \ref{sec:plan_management-negotiation}. Using this system, the preference and abilities of users are recorded in the Situation Assessment layer. 
 % If a user is not able to perform a certain task, the planner will never chose this action for him. If he user prefers to perform, or not to perform, a specific task, the planner will update the cost functions accordingly with a reward or penality to assign that task to him.
@@ -125,7 +125,7 @@ To properly compute the cost of a plan, the planner will also upgrade accordingl
 \section{Plan Presentation}
 \label{sec:knowledge-plan_presentation}
 Before executing the plan, the robot will present the goal and the proposed allocation of high-level tasks to give a global view of the chosen strategy. Standard natural language generation is used, as shown in table \ref{table:knowledge-pie-present}. 
-In some situations, the plan will be too long to explain it in one step to a user, which could then be confused or annoyed. For this reason, when presenting the plan, the robot will verbalize only the first $N$  highest level tasks. We have chosen $N$=$3$ based on our own experience during tests with the system, but we can imagine to adapt it to the complexity of the domain, or even to specific users. The robot will present the first steps of the plan, and then execute them. Once these tasks have been executed, the robot will repeat the present/execute process until the plan is completed or aborted.
+In some situations, the plan will be too long to explain it in one step to a user, who could then be confused or annoyed. For this reason, when presenting the plan, the robot will verbalize only the first $N$  highest level tasks. We have chosen $N$=$3$ based on our own experience during tests with the system, but we can imagine to adapt it to the complexity of the domain, or even to specific users. The robot will present the first steps of the plan, and then execute them. Once these tasks have been executed, the robot will repeat the present/execute process until the plan is completed or aborted.
  
  \begin{table}
  %\vspace{-10pt}
@@ -151,7 +151,7 @@ In some situations, the plan will be too long to explain it in one step to a use
 
 \section{Plan Management and User Knowledge}
 \label{sec:knowledge-plan_management}
-We start this section by showing how we adapted our Plan Management algorithm to take into account human's knowledge in the task. After showing the algorithm, we will explain it. During this algorithm we will sometimes discuss about the consequence of a user \textit{failing} at executing a task. We deduce that a fails if he execute a different action than the one the robot is expecting, or if he does not execute any action for a long period of time (determined by setting a threshold).
+We start this section by showing how we adapted our plan management algorithm to take into account the human's knowledge in the task. After showing the algorithm, we will explain it. During this algorithm we will sometimes discuss about the consequence of a user \textit{failing} at executing a task. We deduce that a user fails if he executes a different action than the one the robot is expecting, or if he does not execute any action for a long period of time (determined by setting a threshold).
 
 %\begin{algorithm}
 \begin{algorithmic}[1]
@@ -191,7 +191,7 @@ We start this section by showing how we adapted our Plan Management algorithm to
 
 \begin{itemize}
 \item \textit{$execute\_tree(n)$} is the main plan management function. The function receives as argument \textit{$nodes$}, a list of nodes initially filled with the root's children.
-\item \textit{$teachPolicy$} is a boolean that defines if we are in teaching or efficient mode.
+\item \textit{$teachPolicy$} is a boolean that defines if we are in teaching or efficiency mode.
 \item \textit{$agents(n)$} returns the agents involved in the node \textit{n}.
 \item \textit{$verbalize(n)$} will verbalize the current task, using the node context to present it (e.g. using sequential relations such as first, then or finally according to the node position in the list).
 \item \textit{$user\_kn(n)$} returns the knowledge level of the user concerning the task \textit{n}.
@@ -206,24 +206,24 @@ This plan management algorithm is based on the structured plan tree computed by 
 
 \subsubsection{Only the robot is involved (lines ~\ref{alg:onlyRobotStart}-~\ref{alg:onlyRobotEnd})}
 If the robot is the only agent in charge of the current node, the collaborator has a knowledge level equal to \textit{new} for the current task,
-and the chosen policy for the interaction is teaching, then the robot will execute the subtasks in ``demonstration mode'', meaning that it will verbalize each child task before performing it.
+and the chosen policy for the interaction is teaching, then the robot will execute the subtasks in `demonstration mode, meaning that it will verbalize each child task before performing it.
 
-Once the task have been executed, the robot updates the human's knowledge on the current node to \textit{beginner}. The same process will be applied to the tasks' children.  Using this process, the robot will verbalize each (and only) task that needs to be learned by the collaborator.
+Once the task has been executed, the robot updates the human's knowledge on the current node to \textit{beginner}. The same process will be applied to the tasks' children.  Using this process, the robot will verbalize each (and only) task that needs to be learned by the collaborator.
 
 If the robot is in charge, but the human collaborator's knowledge on the task is different from \textit{new}, or the current policy is efficiency, the robot will verbalize only the high-level task it performs.
 
-If the human is involved in the current node, the robot's behavior will depend on the human's knowledge level for the task, since the human might need explanations.  Explaining a task could be done in several ways: showing a video, asking an expert to explain the it or simply verbally guiding the user, step by step.
+If the human is involved in the current node, the robot's behavior will depend on the human's knowledge level for the task, since he might need explanations.  Explaining a task could be done in several ways: showing a video, asking an expert to explain the it or simply verbally guiding the user, step by step.
 \subsubsection{The collaborator's knowledge level on the task is \textit{new} (lines~\ref{alg:newStart}-~\ref{alg:newEnd})}
-If the human has a level $new$ for the current task, we explain it.
+If the human has the level $new$ for the current task, we explain it.
 When verbally guiding the user, if the current node has only one child, we  go deeper in the tree and apply again the corresponding behavior according to the knowledge level. If the current node is actually an operator (a leaf), the system monitors the current action execution. In case of success, the knowledge level for the task is upgraded to \textit{beginner}.
 
 % if beginner
 \subsubsection{The collaborator's knowledge level on the task is \textit{beginner} (lines ~\ref{alg:beginnerStart}-~\ref{alg:beginnerEnd})}
- If the human has a level \textit{beginner} for the current task, we ask if he needs explanations. If so, we downgrade his knowledge level to $new$ on the current task and apply the same process as the previous paragraph. If the user refuses explanations, we simply monitor the execution of the current node. In case of success, the knowledge level for the current task is upgraded to \textit{intermediate}. This knowledge level will also be used as default. This way, when the robot does not know the knowledge level of an agent concerning a task, it will just ask him if he needs an explanation and adapt its behavior accordingly.
+ If the human has the level \textit{beginner} for the current task, we ask if he needs explanations. If so, we downgrade his knowledge level to $new$ on the current task and apply the same process as the previous paragraph. If the user refuses explanations, we simply monitor the execution of the current node. In case of success, the knowledge level for the current task is upgraded to \textit{intermediate}. This knowledge level will also be used as default. This way, when the robot does not know the knowledge level of an agent concerning a task, it will just ask him if he needs an explanation and adapt its behavior accordingly.
 
 % if intermediate
 \subsubsection{The collaborator's knowledge level on the task is \textit{intermediate} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})}
- If the human has a level \textit{intermediate} for the current task, we verbalize it without proposing explanations, since he has already  succeeded with the plan at least once without help. Also, we do not go deeper in the tree and directly monitor the current task. If the user  fails, we downgrade his knowledge to \textit{beginner}, otherwise we upgrade it to \textit{expert}.
+ If the human has the level \textit{intermediate} for the current task, we verbalize it without proposing explanations, since he has already  succeeded with the plan at least once without help. Also, we do not go deeper in the tree and directly monitor the current task. If the user  fails, we downgrade his knowledge to \textit{beginner}, otherwise we upgrade it to \textit{expert}.
 
 % if expert
 \subsubsection{The collaborator's knowledge level on the task is \textit{expert} (lines~\ref{alg:interStart}-~\ref{alg:interEnd})}

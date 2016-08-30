@@ -15,7 +15,6 @@
   <graph edgedefault="directed" id="G">
     <data key="d0"/>
     <node id="n0">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="212.0" width="125.0" x="56.59937499999995" y="18.15625"/>
@@ -33,7 +32,6 @@
       </data>
     </node>
     <node id="n1">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="75.59937499999995" y="68.15625"/>
@@ -51,7 +49,6 @@
       </data>
     </node>
     <node id="n2">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="75.59937499999995" y="151.15625"/>
@@ -69,7 +66,6 @@
       </data>
     </node>
     <node id="n3">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="72.9375" width="193.75" x="-232.32299479166565" y="-153.5"/>
@@ -87,7 +83,6 @@
       </data>
     </node>
     <node id="n4">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="212.0" width="125.0" x="-431.12187499999993" y="16.90625"/>
@@ -105,7 +100,6 @@
       </data>
     </node>
     <node id="n5">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-150.44799479166565" y="-64.234375"/>
@@ -123,7 +117,6 @@
       </data>
     </node>
     <node id="n6">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="15.599374999999952" y="107.90625"/>
@@ -141,7 +134,6 @@
       </data>
     </node>
     <node id="n7">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-358.14062500000006" y="279.328125"/>
@@ -160,7 +152,6 @@ Day<y:LabelModel>
       </data>
     </node>
     <node id="n8">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-26.540625000000148" y="285.12812499999995"/>
@@ -179,7 +170,6 @@ Recently<y:LabelModel>
       </data>
     </node>
     <node id="n9">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-358.14062500000006" y="415.828125"/>
@@ -198,7 +188,6 @@ Water<y:LabelModel>
       </data>
     </node>
     <node id="n10">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-26.540625000000148" y="415.828125"/>
@@ -217,18 +206,17 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n11">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-130.3406250000001" y="316.62812499999995"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="4.0" x="13.0" y="13.0"/>
           <y:Shape type="rectangle"/>
         </y:ShapeNode>
       </data>
     </node>
     <node id="n12">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-239.04812500000008" y="447.328125"/>
@@ -250,7 +238,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n13">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="84.24911458333116" y="447.328125"/>
@@ -272,7 +259,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n14">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-239.04812500000008" y="310.828125"/>
@@ -294,7 +280,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n15">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="84.24911458333116" y="316.62812499999995"/>
@@ -303,7 +288,7 @@ Table<y:LabelModel>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="55.0" modelName="custom" textColor="#000000" visible="true" width="44.0" x="-7.0" y="-12.5">&lt;html&gt;
 &lt;span style="color:black"&gt; 0.5 &lt;/span&gt; &lt;br&gt;
 &lt;span style="color:red"&gt; False &lt;/span&gt; &lt;br&gt;
-&lt;span style="color:blue"&gt; 0 &lt;/span&gt; 
+&lt;span style="color:blue"&gt; 0.5 &lt;/span&gt; 
 &lt;/html&gt;<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
@@ -316,7 +301,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n16">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-358.14062500000006" y="600.6249999999999"/>
@@ -335,7 +319,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n17">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-244.54812500000008" y="745.6749999999997"/>
@@ -355,7 +338,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n18">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-244.54812500000008" y="850.7249999999999"/>
@@ -375,18 +357,17 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n19">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-239.04812500000008" y="632.1249999999999"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="4.0" x="13.0" y="13.0"/>
           <y:Shape type="rectangle"/>
         </y:ShapeNode>
       </data>
     </node>
     <node id="n20">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-399.7406250000001" y="832.8249999999998"/>
@@ -406,7 +387,6 @@ Table<y:LabelModel>
       </data>
     </node>
     <node id="n21">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="-26.540625000000148" y="600.6249999999998"/>
@@ -425,7 +405,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n22">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="87.05187499999982" y="745.6749999999997"/>
@@ -445,7 +424,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n23">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="93.0" width="98.0" x="87.05187499999982" y="850.7249999999999"/>
@@ -465,7 +443,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n24">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="92.55187499999982" y="632.1249999999998"/>
@@ -476,7 +453,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n25">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-136.68775" y="882.2249999999999"/>
@@ -494,7 +470,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n26">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="195.07200000000017" y="876.4250000000002"/>
@@ -512,7 +487,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n27">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="195.07200000000017" y="777.1749999999997"/>
@@ -530,7 +504,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n28">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-244.54812500000008" y="632.1249999999999"/>
@@ -552,7 +525,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n29">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="78.74203124998002" y="626.7549999999997"/>
@@ -574,7 +546,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n30">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-513.435" y="-132.03125"/>
@@ -592,7 +563,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <node id="n31">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="-513.435" y="310.828125"/>
@@ -610,7 +580,6 @@ Kitchen<y:LabelModel>
       </data>
     </node>
     <edge id="e0" source="n5" target="n6">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -621,7 +590,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e1" source="n7" target="n9">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -632,7 +600,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e2" source="n8" target="n10">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -643,7 +610,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e3" source="n16" target="n17">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -656,7 +622,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e4" source="n16" target="n18">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -670,7 +635,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e5" source="n21" target="n22">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -683,7 +647,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e6" source="n21" target="n23">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -697,7 +660,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e7" source="n9" target="n16">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -708,7 +670,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e8" source="n9" target="n21">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -722,7 +683,6 @@ Kitchen<y:LabelModel>
       </data>
     </edge>
     <edge id="e9" source="n10" target="n16">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">

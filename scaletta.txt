@@ -1,31 +1,22 @@
-scaletta:
+scaletta re-read
 
-coworker;
-	task execution  lm   x
-	saphari			lm   x
-	mamdp			la  x
+parti importanti:
 
-teacher:
-	knowledge		la x
-	experiments		tm
+mamdp construction
+mamdp example
 
-case study
-	spencer desc	tm
-	experiments		ta
+ig example
+ig results
 
-conclusions
-	conclusions     ta
-	methods			wm
+collaborative planners bf
+collaborative planner handover
 
+collaborative planner guide
 
-mercoledì: review
-giovedì: review
+capitoli:
 
+Intro      fm
+Overview   fm
 
-letteratura muaddib:
-	l(m-a-o depending on how quick we proceed)
+Intention results     fm
 
-
-parti da rileggere a parte: 
-	-task execution (perchè l'ho scritta oggi)
-	-esempi (in particolare l'MAMDP)
