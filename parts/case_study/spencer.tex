@@ -6,7 +6,7 @@
 
 \lhead{Chapter 10. \emph{Robot Guide}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
- In this chapter we present a case study for our system: the human-aware robot guide. Section~\ref{sec:spencer-intro} presents the subject and the motivations of our application. Section~\ref{sec:spencer-robot_guide} shows how we adapted our architecture to scenario. Section~\ref{sec:spencer-intention} introduces a new intention recognition algorithm developed for this task, based on environmental informaton. The scenario required a different approach to task planning than the one we developed, and we show our solution in section~\ref{sec:spencer-planning}. To guide humans, we developed a new collaborative planner, which is shown in section~\ref{sec:spencer-collaborative_guide_planner}. 
+ In this chapter we present a case study for our system: the human-aware robot guide. Section~\ref{sec:spencer-intro} presents the subject and the motivations of our application. Section~\ref{sec:spencer-robot_guide} shows how we adapted our architecture to scenario. Section~\ref{sec:spencer-intention} introduces a new intention recognition algorithm developed for this task, based on environmental information. The scenario required a different approach to task planning than the one we developed, and we show our solution in section~\ref{sec:spencer-planning}. To guide humans, we developed a new collaborative planner, which is shown in section~\ref{sec:spencer-collaborative_guide_planner}. 
 
 \section{Introduction}
 \label{sec:spencer-intro}
@@ -15,7 +15,7 @@ One interesting problem in human-robot interaction is developing robots able to 
 A generic mobile robot platform should possess a vast set of skills, which includes advanced perception, motion planning, and task planning. These skills are not enough for a robot guide, which is deployed in highly dynamic human environments, and need to be complemented with human-aware behaviors.
 
 %Examples
-Different robot guides have been studied and developed, starting with pioneers like Rhino and Minerva \citep{thrun2000probabilistic}.  Few systems have actually been deployed for long period of time in human environments. Rackham \citep{clodic2006rackham}, a museum guide with human-aware behaviors, is an example of such system, and has been deployed in a science museum for several months.  Rackham's algorithms, like voice and face recognition, enable it to estabilish a form of relationship with his users, and to consider the task as a collaborative activity. For example, Rackham will stop if the user goes away and waits for a period of time, resuming the task if it recognizes the user coming back.
+Different robot guides have been studied and developed, starting with pioneers like Rhino and Minerva \citep{thrun2000probabilistic}.  Few systems have actually been deployed for long period of time in human environments. Rackham \citep{clodic2006rackham}, a museum guide with human-aware behaviors, is an example of such system, and has been deployed in a science museum for several months.  Rackham's algorithms, like voice and face recognition, enable it to establish a form of relationship with his users, and to consider the task as a collaborative activity. For example, Rackham will stop if the user goes away and waits for a period of time, resuming the task if it recognizes the user coming back.
 
  Another example of robot guide was developed in \cite{bueno2011autonomous}, where the robot was integrated  in a smart museum environment, using virtual avatars with human-aware interfaces, associated to exhibitions, in order to convey information to users. 
 
@@ -28,9 +28,9 @@ Recently, there has been emphasis on robot navigation algorithms that reason abo
 The robot guide scenario can become more complex if we consider not only single humans, but groups. Humans, in fact, tend to naturally form groups, which can be classified in different types, based on their size, on their level of cohesion, on their duration, and other factors \citep{forsyth2009group}.  Studying group formations is a complex problem, since the robot must be able to detect humans, which can be occluded in populated environments; and to model their social interactions, which can be ambiguous. One of the most powerful and expressive social cues is distance, used in different works to track social relationship, like \cite{luber2013multi}. 
 
 \subsection{Motivations}
-We believe that most robot guide systems are focusing on the social aspects of the problem, and on human-aware navigation, without fully considering the fundamental aspects of joint actions. Guiding is a collaborative task, where the robot does not need only to reach a destination, but also to ensure that its followers reach it, while providing a socially acceptable experience to them. In order to achieve this goal, the robot needs to constantly monitor its users, to adapt to their behaviors and to be ready to proactively help them.
+We believe that most robot guide systems are focusing on the social aspects of the problem, and on human-aware navigation, without fully considering the fundamental aspects of joint actions. Guiding is a collaborative task, where the robot does not need only to reach a destination, but also to ensure that its followers reach it, while providing a socially acceptable experience to them. In order to achieve this goal, the robot needs to constantly monitor its users, to adapt to their behaviors and to be ready to pro-actively help them.
 
-We applied our system to this problem, creating a human-aware robot guide which is able to lead a group of people to a destination. More particularly, the originality of our approach is that the robot is able to show both adaptive and a proactive behaviors. The robot will try, while guiding, to select a speed that pleases its users, when adapting, or to propose a new speed, using environmental and task related stimulus. Finally, our system will proactively try to engage members of the group if it detects they need assistance. 
+We applied our system to this problem, creating a human-aware robot guide which is able to lead a group of people to a destination. More particularly, the originality of our approach is that the robot is able to show both adaptive and a proactive behaviors. The robot will try, while guiding, to select a speed that pleases its users, when adapting, or to propose a new speed, using environmental and task related stimulus. Finally, our system will pro-actively try to engage members of the group if it detects they need assistance. 
 
 \section{Building a Robot Guide}
 \label{sec:spencer-robot_guide}
@@ -39,7 +39,7 @@ In order to adapt our system to the robot guide scenario we had to enhance sever
 \item The user is able to interact with the robot by using a tactile interface on its front. Partners in the project developed an interface that connects this tablet to requests for the robot.
 \item In this scenario we are not really interested in the intention recognition skills that we developed in chapter~\ref{chapter:intention}. In an airport there are no complex sequence of actions that humans need to perform and we will evaluate users' intentions by their trajectories and the surrounding environment. We developed an Environment-Based Intention Recognition module to enhance our Situation Assessment layer, presented in section \ref{sec:spencer-intention}. The geometrical reasoning skills of the Situation Assessment layer will, instead, be necessary to properly guide the robot's followers. 
 \item Similarly, task planning and plan management is quite simple in this scenario. The robot will mostly vary its paths in the environment, using similar plans. We developed an A*-based task planner, which is able to find a path in a semantic map, to guide users to their destination, presented in section~\ref{sec:spencer-planning}. The Plan Management layer will receive this plan and communicate with the Task Execution layer to move the robot toward the goal.
-\item The main work, in this application, has been creating a Collaborative Planner to guide users in a human-aware way. Using this planner, our robot is able to adapt itself to users' actions, or to proactively propose new behaviors. This planner is presented in section~\ref{sec:spencer-collaborative_guide_planner}.
+\item The main work, in this application, has been creating a Collaborative Planner to guide users in a human-aware way. Using this planner, our robot is able to adapt itself to users' actions, or to pro-actively propose new behaviors. This planner is presented in section~\ref{sec:spencer-collaborative_guide_planner}.
 \end{itemize} 
 
 \begin{figure}[ht!]
@@ -49,7 +49,7 @@ In order to adapt our system to the robot guide scenario we had to enhance sever
 	\label{fig:spencer-architecture}
 \end{figure}
 
-The system has been tested with different configurations, in laboratory experiments and in the Schipol airport, presented in chapter~\ref{chapter:spencer_results}. Parts of this section were presented in \cite{fiore2015adaptive}.
+The system has been tested with different configurations, in laboratory experiments and in the Schiphol airport, presented in chapter~\ref{chapter:spencer_results}. Parts of this section were presented in \cite{fiore2015adaptive}.
 
 \section{Environment-Based Situation Assessment}
 \label{sec:spencer-intention}
@@ -81,7 +81,7 @@ We introduced, in the Situation Assessment layer, the ability able to create act
 \label{sec:spencer-planning}
 To guide people in environments like museums or airports, the robot will need to navigate very large areas, which are often too big to efficiently perform motion planning. A solution to this problem is reducing the size of the area where the motion planner will compute its paths, splitting the navigation problem in a list of sub goals. The problem, with this approach,  is choosing the correct list of sub-goals to reach the final position.  
 
-To deal with this issue we have implemented an A*-based task planner, which will choose a high-level path to be followed by the robot from a semantic map. This map is a hand-crafted graph, composed by different nodes, that represent parts of the environemt (corridors, elevator entrances, gates, etc.). Each node will be linked to a point in the real world. This task planner will, so, produce a list of coordinates usable by the motion planning layer. 
+To deal with this issue we have implemented an A*-based task planner, which will choose a high-level path to be followed by the robot from a semantic map. This map is a hand-crafted graph, composed by different nodes, that represent parts of the environment (corridors, elevator entrances, gates, etc.). Each node will be linked to a point in the real world. This task planner will, so, produce a list of coordinates usable by the motion planning layer. 
 
 \begin{figure}[ht!]
 	\centering
@@ -91,7 +91,7 @@ To deal with this issue we have implemented an A*-based task planner, which will
 \end{figure}
 
 
-A first way to manage this kind of plan is simply travelling to each calculated point, sending a goal to the motion planner for the next point every time the robot reaches its sub-destination. The problem with this approach is that the path followed by the robot might be very inefficient and not look natural.
+A first way to manage this kind of plan is simply traveling to each calculated point, sending a goal to the motion planner for the next point every time the robot reaches its sub-destination. The problem with this approach is that the path followed by the robot might be very inefficient and not look natural.
 
 Our solution was using a rolling window approach, shown in figure~\ref{fig:case_study-spencer-rolling_window}, where the motion planner will compute paths on a grid map centered on the robot, which will be updated with its position. In this way, the robot will send the next sub-goal in the calculated plan as soon as it is present in the rolling window, without waiting to reach the previous sub-goal. It is very important, with this approach to carefully select the nodes in the semantic maps so that the rolling window will contain at least two semantic nodes. If not, the motion planner would have to plan a path to a goal outside its grid map, which would generate an error.
 
@@ -136,7 +136,7 @@ We built our collaborative planner following these ideas:
 	\begin{enumerate}
 		\item If there is only one agent $a$ in $f$ so that $a\_isIn=robot\_area$ and $a\_isMoving=true$ AND $a\_isTowardRobot=true$ he is the \textit{best follower}. If there are more agents that satisfy this condition, the \textit{best follower} is the closest to the robot. Our preferable condition for best follower is somebody who is moving toward the robot and staying behind it, as we assume that he is following it.
 		\item If no agent satisfies condition 1, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isTowardRobot=true$ he is the \textit{best follower}. If there are more agents that satisfy this condition, the \textit{best follower} is the closest to the robot. If there is no one that is moving toward the robot, we choose an agent that is not moving but still behind it and oriented toward it, as he could just have stopped for some moments before resuming following.
-		\item If no agent statisfies condition 1 or 2, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isMoving=false$ AND $a\_isTowardRobot=false$ he is the \textit{best follower}. If the previous conditions are not statisfied, we choose an agent that is not moving, behind the robot, and not oriented toward it. There could be humans that have stopped following and are speaking between themselves, or looking at a screen.
+		\item If no agent satisfies condition 1 or 2, but there is an agent $a$ in $f$ so that $a\_isIn=robot\_area$ AND $a\_isMoving=false$ AND $a\_isTowardRobot=false$ he is the \textit{best follower}. If the previous conditions are not satisfied, we choose an agent that is not moving, behind the robot, and not oriented toward it. There could be humans that have stopped following and are speaking between themselves, or looking at a screen.
 		\item otherwise, \textit{the best follower} is the closest to the robot.
 	\end{enumerate}
 \item If $f$ is empty, but $o$ is not, the robot will choose a \textit{best} follower $b$ from $o$, by following the rules that we just introduced (substituting $f$ for $o$). If the robot has lost track of its group, it will try guiding other persons that have a behavior consistent with that of a follower.  
@@ -182,7 +182,7 @@ The main problem of the robot is choosing if it should still guide the group, su
 
 		We imagine that a user is engaged if we detect that he is following the robot, meaning that he is moving in its same direction, he is behind the robot, and he is not too far from it.
 
-	\item  $R$: the robot receives a reward for completing a task, for waiting for not enaged users, and for continuing if the user is engaged and the task is not finished.
+	\item  $R$: the robot receives a reward for completing a task, for waiting for not engaged users, and for continuing if the user is engaged and the task is not finished.
 \end{itemize}
 
 
@@ -200,9 +200,9 @@ In our study, $dr_1$ and $dr_2$ were predefined values, but they could be learnt
 
 The robot should also not constantly change speed, in order to give time to users to adapt to its new chosen speed, and so we have defined a temporal threshold in which we do not allow the robot to repeat an \textit{accelerate} or \textit{decelerate} action.
 
-The robot changes its speed in increments or decrements of a constant $s$. In our preliminary studies at the airport, we tested several constants for $t$ and $s$, and found that increments of 0.1 m/s and a threshold of 1.5 seconds showed the best behavior for the robot. The starting, minimum and maximum speed of the robot where selected, again, with experimental studies, based on the confort and interest of users surrounding the robot, and of the opinions of the research team. The starting speed was selected as 1 m/s, the maximum as 1.3 m/s, and the minimum as 0.7 m/s. The Task Executor will ignore any command to accelerate when it has already reached the maximum speed, and any command to decelerate when it has reached the minimum speed.
+The robot changes its speed in increments or decrements of a constant $s$. In our preliminary studies at the airport, we tested several constants for $t$ and $s$, and found that increments of 0.1 m/s and a threshold of 1.5 seconds showed the best behavior for the robot. The starting, minimum and maximum speed of the robot where selected, again, with experimental studies, based on the comfort and interest of users surrounding the robot, and of the opinions of the research team. The starting speed was selected as 1 m/s, the maximum as 1.3 m/s, and the minimum as 0.7 m/s. The Task Executor will ignore any command to accelerate when it has already reached the maximum speed, and any command to decelerate when it has reached the minimum speed.
   
-We have studied two different situations where the robot can proactively try to influence the speed of the group.
+We have studied two different situations where the robot can pro-actively try to influence the speed of the group.
 \begin{itemize}
 \item There is a time limit to reach the destination. In this case the robot must balance the desire to satisfy the group with the task urgency. Different situations will require different policies. For example, in an airport scenario, the robot could prioritize arriving on time, warning users if their speed would render the goal not achievable, while in other situations the robot could try to arrive in time but still avoid to adopt speeds that are uncomfortable for the group.
 \item The rules of the current environment limit the robot's speed. In this case the robot will avoid accelerating over a set speed even if it detects that its current velocity is considered too slow for the group. For example, the robot could be navigating in a construction zone.
@@ -224,7 +224,7 @@ We present a MOMDP model to implement these ideas:
 
 		We introduce the observed variable representing the urgency of the task. Depending on this value, the system might decide to propose a new speed without simply  adapting to the human's desires.
 
-		The \textit{environment\_limit} variable also informs the robot, when \textit{true}, that it has reached the speed limit for the current environment (i.e. costruction zone, has explained before) and should not accelerate. When the value is \textit{passed}, the robot is going too fast for the speed limits of the current environment. When the value is \textit{false} there is no speed limit in the area or, if there is, the robot's speed is lower than this limit.
+		The \textit{environment\_limit} variable also informs the robot, when \textit{true}, that it has reached the speed limit for the current environment (i.e. construction zone, has explained before) and should not accelerate. When the value is \textit{passed}, the robot is going too fast for the speed limits of the current environment. When the value is \textit{false} there is no speed limit in the area or, if there is, the robot's speed is lower than this limit.
 	
 	\item $A:\{accelerate,decelerate,continue\}$.
 	\item $O:\{highest\_density,in\_slow\_area\}$.
@@ -233,7 +233,7 @@ We present a MOMDP model to implement these ideas:
 			\item $values(in\_slow\_area)=\{false,true\}$.
 		\end{itemize}
 
-		When we designed this model, we envisioned the possibility of guiding with a realiable perception, knowing the identifiers of the members of the group, and thinking that these identifiers would be stable over the course of the scenario. 
+		When we designed this model, we envisioned the possibility of guiding with a reliable perception, knowing the identifiers of the members of the group, and thinking that these identifiers would be stable over the course of the scenario. 
 
 		We introduced an observation related to the distribution of the locations of the members of the group. This observation can assume the value \textit{accelerate\_area} if the majority of the members of the group are closer than $d_1$ to the robot, or \textit{behind} otherwise. We also introduced the observation \textit{in\_slow\_area}, which assumes the value \textit{true} if any member of the group is at a distance from the robot higher than $d_2$.
 

@@ -6,7 +6,7 @@
 
 \lhead{Chapter 8. \emph{Human Knowledge}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
   
-In this chapter we show how we use human knowledge to adapt the plan explanation and managent capacities of our system. Section~\ref{sec:knowledge-intro} introduces the subject, while section~\ref{sec:knowledge-overview} explains the basics of our approach to model knowledge. Section~\ref{sec:knowledge-adapting_knowledge} shows how human knowledge can be used to adapt the planning capacities of HATP. Finally, sections~\ref{sec:knowledge-plan_presentation} and \ref{sec:knowledge-plan_management} respectively describe how the robot can explain plans in a human-aware way, by taking into account the knowledge of the human, and how it can guide the human in the execution of the task, by modifying our plan management algorithm.
+In this chapter we show how we use human knowledge to adapt the plan explanation and management capacities of our system. Section~\ref{sec:knowledge-intro} introduces the subject, while section~\ref{sec:knowledge-overview} explains the basics of our approach to model knowledge. Section~\ref{sec:knowledge-adapting_knowledge} shows how human knowledge can be used to adapt the planning capacities of HATP. Finally, sections~\ref{sec:knowledge-plan_presentation} and \ref{sec:knowledge-plan_management} respectively describe how the robot can explain plans in a human-aware way, by taking into account the knowledge of the human, and how it can guide the human in the execution of the task, by modifying our plan management algorithm.
 
 
 \section{Introduction}
@@ -31,7 +31,7 @@ In the following sections, we will present our approach, where we adapt plan exp
 % We introduce a simple negotiation algorithm, that starts with the robot asking humans for approval of the plan, inquiring what is wrong in case of disagreement. We handle two different human requests. First, the user can express his preferences, either to perform a task previously assigned to the robot or to not perform a task assigned to him. The other possibility is to inform the robot that the user cannot perform an action. The system will store these information and try to find a new plan, taking them into account, before starting a new explanation and negotiation phase.
 
 
-% In a collaborative scenario, all the agents must agree on the shared plan. If there is a disagreement the agents might negotiate to find a nother solution.  This problem has been studied, for example, in \cite{fabregues2014hana}, where the authors present the \HANA system, an architecture that allows agents (robots and humans) to negotiate in competitive and cooperative settings. In HANA agents interact during the whole planning process, proposing solutions while they keep searching for better plans. During this process agents agree on performing specific tasks, which prunes the search space of feasible plan.
+% In a collaborative scenario, all the agents must agree on the shared plan. If there is a disagreement the agents might negotiate to find a another solution.  This problem has been studied, for example, in \cite{fabregues2014hana}, where the authors present the \HANA system, an architecture that allows agents (robots and humans) to negotiate in competitive and cooperative settings. In HANA agents interact during the whole planning process, proposing solutions while they keep searching for better plans. During this process agents agree on performing specific tasks, which prunes the search space of feasible plan.
 
 
 \section{Overview}
@@ -64,7 +64,7 @@ Using the knowledge of a task of a human, the system is able to adapt plan gener
 
 
 \subsection{Architecture}
-This process was implemented by integrating a new module in the Plan Management layer's architecture, presented in chapter~\ref{chapter:plan_management}, which we called `Plan Explanation'. This module receives as input a shared plan, from the Plan Manager, and the current knowledge of the humans involved in the plan, from the Situation Assessmen layer. With these information, it will adapt the knowledge of users to explain the shared plan. Information about human's knowledge will be used also by the Plan Manager module to adapt the plan management algorithm, as we will explain in the following sections.
+This process was implemented by integrating a new module in the Plan Management layer's architecture, presented in chapter~\ref{chapter:plan_management}, which we called `Plan Explanation'. This module receives as input a shared plan, from the Plan Manager, and the current knowledge of the humans involved in the plan, from the Situation Assessment layer. With these information, it will adapt the knowledge of users to explain the shared plan. Information about human's knowledge will be used also by the Plan Manager module to adapt the plan management algorithm, as we will explain in the following sections.
 
 The modified architecture of the Plan Management layer is shown in figure~\ref{fig:knowledge-knowledge_architecture}. This work was presented in~\cite{milliez2016using}.
 
@@ -119,7 +119,7 @@ Bake(Mould) & Intermediate \\
 To properly compute the cost of a plan, the planner will also upgrade accordingly the knowledge of a task once it is added to the plan. This allows the \textit{efficiency} policy to prefer plans with repetitive decompositions, that are assigned to the same user, over plans with more variable decompositions, where repetitive tasks are assigned to different agents.
 
 % The planner can receive information produced from a dialog system that allows to negotiate plans, as explained in section \ref{sec:plan_management-negotiation}. Using this system, the preference and abilities of users are recorded in the Situation Assessment layer. 
-% If a user is not able to perform a certain task, the planner will never chose this action for him. If he user prefers to perform, or not to perform, a specific task, the planner will update the cost functions accordingly with a reward or penality to assign that task to him.
+% If a user is not able to perform a certain task, the planner will never chose this action for him. If he user prefers to perform, or not to perform, a specific task, the planner will update the cost functions accordingly with a reward or penalty to assign that task to him.
 
 
 \section{Plan Presentation}

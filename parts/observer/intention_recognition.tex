@@ -11,7 +11,7 @@ In this chapter we show how our system is able to infer human actions and intent
 \label{sec:intention-intro}
 A crucial skill to interact with humans is recognizing others' actions and goals. This process is is directly linked to modeling humans' beliefs, since, as explained by \cite{byom2013theory} ``as humans, we generally believe that others act in ways that are consistent with their beliefs and goals". 
 
-The recognition of human activities is an important topic in computer science research, which can be studied at different levels. Anticipating human actions and movements allows the robot to adapt its behavior and proactively help humans, as studied in \cite{koppula2013anticipating}. 
+The recognition of human activities is an important topic in computer science research, which can be studied at different levels. Anticipating human actions and movements allows the robot to adapt its behavior and pro-actively help humans, as studied in \cite{koppula2013anticipating}. 
 
 Sequences of actions can be linked to plans, a well-known topic called plan recognition. Several approaches have been studied in this domain using, for example, classical planning \citep{ramirez2009plan}, probabilistic \citep{bui2003general} or logic techniques \citep{singla2011abductive}.
 
@@ -19,11 +19,11 @@ As previously said, we call an intention the wish and will to achieve a goal. In
 
 Other approaches that can be used to estimate the intention of a human are Interactive Partially Observed Markov Decision Processes (I-POMDP) and Inverse Learning. I-POMDP~\citep{gmytrasiewicz2004interactive} offer a rich framework that extends Partially Observed Markov Decision Processes (POMDP) in a multi-agent setting. Inference in these models can be extremely complex, but there have been attempts at solving this issue, like in~\cite{doshi2009monte,hoang2013interactive}. 
 
-Inverse Reinforcement Learning~\citep{ng2000algorithms} formulates the problem of computing an unknown reward function of an agent after observing his behavior. This strategy has been applied, with Bayesian Networks (BN), in~\cite{Nagai2015}, in order to learn the mental model of another agent, and choose appropriate actions for a relationship building task. A linked approach is inverted planning, which has been applied in a bayesian framework in~\cite{baker2009action}  for human action understanding.
+Inverse Reinforcement Learning~\citep{ng2000algorithms} formulates the problem of computing an unknown reward function of an agent after observing his behavior. This strategy has been applied, with Bayesian Networks (BN), in~\cite{Nagai2015}, in order to learn the mental model of another agent, and choose appropriate actions for a relationship building task. A linked approach is inverted planning, which has been applied in a Bayesian framework in~\cite{baker2009action}  for human action understanding.
 
-Contextual information can be used to further disambiguate complex situations. For example, if it is currently raining (context), we could think that it is more likely that Greg will look for his umbrella (intention) if he has to go out. ~\cite{Liu2014} show a system using BNs to understand users' intentions with an emphasis on contextual information. This BN is constructed using object affordance nodes (e.g. a cup can be washed or used for drinking), context nodes (e.g. it's a hot day, the cup was recently used), and intention nodes (e.g. drinking from a cup or washing it). The causal links between contexts and intentions are learnt through a user study, which uses an online questionnaire where participants need to rate the strenght of the connection betwen an intention and a context. The work does not study how to adapt this BN to complex plans, composed by sequences of actions.
+Contextual information can be used to further disambiguate complex situations. For example, if it is currently raining (context), we could think that it is more likely that Greg will look for his umbrella (intention) if he has to go out. ~\cite{Liu2014} show a system using BNs to understand users' intentions with an emphasis on contextual information. This BN is constructed using object affordance nodes (e.g. a cup can be washed or used for drinking), context nodes (e.g. it's a hot day, the cup was recently used), and intention nodes (e.g. drinking from a cup or washing it). The causal links between contexts and intentions are learnt through a user study, which uses an online questionnaire where participants need to rate the strength of the connection between an intention and a context. The work does not study how to adapt this BN to complex plans, composed by sequences of actions.
 
-It is very important to consider humans' beliefs when estimating their intentions. In a dynamic environment, agents can execute actions, modifying the state of the world without other agents being able to perceive the changes. Let us imagine a scenario. Bob comes back home from work and would like to relax while reading. He lays down on a sofa with a book, and reaches to a nearby table to grab his glasses. He does not know that his wife, during the day, moved the glasses to another room. If we would ignore Bob's beliefs on the world (i.e. he does not know that the glasses are not on the table) we could infer that, for example, Bob would like a drink while he is sitting on the sofa, or the tv remote controller. If, instead, we would know that Bob thinks his glasses are on the table (and we would use other contextual information perhaps, like Bob's habitudes) we would be able to correctly infer Bob's current intention, that is, taking his glasses, and warn him that they are not there, perhaps even fetching them for him. 
+It is very important to consider humans' beliefs when estimating their intentions. In a dynamic environment, agents can execute actions, modifying the state of the world without other agents being able to perceive the changes. Let us imagine a scenario. Bob comes back home from work and would like to relax while reading. He lays down on a sofa with a book, and reaches to a nearby table to grab his glasses. He does not know that his wife, during the day, moved the glasses to another room. If we would ignore Bob's beliefs on the world (i.e. he does not know that the glasses are not on the table) we could infer that, for example, Bob would like a drink while he is sitting on the sofa, or the tv remote controller. If, instead, we would know that Bob thinks his glasses are on the table (and we would use other contextual information perhaps, like Bob's habits) we would be able to correctly infer Bob's current intention, that is, taking his glasses, and warn him that they are not there, perhaps even fetching them for him. 
 
 In robotics, an interesting framework that considers this issue is the Bayesian Theory of Mind \citep{baker2014modeling}, used to represent the inference process of an observer looking at another agent's behaviors. The acting agent is modeled as a POMDP, whose richness is able to represent his possible beliefs about the world. The observer's process is modeled as a DBN, built starting from the agent's POMDP but considering his reward function (that represents his desires) as hidden. The system has been tested against some alternative models and compared, in user studies, with human capacities, to understand how well it models theory of mind. Since the models used are quite complex, scalability in the model could be an issue. Also, the study is focused on a single-agent scenario, and does not consider collaborative problems.
 
@@ -133,7 +133,7 @@ We will discuss, in chapter~\ref{chapter:mamdp} about a possible multi-agent MDP
 
 \section{Proactive Behaviors}
 \label{sec:intention-proactive_behaviors}
-Information about the most likely intention and action will be introduced in the Situation Assessment layer's Database, to be read by the Goal Management layer. Based on this information, the robot can execute two different proactive behaviors: correcting the belief state of the human, and proactively helping him to achieve his task.
+Information about the most likely intention and action will be introduced in the Situation Assessment layer's Database, to be read by the Goal Management layer. Based on this information, the robot can execute two different proactive behaviors: correcting the belief state of the human, and pro-actively helping him to achieve his task.
 
 \subsection{Correcting Belief State}
 Having a wrong or incomplete belief on the world state can lead agents to execute non optimal, useless, or even dangerous actions. The robot needs to detect these situations in order to warn the human. For example Greg could search for his glasses in a wrong location if he does not know that they were moved, or could touch a hot object if he does not know its temperature.
@@ -209,7 +209,7 @@ We build a starting IG with the following nodes:
 \end{itemize}
 
 
-In this scenario, we precompute the probability table of the causal links between Context Nodes and Intention Nodes, and between Action Nodes and Observaton Nodes. We set a causal link between \textit{HotDay} and \textit{DrinkWater}, and one between \textit{AlreadyDrank} and \textit{ReorderTable}. In both cases, we use the probability table of table~\ref{table:intention-ig_intention}.
+In this scenario, we precompute the probability table of the causal links between Context Nodes and Intention Nodes, and between Action Nodes and Observation Nodes. We set a causal link between \textit{HotDay} and \textit{DrinkWater}, and one between \textit{AlreadyDrank} and \textit{ReorderTable}. In both cases, we use the probability table of table~\ref{table:intention-ig_intention}.
 
  \begin{table}[h!]
 \centering
@@ -343,10 +343,27 @@ We will now describe and discuss these stages:
 \end{figure}
 \clearpage
 
+\section{Human Changing Intention}
+%MOUADDIB_CORRECTION
+What happens when the robot has inferred the human intention but he changes his mind? If the robot does not recognize this change it would do useless actions, perhaps even interfering with the human's plan. Our system handles this problem by using a continuous recognition process, meaning that even after inferring the most likely human intention the inference process will continue. Of course, if the robot is acting to pro-actively help the human and it infers a change in the human plan, it needs to abort the current plan and to create a new one related to the current human goal. 
+
+We will show a simulated example of a situation where the human changes his intention and the system recognizes it. This example uses the same scenario presented in section~\ref{sec:intention-example}. We imagine that, in this example, Greg wants to reorder the table but then changes his mind halfway and decides to drink a glass of water.
+
+This time, we will execute our test by using the human's mental belief state, as perceived by the robot, and contextual information, setting \textit{HotDay} to \textit{false} and \textit{RecentlyDrank} to \textit{false}.
+
+We will now describe and discuss these stages:
+\begin{itemize}
+    \item Greg is approaching the \textit{kitchen} with the \textit{bottle} in his hands, as shown in figure ~\ref{fig:intention-ig_exp4}. The observations are updated correspondingly, and the probabilities of the actions are computed. The action \textit{MoveKitchen} and the intention \textit{ReoderTable} have the highest probability. 
+    \item Halfway to the kitchen, Greg changes his mind and goes back to the \textit{table}, as shown in figure~\ref{fig:intention-ig_exp5}. The probability of \textit{ReorderTable} decreases, since this is not the optimal course of actions to reorder the table, and the probability of \textit{DrinkWater} increases. 
+    \item Greg moves his hand toward the \textit{glass}, as shown in figure~\ref{fig:intention-ig_exp6}. At this point there is a peak on the probability of \textit{DrinkWater}, which is inferred as the most likely intention. 
+\end{itemize}
+%END_MOUADDIB_CORRECTION
+
+
 \section{Discussion}
 
 This component is able to estimate the likelihood of a human's intention by combining BNs, MDPs, geometrical reasoning, and the capacity to model human's beliefs. Contextual information can further help to disambiguate the inference process. 
 
-Another advantage of our approach is its good scalability. Computing the probabilities in a BN can be done using efficient and well know algorithms, which scale well with the size of the network, meaning that the IG is able to accomodate the addition of new actions, observations and contexts. 
+Another advantage of our approach is its good scalability. Computing the probabilities in a BN can be done using efficient and well know algorithms, which scale well with the size of the network, meaning that the IG is able to accommodate the addition of new actions, observations and contexts. 
 
 Adding a new intention means creating and solving another MDP. Since this process is done offline this would not impact the run of the system. When computing the conditional probabilities of the action nodes, the system uses the action value function of the MDPs, which is stored in memory and can be directly accessed.

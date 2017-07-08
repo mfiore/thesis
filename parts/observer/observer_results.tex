@@ -41,7 +41,7 @@ We will describe in details the two scenarios and the relative tests.
 \item  \textit{Divergent Belief Event}:  \textit{Max} and \textit{Bob} are chatting on the \textit{Sofa}. Max eats the last \textit{Cookie} from the \textit{Cookie Box} before closing it and leaving. While \textit{Max} is away, \textit{Bob} takes \textit{Cookies} from the \textit{Kitchen Shelf}, fills the \textit{Cookie Box} with them, and closes it, before leaving.
 \end{itemize}
 
-The \textit{Divergent Belief Event} was shown to the users (and its simulation streamed to the system) between the \textit{Contextual Clues} and the \textit{Divergent Belief No Cookiies} events. 
+The \textit{Divergent Belief Event} was shown to the users (and its simulation streamed to the system) between the \textit{Contextual Clues} and the \textit{Divergent Belief No Cookies} events. 
 
 
 We have deliberately included an intention, \textit{Reading the Book}, without placing a book in the visible environment, introducing a confusing element in the scenario. This scenario can be seen in figure~\ref{fig:observer_experiments-cookie}.
@@ -68,7 +68,7 @@ We have deliberately included an intention, \textit{Reading the Book}, without p
 \item \textit{Divergent Belief Event}: \textit{Max} is sitting on the \textit{Table}, drinking from the \textit{Mug}, while having the \textit{Keys} in his hands. His phone rings, so he drops the \textit{Keys} and the \textit{Mug} on the \textit{Table}, behind the \textit{Box}, and leaves the room. While \textit{Max} is away, \textit{Bob} comes and sits on the \textit{Sofa}, reading a \textit{Book}. When he sees the \textit{Keys}, he takes them, places the \textit{Book} on the \textit{Table}, and leaves.
 \end{itemize}
 
-The \textit{Divergent Belief Event} was shown to the users (and its simulation streamed to the system) between \textit{Contextual Clues} and the \textit{Divegent Belief Max} events. This scenario can be seen in figure~\ref{fig:observer_experiments-keys}.
+The \textit{Divergent Belief Event} was shown to the users (and its simulation streamed to the system) between \textit{Contextual Clues} and the \textit{Divergent Belief Max} events. This scenario can be seen in figure~\ref{fig:observer_experiments-keys}.
 
  \begin{figure}[ht!]
 	\centering
@@ -90,9 +90,10 @@ Looking at users' answers (figure \ref{fig:observer_experiments-user_study_resul
 In this subsection, we show how we implemented this experiment on our system. We will start by showing how we created a simulation of the scenarios. Then we will explain how we computed conditional dependencies between intentions and contexts, and finally we will discuss about the actual implementation of the IGs in the two scenarios.
 
 \subsubsection{Setting up the Simulation}
-% At the start of a scenario the robot scanned the environment, building a model of its world state. 
-We built a simulation to represent these two scenarios. For each scenario, we set the positions of the objects and computed a starting world state.
-
+% At the start of a scenario the robot scanned the environment, building a model of its world state.
+%DEMIRIS_CORRECTION 
+We built a simulation to represent these two scenarios. For each scenario, we set the positions of the objects and computed a starting world state. This simulation was built using the TF\footnote{http://wiki.ros.org/tf} framework of ROS. TF allows to represent and track different coordinate frames over time. This way, we could represent both the positions of objects and of agents, and their evolution over time.
+%END_DEMIRIS_CORRECTION
  At the start of the scenario, the system does not have information about what each human knows, and so it will assume that they have the same belief model as itself. The system will be able to form a different belief model of each human only with the \textit{Divergent Belief} event. This is a simplification. In the real world, we believe that humans have complex mechanisms to infer others' mental beliefs, based on many aspects. For example, if we would go to the home of a friend, we would probably infer that he has knowledge even about attributes that he can not immediately perceive (e.g. he will know that that he can find a glass in a cabinet in the kitchen even if he can not see it at the moment). Instead, if other people come at our home, we would infer that they do not know where objects are located until they see them. Our system is not able to replicate this idea, leading to our simplification.
 
  For each test of our simulation, we streamed coordinates related to the body and hand positions of agents, following what was shown in the videos of the user study. For example, if in a test we showed Max moving from the hallway to the table, we streamed a trajectory of coordinates representing this path. 
@@ -115,7 +116,7 @@ where $ncj_k$ is the number of persons who rated the influence of context $C_j$ 
 We set the values of Context Nodes manually in the tests, depending  on the information shown in the videos. While we simulated this aspect, we will give some ideas on how the values of these Context Nodes could be inferred in a real scenario.
 
 \begin{itemize}
-\item \textit{Hot Day}. The temperature of the day could be measured by a sensor or obtained from a meteo application. Also, in one of the tests Max is commenting that the day is very warm. A speech recognition software could capture this information.
+\item \textit{Hot Day}. The temperature of the day could be measured by a sensor or obtained from a weather application. Also, in one of the tests Max is commenting that the day is very warm. A speech recognition software could capture this information.
 \item \textit{Break Time} and \textit{Time to Leave}. These information could be either hardcoded (e.g. in the company, workers have an hour of break from 13 to 14 and leave at 17:30) or learnt by observing the agents' activities.
 \end{itemize}
 

@@ -37,7 +37,7 @@ For each scenario, we define a planning \textit{domain}, which includes every en
 
 In some situations, to be more generic, we will use the word \textit{task} to refer to both tasks and actions, since actions are actually tasks that can not be decomposed in the current planning model.
 
-Each planner used by our system needs to represent its plans as a set of streams, one for each agent. A stream is a sequence of nodes, where each node corresponds to task assigned to be executed by the agent. Nodes can be connected by causal links, even among different streams, to ensure synchronization. A causal link $l=(t_1,t_2)$ indicates that  task $t_1$ should be execute before task $t_2$. This ensures that all the preconditions to execute $t_2$ are fullfilled. Moreover, if $t_1$ and $t_2$ are executed by different agents, and if there is a shared resource connected to the task, the causal link indicates that the resource will be released by the agent only after $t_1$ is completed. An example of this data structure is shown in figure~\ref{fig:plan_management-streams}.
+Each planner used by our system needs to represent its plans as a set of streams, one for each agent. A stream is a sequence of nodes, where each node corresponds to task assigned to be executed by the agent. Nodes can be connected by causal links, even among different streams, to ensure synchronization. A causal link $l=(t_1,t_2)$ indicates that  task $t_1$ should be execute before task $t_2$. This ensures that all the preconditions to execute $t_2$ are fulfilled. Moreover, if $t_1$ and $t_2$ are executed by different agents, and if there is a shared resource connected to the task, the causal link indicates that the resource will be released by the agent only after $t_1$ is completed. An example of this data structure is shown in figure~\ref{fig:plan_management-streams}.
 
 \begin{figure}[ht!]
  \centering
@@ -81,7 +81,7 @@ Parts of this chapter were presented in \cite{Lallement2014,fioreiser2014}.
 
 \section{Plan Management Modalities}
 \label{sec:plan_management-modalities}
-When acting together, agents sometimes do not have the same decision power, with one of them assuming the role of a leader. We represent this idea, in our system, by proposing three different modalities: \textit{robot leader}, \textit{human leader}, and \textit{equal partners}. The robot is able to switch from one modality to another during the execution of a plan. For example, if the current modality is \textit{robot leader} and rhe Robot receives a command from a user, it will switch to the \textit{human leader} modality, after interrupting its current action.
+When acting together, agents sometimes do not have the same decision power, with one of them assuming the role of a leader. We represent this idea, in our system, by proposing three different modalities: \textit{robot leader}, \textit{human leader}, and \textit{equal partners}. The robot is able to switch from one modality to another during the execution of a plan. For example, if the current modality is \textit{robot leader} and the Robot receives a command from a user, it will switch to the \textit{human leader} modality, after interrupting its current action.
 
 \subsection{Robot leader}
 \label{subsec:plan_management-robot_leader}
@@ -162,7 +162,7 @@ Our plan management algorithm receives as input a plan composed by a set of stre
   \item Each thread executes the part of the plan of an agent, composed by $n$ different tasks.
   \item For each task, for every causal link $(t_i,t_n$), where $t_n$ is the current task, and $t_i$ is another task, the plan manager waits until $t_i$ is completed, or there is an error. This process is handled in the \textit{waitCausalLinks} procedure.
   \item When all the causal links have been satisfied, the execute\textbackslash monitor procedure is called, depending if the thread is managing the robot or a human. The \textit{executeTask} operation interacts with the Task Execution layer to complete the task, while the MonitorTask operation with the Situation Assessment layer.
-  \item If these procedures succed, the Plan Manager switches to the next task, otherwise it returns a failure.
+  \item If these procedures succeed, the Plan Manager switches to the next task, otherwise it returns a failure.
   \item The process is continued until there is a failure or the plan for the current agent is completed.
 \end{itemize} 
 
@@ -173,9 +173,9 @@ Our plan management algorithm receives as input a plan composed by a set of stre
  \label{fig:plan_management-manage_plan}
  \end{figure}
 
-Failures in the algorithm lead to a replan request. If a new plan is found, the algorithm starts again, otherwhise the goal is considered as failed. Depending on the modality, the robot will also give different verbal information to the human.
+Failures in the algorithm lead to a replan request. If a new plan is found, the algorithm starts again, otherwise the goal is considered as failed. Depending on the modality, the robot will also give different verbal information to the human.
 
-If the current management modality is \textit{robot leader}, the robot will warn the human the he executed a wrong action. If the replan is successfull, the robot will explain the new plan to the human. 
+If the current management modality is \textit{robot leader}, the robot will warn the human the he executed a wrong action. If the replan is successful, the robot will explain the new plan to the human. 
 
 When the human is the leader, the robot is following orders. The current order might be to execute a task which still requires coordination, and the robot might expect the human to follow a particular strategy. If the human deviates from this strategy the robot will replan, but not issue any warning.
 
@@ -200,7 +200,7 @@ At all time, as previously explained in chapter~\ref{chapter:intention}, the rob
 
 As we said in section~\ref{subsec:intention-unknown_intentions}, the single-agent MDP mechanism that we introduced is not sufficient to monitor a joint goal, and so the IG for the human, in the coworker scenario, only includes Actions and Observation nodes.
 
-The Plan Manager will wait for Situation Assessement to infer that an action has been performed by the human. If the action is different from $a$, it will return an error, prompting a replan. Otherwise, the plan management will continue with the next action in the stream, if there are any.
+The Plan Manager will wait for Situation Assessment to infer that an action has been performed by the human. If the action is different from $a$, it will return an error, prompting a replan. Otherwise, the plan management will continue with the next action in the stream, if there are any.
 
 For example, let us imagine a scenario where Greg is near a table, with a \textit{bottle} and a \textit{book} on top. Let us say that, at the moment, Greg can execute three actions: \textit{take book}, \textit{take bottle}, and \textit{move kitchen}. The current IG for Greg will include these actions, as well as observations to infer their execution. In this example, Greg's plan is represented by a stream of three sequential actions: \textit{move to table, take bottle, move kitchen}. 
 Greg has just completed the action \textit{move to table}, and should now execute the action \textit{take bottle}, if he follows this stream. If the system infers that Greg executes \textit{take book} or \textit{move kitchen}, the plan manager will replan, since Greg executed a different action that the one that was expected. If Greg executes \textit{take book}, the system will start monitoring the next action in the stream, which is \textit{move kitchen}.

@@ -23,7 +23,10 @@ The environment is composed by two different furniture, a $TABLE$ and a $SHELF$,
  	\label{fig:coworker_results-pr2helper}
  \end{figure}
 
-In this scenario, human detection and handling was done using a depth camera, mounted on the ceiling. the scenario uses both the capacities of the robot coworker, described in this part, and the belief management and action inference capacities of the robot observer, shown in part~\ref{part:robot_observer}.
+%CORRECTION_DEMIRIS
+In this scenario, human detection and handling was done using a depth camera, mounted on the ceiling. The planning and execution of the robot's motions are based on the ideas presented in \cite{Sisbot2008,Mainprice2011,Pandey2010}. The collaboration planner for the handover is implemented using the APPL library~\footnote{http://bigbird.comp.nus.edu.sg/pmwiki/farm/appl/} which is based on the SARSOP algorithm\~cite{kurniawati2008sarsop} for solving POMDPs.
+%END_CORRECTION_DEMIRIS
+The scenario uses both the capacities of the robot coworker, described in this part, and the belief management and action inference capacities of the robot observer, shown in part~\ref{part:robot_observer}.
 
 \section{Experiments}
 \label{sec:coworker_experiments-experiment}
@@ -38,7 +41,7 @@ has completed an action.
 \begin{figure}
   \caption[Robot coworker experiment 1]{Robot adapts. This figure shows the robot's representation of the scenario. The white tape is the \textit{TAPE2}, while the blue
     one is the \textit{TAPE1}. The spheres represent the agents'
-    rechabilities, with red spheres representing robot reachabilities
+    reachabilities, with red spheres representing robot reachabilities
     and green spheres human reachabilities. In this case only the human
   can reach the \textit{TAPE2} while both agents can reach the \textit{TAPE1}
 and the \textit{BIN}. After the human takes the \textit{TAPE2} the
@@ -93,7 +96,7 @@ takes the \textit{TAPE1} and throws it in the \textit{BIN}, completing the task.
 
 In the second run the current modality is \textit{human leader}. The user is
 asked to clean the table as he wishes. The user asks the robot to take
-each tape and give it to him, throwing them in the trashbin.
+each tape and give it to him, throwing them in the trash bin.
 
 \item
 \textbf{Replanning after failed action}. 
@@ -131,7 +134,7 @@ In this run the robot computes that the \textit{TAPE3} and \textit{BIN}
 are reachable only by the human, while the \textit{TAPE2} is reachable only by the robot. The robot computes a plan
 and starts executing it, observing the human reactions. 
  After an initial stage when the human is
-commited to the task, he does not execute a part of the plan (taking
+committed to the task, he does not execute a part of the plan (taking
 the final tape and throwing it), so the robot looks for another
 plan. The only solution to the problem is the one already computed at
 the beginning, so the robot decides to ask
@@ -178,7 +181,7 @@ human partner to give commands or to be more passive in its role and
 switching from one modality to the other. 
 \item
 \textbf{The system is able to handle each agent beliefs}.
-The system is able to represent different belief states for different agents and to take into accout what users can see, reach and know when creating a plan.
+The system is able to represent different belief states for different agents and to take into account what users can see, reach and know when creating a plan.
 
 \item
 \textbf{The system is able to monitor human actions}.

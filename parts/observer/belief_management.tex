@@ -14,7 +14,7 @@ In this chapter we show how our system is able to manage agents beliefs. Section
 
 In HRI, it is important to represent humans not as simple obstacles, but as acting entities, with different beliefs on the state of the world and with the capacity to affect the environment. 
 
-A simple example to prove this point is related to proxemics. Normally, when we approach an object, like a table, in an empty environment, we just choose the quickest path. If, intead, the environment is populated by other people, we will follow a set of social rules, like keeping a certain distance from them. If the robot does not follow these rules, it might freighten people, for example by approaching quickly from behind the person, or be considered as `rude'.
+A simple example to prove this point is related to proxemics. Normally, when we approach an object, like a table, in an empty environment, we just choose the quickest path. If, instead, the environment is populated by other people, we will follow a set of social rules, like keeping a certain distance from them. If the robot does not follow these rules, it might frighten people, for example by approaching quickly from behind the person, or be considered as `rude'.
 
 
 Theory of Mind~\citep{premack1978does} is a skill used to reason about humans' beliefs and thoughts, and how they affect actions. An ability linked to this concept is perspective taking, which is widely studied in developmental literature.  Flavell in \cite{flavell1977development} describes two levels of perspective taking: 
@@ -33,7 +33,7 @@ An important study linked to conceptual perspective taking is the \textit{diverg
 
 Studies on individuals that do not possess the required mechanisms to perform perspective taking \citep{frick2014picturing} have shown that they encounter great difficulties in social relationships, confirming the importance of this ability.
 
-These studies make us think that perspective taking could be very important in robotics. For example, let us imagine a scenario where Greg and a robot are performing some household repairs, which require the use of different tools. The robot might create a plan to achieve this goal where Greg needs to use a screwdriver, which is actually behind a box, hidden from his sight. Without perspective taking, the robot will procede in its task while Greg is desperately looking for the screwdriver. By using perspective taking, instead, the robot would infer that Greg does not know where the screwdriver is, and can not see it. In this situation, the robot might inform Greg of the location of the screwdriver, give it to him, or create a plan where Greg does not need to use it, thus being a more likable helper.
+These studies make us think that perspective taking could be very important in robotics. For example, let us imagine a scenario where Greg and a robot are performing some household repairs, which require the use of different tools. The robot might create a plan to achieve this goal where Greg needs to use a screwdriver, which is actually behind a box, hidden from his sight. Without perspective taking, the robot will proceed in its task while Greg is desperately looking for the screwdriver. By using perspective taking, instead, the robot would infer that Greg does not know where the screwdriver is, and can not see it. In this situation, the robot might inform Greg of the location of the screwdriver, give it to him, or create a plan where Greg does not need to use it, thus being a more likable helper.
 
 Previous works in robotics have actually demonstrated that enhancing the robot's perspective taking abilities improves its reasoning capabilities, leading to more appropriate and efficient task planning and interaction strategies \citep{Trafton2005,ros2010one,breazeal2006}. Let us review some implementations of perspective taking.
 
@@ -43,13 +43,22 @@ Perspective taking is performed by introducing two forward vision models. The fi
 
 The architecture of~\cite{BreazealGB09}, also presented in chapter~\ref{chapter:introduction}, is another cognitive system which uses simulation mechanisms, but the work  includes both perceptual and conceptual perceptive taking. In this system the robot's schemas are used to build its mental model and execute its tasks, but also to build humans mental models and infer their actions and goals.
 
-The robot is able to build a belief on the world state by analyzing perceptual data, producing symbolic information, such as the location or color of an object. This belief is constantly maintained, by adding new information and erasing those that are no longer valid.
+%DEMIRIS_CORRECTION
+The system extracts information from a set of observations $O = \{o_1,o_2,...,o_N\}$ using its perception system $P = \{p_1,p_2,...,p_K\}$, where each $p \in P$ is a classification function $p(o) = (m,c,d)$, where $m$ is the match of the percept, $c$ is the confidence in the result, and $d$ is an optional feature. In this way, the system is able to produce, for each observation, a probabilistic percept snapshots $s_i = \{(p,m,c,d) | p \in P, \; p(o_i) = (m,c,d), \; m*c > k\}$, where $k$ is a threshold value. This percept snapshot can represent information such as the location or color of an object.
+
+All these percept snapshots are then clustered into beliefs, based on metrics of similarity between the different observations. This merging allows to link informations regarding the same object (for example, different percepts could be linked to that a certain button is on or off). Each belief $b \in B$ is a set mapping percepts to history functions $b = \{(p_x,h_x),(p_y,h_y),...\}$ where $h$ is the history function $h(t) = (m'_t, c'_t, d'_t)$, representing the value of a percept at time $t$.
+
+This belief is constantly maintained, by adding new information and erasing those that are no longer valid. Beliefs are marked for deletion by evaluating set of culling functions $c = \{c_1,c_2,...,c_j\}$.
 
 To build a belief model of a human, the robot manipulates perceptual data, by filtering objects that can not be seen by the human (because they are occluded, for example), and transforming the data to simulate a first-person experience on the human. By using the same mechanisms to manage the belief for itself and for humans, the robot can infer divergent belief situations. This method has been tested on variants of the Sally and Anne test with good results.
 
-The belief management algorithm of this systems does not take into account information that can not be directly perceived, but must be inferred. For example, in a domestic scenario, a human might not be aware that a mug containing liquid is hot and should not be touched. These aspects could be inferred by taking into account the results of actions, like pouring hot liquid in the mug.
+The authors do not discuss on how to take into account information that can not be directly perceived, but must be inferred. For example, in a domestic scenario, a human might not be aware that a mug containing liquid is hot and should not be touched. These aspects could be inferred by taking into account the results of actions, like pouring hot liquid in the mug. We could imagine extending the set of observations $O$ to include not only information from sensory processes but also from higher level reasoning to include these information.
 
-Another system able to model agent beliefs is~\cite{scheutz2013computational}. This work is oriented toward problems where a distributed team of agents needs to communicate over a remote connection to solve a task. Each agent is assumed to be able to create his own mental model using his perception capacities, even though the precise rules for these mechanisms are not explained. When an agent receives information, he updates his mental belief using a set of rules, introducing the new data and checking for incongruencies with his previous information.  Using the same mechanism, each agent forms a belief model of other agents that have received the same information.
+
+Another system able to model agent beliefs is~\cite{scheutz2013computational}. This work is oriented toward problems where a distributed team of agents needs to communicate over a remote connection to solve a task. Each agent is assumed to be able to create his own mental model using his perception capacities, even though the precise rules for these mechanisms are not explained. When an agent receives information, he updates his mental belief using a set of rules, introducing the new data and checking for incongruences with his previous information. For example, the rule $Perceives(\alpha,o,l,t) \rightarrow  B(\alpha,Perceives(\alpha,o,l,t))$ indicates that if agent $\alpha$ perceives object $o$ at location $l$ and time $t$, he will believe that it perceived this object at this location.
+
+Using the same mechanism, each agent forms a belief model of other agents that have received the same information.
+%END_DEMIRIS_CORRECTION%
 
 We created a rule-based approach for belief management, based on geometric reasoning and on inference, which we will introduce in the following sections. 
 
@@ -89,7 +98,7 @@ These aspects are represented in the Situation Assessment layer, and in particul
 \item Geometrical Reasoning. Symbolic facts are produced starting from perceptual data.
 \item Belief Management. The system maintains a mental model of each agent.
 \item Database. The Database stores symbolic facts produced by the system.
-\item Intention and Action Recognition. The system infers the current intentions of a human, and which actions are executed, by integrating  geometrical reasoning, the human's belief model, planning, and bayesian inference.
+\item Intention and Action Recognition. The system infers the current intentions of a human, and which actions are executed, by integrating  geometrical reasoning, the human's belief model, planning, and Bayesian inference.
 \end{itemize}
 
  \begin{figure}[ht!]
@@ -110,7 +119,7 @@ In the following sections we will show how our system is able to manage agents' 
 \section{Entity Detection}
 \label{sec:belief_management-entity_detection}
 In our system, we chose to simplify perception issues, focusing on reasoning aspects. We associate a unique tag to every object that is interesting in a particular scenario. When the robot observes a tag using a camera, it detects the corresponding object using a tag-matching algorithm.
-Regarding humans, we use a motion capture software to identify and track agents moving in the environment. Using different tags, we can track the head, shoulders, and right arm of a human. Our situation assessment component has also been tested using a laser and RGB based detector, detailed in~\cite{lindermulti}, in the SPENCER european project. We also experimented using a depth camera, mounted on the ceiling, and a color-recognition algorithm to identify humans. 
+Regarding humans, we use a motion capture software to identify and track agents moving in the environment. Using different tags, we can track the head, shoulders, and right arm of a human. Our situation assessment component has also been tested using a laser and RGB based detector, detailed in~\cite{lindermulti}, in the SPENCER European project. We also experimented using a depth camera, mounted on the ceiling, and a color-recognition algorithm to identify humans. 
 
  \begin{figure}[ht!]
 	\centering
@@ -129,7 +138,7 @@ Using its perception abilities the robot can build a representation of the envir
 \item \textit{isNextTo}. Used when two objects are on the same surface and close to each other, for example $CUP\; isNextTo\; BOX$.
 \item \textit{isReachable}. Used when an object is reachable by an agent, computed through inverse kinematics. An example of such predicate is $CUP\; isReachableBy\; ROBOT$
 \item \textit{isVisible}. Used when an entity is visible by an agent. This is calculated by computing the field of view of an agent, and checking if there is a sufficient portion of the object not hidden by occlusions in this field. An example of this predicate is $CUP\; isVisibleBy\; ROBOT$.
-\item \textit{isMoving}. Used when an agent is currently moving. This is computed by checking if the agent's displacements in a pre-determined time unit is bigger than a pre-determined threshold. We use an hysteresis filter to avoid continuous oscillations in the value of the fact. An example of $isMoving$ is $ROBOT\; isMoving\; TRUE$.
+\item \textit{isMoving}. Used when an agent is currently moving. This is computed by checking if the agent's displacements in a predetermined time unit is bigger than a predetermined threshold. We use an hysteresis filter to avoid continuous oscillations in the value of the fact. An example of $isMoving$ is $ROBOT\; isMoving\; TRUE$.
 \item \textit{isMovingToward}. Used to indicate that an agent is moving toward a particular entity. This is computed by checking if the distance between the agent and the entity is decreasing. An example of this predicate is $ROBOT\; isMovingToward\; GREG$.
 \item \textit{isOrientedToward}. Used to indicate that an agent is oriented toward a particular entity, for example $ROBOT\; isOrientedToward\; GREG$.
 \item \textit{pose}. Used to indicate that an agent is in a particular pose, for example $GREG\; pose\; HANDOVER$.

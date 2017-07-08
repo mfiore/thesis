@@ -8,7 +8,7 @@ In this section we present a recent work where we developed a Multi-Agent Markov
 
 \section{Introduction}
 \label{sec:mamdp-intro}
-Multi-Agent planning   is an important and studied topic in the AI community \citep{durfee1999survey}. There are several approaches to this problem, using classical or probabilistc planning. There are several issues to consider:
+Multi-Agent planning   is an important and studied topic in the AI community \citep{durfee1999survey}. There are several approaches to this problem, using classical or probabilistic planning. There are several issues to consider:
 \begin{itemize}
 \item Distributed vs Centralized. A multi-agent planner might be distributed, meaning that separate systems plan independently and then communicate to build a shared plan (an idea investigated, for example in \cite{nikolaidis2013cross,guestrin2002distributed} ); or centralized, meaning that a single system plans for all the agents.
 \item Coordination. Agents need to coordinate their plans, in particular in the presence of shared resources. Imagine, for example, two agents, Max and Bob, that are using a tool to repair a set of cars. If Max is proceeding faster than Bob and the two do not coordinate, Max might take the tool and leave, starting to repair another car, ignoring the fact that Bob still needs the tool. This example shows that it is important to reason on the duration of actions performed by agents. At the simplest level, agents need to know the advancement of the sub-plan of other agents. More complex reasoning might take into account how long an agent needs to perform a certain sub-task, in order to refine a plan. 
@@ -108,7 +108,7 @@ We define the function $single_i(s)$ , which converts the MAMDP state to state o
 
 
 \subsection{Actions}
-$A=(\prod_{i=1}^{n} A_i) \cup JointActions \cup WaitActions$ , where $JointActions$ is the set of collaborative actions, and $WaitActions$ is a set computed by enumerating all the possibile instances where one or more agents do not act, and simply wait, while others are acting.
+$A=(\prod_{i=1}^{n} A_i) \cup JointActions \cup WaitActions$ , where $JointActions$ is the set of collaborative actions, and $WaitActions$ is a set computed by enumerating all the possible instances where one or more agents do not act, and simply wait, while others are acting.
 
 The actions of the MAMDP are a concatenation of the actions of the single MDP, adding the separator character `-' between the different agents' actions. We will refer to the single agent's actions of action $a$ as $a_i \quad \forall \> 1\leq i \leq n$.
 
@@ -139,10 +139,13 @@ For example, consider the state $(objectp1\_isAt=`surface', objectp2\_isAt=`tabl
 
 Consider now the state $(objectp1\_isAt=`agentp1', objectp2\_isAt=`other', agentp1\_isAt=`table', \\ agentp2\_isAt=`table')$. If $objectp1$ is a parameter assigned to $Greg$, \textit{objectp1\_isAt} is an abstract variable, and $abstract\_values_{objectp2\_isAt}(`Greg')=`other'$, this state will not be considered incongruent.  
 
+%CORRECTION MOUADDIB
+While building the MAMDP, we assume that the transition functions of the single agents are independent. For example, we are not able to model the possibility that an agent is more likely to fail an action that requires his concentration if another agent is moving around the area disturbing him.
+%END_CORRECTION MOUADDIB
 
 \subsection{Start and Goal States}
 $S_0=s \in S\; | \; \forall_{i=1}^n s_i \in S_{0i} $. A state is a starting state in the MAMDP only if it is a starting state in all the single agent MDPs.\\
-$G=s \in S\; | \; \exists_{i=1}^n \; | \; s_i \in G_{i}$. A state is a goal state in the MAMDP if it is a goal state in any one of the single agent goal states. The idea of this choice is that a MAMDP terminates when one of the agents has achieved its goal. If there is an agent that has not completed its task, and the MAMDP was a sub-model in a hierarchy, its father will select another action, perhaps assigning one or more agents to the incompleted task. 
+$G=s \in S\; | \; \exists_{i=1}^n \; | \; s_i \in G_{i}$. A state is a goal state in the MAMDP if it is a goal state in any one of the single agent goal states. The idea of this choice is that a MAMDP terminates when one of the agents has achieved its goal. If there is an agent that has not completed its task, and the MAMDP was a sub-model in a hierarchy, its father will select another action, perhaps assigning one or more agents to the uncompleted task. 
 
 In some situations, we might try creating a MAMDP composed of opposing goals, like for example, a MAMDP where both agents need to get the same object. Since we are interested in cooperative and not competitive scenarios, we will not create these kind MAMDPs. We can recognize this situation by checking if there is any state in $G$ that is incongruent, as previously defined in subsection~\ref{subsec:mamdp-transition}. 
 
@@ -168,7 +171,7 @@ The action space of the joint model is calculated as the cross product of the ac
 
 First of all, created MAMDPs can be reused in different branches of the hierarchy, if needed. When creating a new MAMDP, we will look to see if there is already an existing MAMDP with the same $name$ and, if so, we will use it.
 
-Second, parameters can greatly  reduce the number of sub-MAMDPs to compute. Let $a$ be a \textit{macro action}, $c$ the sub-MAMDP linked to $a$, $1..n$ the indexs of the single-agent MDPs of $c$, which are selected as previously explained.
+Second, parameters can greatly  reduce the number of sub-MAMDPs to compute. Let $a$ be a \textit{macro action}, $c$ the sub-MAMDP linked to $a$, $1..n$ the indexes of the single-agent MDPs of $c$, which are selected as previously explained.
 
  We create the \textit{parametrized\_name} of $c$ by concatenating the \textit{parametrized\_name} of its single-agent MDPs. To set the $name$ of  $c$ we process each name of its single-agent MDPs $name_i$, by modifying all of its $name\_parts_{i,k}$, with $1 \leq k \leq m$ in the following way:\\
 $name\_part_{i,k}=
@@ -186,7 +189,7 @@ The idea behind this choice is the following. If the sub-MDPs do not have parame
 
 \section{Example}
 \label{sec:mamdp-example}
-In this section we will show an example of creation of a MAMDP. We start by presenting a cooperative scenario. The robot and a human are working together to assemble three brackets on three differents work surfaces. To assemble a bracket the agents need to clean the surface, apply some glue to it, and fix the bracket. A possible set-up for this scenario is shown in figure ~\ref{fig:mamdp-mamdp_scenario}.
+In this section we will show an example of creation of a MAMDP. We start by presenting a cooperative scenario. The robot and a human are working together to assemble three brackets on three different work surfaces. To assemble a bracket the agents need to clean the surface, apply some glue to it, and fix the bracket. A possible set-up for this scenario is shown in figure ~\ref{fig:mamdp-mamdp_scenario}.
 
  \begin{figure}[ht!]
 	\centering
@@ -256,7 +259,7 @@ We will now show the \textit{AssembleAllBrackets} model, whose goal is directing
 Note that we did not need to specify a cost function for this model. Since all of its actions are \textit{macros}, the cost function will be directly derived from its sub-models.
 
 \subsubsection{AssembleBracket}
-We will now show the \textit{AssembleBracket} model, whose goal is assembling a specific bracket on a specifc surface.
+We will now show the \textit{AssembleBracket} model, whose goal is assembling a specific bracket on a specific surface.
 \begin{itemize}
 	\item $name: agent\_assemble\_bracket\_surface$.
 	\item		$par: \{agent,bracket,surface\}$.
@@ -387,7 +390,7 @@ We will now show how our MAMDP is created. The MAMDP hierarchy, shown in figure~
 \end{itemize}
 
 
-If we would create and solve a new MAMDP for each of these macros, we would create a great quantity of models. Fortunately, as previously said, we can reduce the number of models by creating generic sub-models for a macro that can be used when there are not parameters in common. In this case, we actually need to create a specifc sub-MAMDP for every action of the type \textit{agentp1\_assemble\_bracketi\_surfacej-agentp2\_assemble\_bracketk\_surfacel}, where $i=j$ or $j=l$ (since they would have variables in common), plus a generic sub-MAMDP for all the other cases.
+If we would create and solve a new MAMDP for each of these macros, we would create a great quantity of models. Fortunately, as previously said, we can reduce the number of models by creating generic sub-models for a macro that can be used when there are not parameters in common. In this case, we actually need to create a specific sub-MAMDP for every action of the type \textit{agentp1\_assemble\_bracketi\_surfacej-agentp2\_assemble\_bracketk\_surfacel}, where $i=j$ or $j=l$ (since they would have variables in common), plus a generic sub-MAMDP for all the other cases.
 
 Also, in this example, all the MAMDPs for actions where the same bracket is assembled by two agents on different surfaces would not be created, as their goal states contain incongruent states (since a bracket can not be on two surfaces at the same time and a surface can not contain more than one bracket).
 
